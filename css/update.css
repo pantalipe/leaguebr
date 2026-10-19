@@ -48,3 +48,13 @@
   .update-section { padding: 28px; }
   .stage-entry { grid-template-columns: minmax(0, 1fr) 140px; }
 }
+
+.updater .member-status { display: flex; align-items: center; gap: 8px; min-height: 44px; margin: 8px 0 0; font-size: .75rem; color: var(--muted); cursor: pointer; }
+.updater .member-status input { width: 19px; height: 19px; min-height: 19px; flex-shrink: 0; padding: 0; accent-color: var(--gold); }
+.updater input:disabled { opacity: .45; }
+.new-members { list-style: none; padding: 0; margin: 16px 0; }
+.new-member-row { display: grid; grid-template-columns: minmax(0, 1fr) 90px; gap: 12px; align-items: end; padding-block: 16px; border-top: 1px solid var(--line); }
+.new-member-row label { min-width: 0; margin-bottom: 0; }
+.new-member-row input { margin-top: 8px; }
+.new-member-row button { grid-column: 1 / -1; justify-self: start; }
+@media (min-width: 651px) { .new-member-row { grid-template-columns: minmax(0, 1fr) 120px auto; } .new-member-row button { grid-column: auto; } }

@@ -14,6 +14,17 @@ Quem coleta os estágios não precisa de conta no GitHub:
 
 O portal permanece igual até o responsável publicar. O arquivo gerado contém todos os membros, seus históricos anteriores e os retratos. Para corrigir um valor antes de enviar, altere o campo e confira a prévia de novo. Se o navegador renomear downloads repetidos para `members (1).json`, envie o arquivo mais recente.
 
+
+### Como registrar entradas, saídas e retornos
+
+- **Quem saiu:** marque **Saiu da guild** abaixo do nickname. Não coloque estágio zero para sinalizar saída. O campo de estágio fica desativado e o histórico anterior é mantido fora do ranking ativo.
+- **Quem entrou:** no bloco **Entradas na guild**, preencha nickname e estágio. Toque em **Adicionar mais um membro** para outras entradas. Deixe a linha vazia se ninguém entrou.
+- **Quem voltou:** adicione o mesmo nickname no bloco de entradas, com o estágio atual. A página recupera o cadastro anterior e seu histórico.
+- **Lista colada com recém-chegados:** preencha primeiro os nicknames no bloco de entradas e depois use **Colar uma lista pronta**, para que esses nomes sejam reconhecidos.
+- **Antes de baixar:** confira a data e as ações na prévia. É possível gerar um arquivo somente com entradas ou saídas, mesmo sem atualizar estágios dos demais.
+
+A data escolhida registra a entrada ou saída. O arquivo completo inclui os cadastros de ex-membros; envie e publique o arquivo inteiro, sem remover esses registros.
+
 ### Para o responsável publicar o arquivo recebido
 
 1. Confira se o arquivo acabou de ser gerado a partir dos dados atuais. Se o portal recebeu outra atualização depois da geração, peça um novo arquivo; não substitua o histórico mais recente por uma cópia antiga.

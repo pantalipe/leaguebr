@@ -37,9 +37,9 @@ function issue(errors, index, id, message) {
 }
 
 /** Build the current ranking, retaining valid history rows and reporting rejected data. */
-export function buildRanking(input) {
+export function buildRanking(input, { includeInactive = false } = {}) {
   const errors = [];
-  const result = [];
+  let result = [];
   if (!Array.isArray(input)) {
     return { members: [], errors: [{ index: null, message: "members must be an array" }] };
   }
@@ -64,6 +64,12 @@ export function buildRanking(input) {
     ids.add(id);
     nicknames.add(nickname);
 
+    if (member.active !== undefined && typeof member.active !== "boolean") issue(errors, index, id, "active must be boolean");
+    for (const field of ["joinedAt", "leftAt"]) {
+      if (member[field] !== undefined) {
+        try { parseDay(member[field]); } catch { issue(errors, index, id, field + " has an invalid date"); }
+      }
+    }
     const role = typeof member.role === "string" && member.role.trim() ? member.role.trim() : "Membro";
     const rows = Array.isArray(member.history) ? member.history : [];
     if (!Array.isArray(member.history)) issue(errors, index, id, "history must be an array");
@@ -103,7 +109,7 @@ export function buildRanking(input) {
     const delta = previous ? current.stage - previous.stage : null;
     const days = previous ? current.day - previous.day : null;
     result.push({
-      id, nickname, role, history,
+      id, nickname, role, history, active: member.active !== false,
       currentStage: current.stage,
       lastDate: current.date,
       previousDate: previous ? previous.date : null,
@@ -114,6 +120,7 @@ export function buildRanking(input) {
     });
   });
 
+  if (!includeInactive) result = result.filter(member => member.active);
   result.sort((a, b) => b.currentStage - a.currentStage || compareText.compare(a.nickname, b.nickname) || compareText.compare(a.id, b.id));
   result.forEach((member, index) => { member.position = index + 1; });
   return { members: result, errors };

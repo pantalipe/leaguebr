@@ -23,7 +23,7 @@ export function parseRankingText(text, sourceMembers) {
   const byNickname = new Map();
   const ambiguous = new Set();
   for (const member of sourceMembers) {
-    if (member && typeof member.nickname === "string") {
+    if (member && member.active !== false && typeof member.nickname === "string") {
       const name = normalizeNickname(member.nickname);
       if (byNickname.has(name)) ambiguous.add(name);
       byNickname.set(name, member);
@@ -74,68 +74,93 @@ export function parseRankingText(text, sourceMembers) {
   return { entries, errors };
 }
 
-/** Apply a complete set of daily updates to a cloned source roster. */
-export function prepareUpdate(sourceMembers, date, entries) {
-  const errors = [];
-  const members = Array.isArray(sourceMembers) ? structuredClone(sourceMembers) : [];
-  const fail = (message) => ({ members, changes: [], errors: [...errors, message] });
+/** Apply stage and membership changes atomically, preserving archived histories. */
+export function prepareUpdate(sourceMembers, date, entries, { additions = [], departures = [] } = {}) {
+  const original = Array.isArray(sourceMembers) ? structuredClone(sourceMembers) : [];
+  const members = structuredClone(original);
+  const errors = [], changes = [], added = [], departed = [];
+  const fail = (message) => ({ members: original, changes: [], added: [], departed: [], errors: message ? [...errors, message] : errors });
   if (!Array.isArray(sourceMembers)) return fail("A lista de membros deve ser um array.");
-  const ranking = buildRanking(sourceMembers);
+  const ranking = buildRanking(sourceMembers, { includeInactive: true });
   if (ranking.errors.length) return fail("Os dados de origem possuem erros e não podem ser atualizados.");
   let day;
   try { day = parseDay(date); } catch { return fail("A data informada é inválida."); }
-  if (!Array.isArray(entries) || entries.length === 0) return fail("Informe ao menos um estágio.");
-
-  const byId = new Map(sourceMembers.map((member) => [member.id, member]));
-  const staged = new Set();
+  if (![entries, additions, departures].every(Array.isArray)) return fail("As alterações devem ser listas.");
+  if (!entries.length && !additions.length && !departures.length) return fail("Informe ao menos um estágio, entrada ou saída.");
+  const byId = new Map(members.map(member => [member.id, member]));
+  const stats = new Map(ranking.members.map(member => [member.id, member]));
+  const staged = new Set(), leaving = new Set(), names = new Set();
+  const dateAllowed = (member, rejoining = false) => {
+    const limits = [stats.get(member.id).lastDate, member.joinedAt];
+    if (rejoining) limits.push(member.leftAt);
+    if (limits.some(value => value && day < parseDay(value))) {
+      errors.push(`A data é anterior ao cadastro ou último registro de ${member.nickname}.`);
+      return false;
+    }
+    return true;
+  };
+  const applyStage = (member, stage) => {
+    let index = -1;
+    member.history.forEach((row, i) => { if (row.date === date) index = i; });
+    if (index >= 0) member.history[index] = { ...member.history[index], stage };
+    else member.history.push({ date, stage });
+    return index >= 0;
+  };
+  for (const id of departures) {
+    const member = byId.get(id);
+    if (!member || member.active === false || leaving.has(id)) {
+      errors.push("Saída duplicada ou membro ativo desconhecido.");
+      continue;
+    }
+    leaving.add(id);
+    if (!dateAllowed(member)) continue;
+    member.active = false;
+    member.leftAt = date;
+    departed.push({ id, nickname: member.nickname });
+  }
   for (const entry of entries) {
-    if (!entry || typeof entry !== "object" || Array.isArray(entry) || !byId.has(entry.id)) {
-      errors.push("A lista contém um membro desconhecido ou inválido.");
-      continue;
-    }
-    if (!safeStage(entry.stage)) {
-      errors.push(`Estágio inválido para ${byId.get(entry.id).nickname}.`);
-      continue;
-    }
-    const latestDay = Math.max(...byId.get(entry.id).history.map((row) => parseDay(row.date)));
-    if (day < latestDay) {
-      errors.push(`A data ${date} é anterior ao último registro de ${byId.get(entry.id).nickname}.`);
-      continue;
-    }
-    if (staged.has(entry.id)) {
-      errors.push(`Membro duplicado: ${byId.get(entry.id).nickname}.`);
+    const member = entry && byId.get(entry.id);
+    if (!member || member.active === false || leaving.has(entry.id) || staged.has(entry.id)) {
+      errors.push("Atualização duplicada, membro inativo ou desconhecido.");
       continue;
     }
     staged.add(entry.id);
+    if (!safeStage(entry.stage)) { errors.push(`Estágio inválido para ${member.nickname}.`); continue; }
+    if (!dateAllowed(member)) continue;
+    const previousStage = stats.get(member.id).currentStage;
+    const sameDay = applyStage(member, entry.stage);
+    changes.push({ id: member.id, nickname: member.nickname, previousStage, stage: entry.stage, delta: entry.stage - previousStage, sameDay });
   }
-  if (errors.length) return { members, changes: [], errors };
-
-  const changes = [];
-  for (const entry of entries) {
-    const original = byId.get(entry.id);
-    const history = original.history;
-    let previousStage = null;
-    let existingIndex = -1;
-    for (let i = 0; i < history.length; i++) {
-      const rowDay = parseDay(history[i].date);
-      if (rowDay === day) existingIndex = i;
-      if (rowDay < day && (previousStage === null || rowDay >= previousStage.day)) {
-        previousStage = { stage: history[i].stage, day: rowDay };
-      }
+  for (const addition of additions) {
+    const nickname = typeof addition?.nickname === "string" ? addition.nickname.trim() : "";
+    const key = normalizeNickname(nickname);
+    if (!nickname || names.has(key) || !safeStage(addition?.stage)) {
+      errors.push("Informe um nickname único e um estágio inteiro válido para cada entrada.");
+      continue;
     }
-    const sameDay = existingIndex !== -1;
-    const baseline = sameDay ? history[existingIndex].stage : previousStage?.stage;
-    const rawCopy = members.find((member) => member.id === entry.id);
-    if (sameDay) rawCopy.history[existingIndex] = { ...rawCopy.history[existingIndex], stage: entry.stage };
-    else rawCopy.history.push({ date, stage: entry.stage });
-    changes.push({
-      id: entry.id,
-      nickname: original.nickname,
-      previousStage: baseline ?? null,
-      stage: entry.stage,
-      delta: baseline === undefined || baseline === null ? null : entry.stage - baseline,
-      sameDay,
-    });
+    names.add(key);
+    const matches = original.filter(member => normalizeNickname(member.nickname) === key);
+    if (matches.length > 1 || matches.some(member => member.active !== false)) {
+      errors.push(`Já existe um membro ativo ou ambíguo com o nickname ${nickname}.`);
+      continue;
+    }
+    if (matches.length) {
+      const member = byId.get(matches[0].id);
+      if (!dateAllowed(member, true)) continue;
+      applyStage(member, addition.stage);
+      member.active = true;
+      member.joinedAt = date;
+      delete member.leftAt;
+      added.push({ id: member.id, nickname: member.nickname, stage: addition.stage, reactivated: true });
+    } else {
+      const base = nickname.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "member";
+      let id = base, suffix = 2;
+      while (byId.has(id)) id = `${base}-${suffix++}`;
+      const member = { id, nickname, role: "Membro", active: true, joinedAt: date, history: [{ date, stage: addition.stage }] };
+      members.push(member);
+      byId.set(id, member);
+      added.push({ id, nickname, stage: addition.stage, reactivated: false });
+    }
   }
-  return { members, changes, errors: [] };
+  return errors.length ? fail() : { members, changes, added, departed, errors: [] };
 }

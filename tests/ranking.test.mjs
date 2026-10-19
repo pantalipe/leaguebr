@@ -105,3 +105,16 @@ test("rejects nonnumeric, nonfinite, fractional and unsafe stages", () => {
   assert.equal(errors.length, 5);
   assert.equal(buildRanking({}).errors.length, 1);
 });
+
+test("inactive members are archived outside the ranking but still validated", () => {
+  const roster = [
+    { id: "old", nickname: "Old", active: false, leftAt: "2025-01-02", history: [{ date: "2025-01-01", stage: 99 }] },
+    { id: "new", nickname: "New", history: [{ date: "2025-01-01", stage: 1 }] },
+  ];
+  assert.deepEqual(buildRanking(roster).members.map(member => [member.id, member.position]), [["new", 1]]);
+  assert.equal(buildRanking(roster, { includeInactive: true }).members.length, 2);
+  roster[0].history[0].stage = -1;
+  assert.ok(buildRanking(roster).errors.length);
+  roster[0].leftAt = "2025-02-30";
+  assert.ok(buildRanking(roster).errors.some(error => error.message.includes("leftAt")));
+});

@@ -78,3 +78,54 @@ test("handles WhatsApp headings, medals, ordinal variants and refuses empty or a
   assert.ok(parseRankingText('PÓDIO:', source).errors.length);
   assert.ok(parseRankingText('Risk 1090', [...source, { id: 'other', nickname: 'RISK' }]).errors.length);
 });
+
+test("archives exits without changing history and permits membership-only batches", () => {
+  const result = prepareUpdate(source, "2025-01-03", [], { departures: ["risk"], additions: [{ nickname: "kü", stage: 1089 }] });
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(result.members[0].history, source[0].history);
+  assert.equal(result.members[0].active, false);
+  assert.equal(result.members[0].leftAt, "2025-01-03");
+  assert.equal(result.members.at(-1).id, "ku");
+  assert.equal(result.added[0].reactivated, false);
+  assert.equal(result.departed[0].id, "risk");
+  assert.equal(source[0].active, undefined);
+});
+test("rejoining preserves id, metadata and history and validates exit date", () => {
+  const archived = structuredClone(source);
+  Object.assign(archived[0], { active: false, leftAt: "2025-01-05" });
+  const result = prepareUpdate(archived, "2025-01-06", [], { additions: [{ nickname: " RISK ", stage: 1100 }] });
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.added[0].reactivated, true);
+  assert.equal(result.members.length, 3);
+  assert.equal(result.members[0].id, "risk");
+  assert.equal(result.members[0].portrait, "risk.png");
+  assert.equal(result.members[0].joinedAt, "2025-01-06");
+  assert.equal(result.members[0].leftAt, undefined);
+  assert.equal(result.members[0].history.length, 3);
+  assert.ok(prepareUpdate(archived, "2025-01-04", [], { additions: [{ nickname: "Risk", stage: 1100 }] }).errors.length);
+  assert.ok(parseRankingText("Risk 1100", archived).errors.length);
+  assert.ok(prepareUpdate(archived, "2025-01-06", [{ id: "risk", stage: 1100 }]).errors.length);
+});
+test("invalid mixed membership batches roll back every change", () => {
+  for (const options of [
+    { departures: ["mat", "unknown"] },
+    { departures: ["risk"], additions: [{ nickname: "Risk", stage: 1 }] },
+    { departures: ["mat"], additions: [{ nickname: "New", stage: 1 }, { nickname: "NEW", stage: 2 }] },
+    { additions: [{ nickname: "New", stage: -1 }] },
+    { departures: ["mat", "mat"] },
+  ]) {
+    const result = prepareUpdate(source, "2025-01-03", [{ id: "risk", stage: 1100 }], options);
+    assert.ok(result.errors.length);
+    assert.deepEqual(result.members, source);
+    assert.deepEqual(result.changes, []);
+    assert.deepEqual(result.added, []);
+    assert.deepEqual(result.departed, []);
+  }
+});
+test("new identifiers avoid accent collisions and metadata dates constrain departures", () => {
+  const roster = [{ id: "ku", nickname: "Other", joinedAt: "2025-01-04", history: [{ date: "2025-01-01", stage: 1 }] }];
+  const result = prepareUpdate(roster, "2025-01-05", [], { additions: [{ nickname: "kü", stage: 1 }, { nickname: "!!!", stage: 2 }] });
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(result.added.map(member => member.id), ["ku-2", "member"]);
+  assert.ok(prepareUpdate(roster, "2025-01-03", [], { departures: ["ku"] }).errors.length);
+});

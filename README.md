@@ -29,6 +29,13 @@ Abra o arquivo, selecione **Edit** (lápis), faça a alteração e escolha **Com
 
 Os retratos opcionais ficam em `portrait` no membro: `image` aponta para uma screenshot em `assets/`; `x`, `y` e `size` definem o quadrado original, em pixels. O navegador mostra somente esse trecho, sem recriar ou alterar os sprites. Para adicionar um membro sem retrato, omita `portrait`; aparece a inicial do nickname. Os nicks seguem a tabela informada e os cargos visíveis seguem as capturas, que podem ter sido feitas em outra data. Não use medalhas, status online ou outros números da imagem como estágios.
 
+
+### Entradas e saídas de membros
+
+Na página de atualização, marque **Saiu da guild** para quem saiu; o estágio fica desativado. No bloco **Entradas na guild**, informe nickname e estágio, usando **Adicionar mais um membro** quando necessário. A data do formulário vale para essas alterações. A prévia distingue atualizações, entradas, retornos e saídas antes do download.
+
+Ex-membros continuam no mesmo arquivo com `active: false` e `leftAt`, preservando seu histórico, mas ficam fora do ranking e da contagem pública. Ausência de `active` significa membro ativo. Novos membros recebem `active: true`, `joinedAt` e apenas o primeiro estágio informado; não há média diária inventada. Para um retorno, use o mesmo nickname no bloco de entradas: o cadastro e o histórico serão recuperados. Não use estágio zero para representar saída; zero continua sendo um estágio válido de um membro ativo.
+
 ## Receitas e inventário
 
 Abra [Receitas](https://pantalipe.github.io/leaguebr/receitas.html): o catálogo começa com todas as receitas e suas imagens. Toque nos botões com ícones para ativar ou desativar ingredientes; receitas precisam conter todos os selecionados. Tipo e raridade também usam botões. **Limpar filtros** restaura o catálogo sem apagar o estoque.

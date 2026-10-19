@@ -27,31 +27,37 @@
       </section>
       <section class="update-section" aria-labelledby="stages-title">
         <h2 id="stages-title"><span class="step-number">2</span> Estágios dos membros</h2>
-        <p class="field-help">Preencha apenas quem enviou uma atualização. Campos em branco mantêm o histórico como está. Digite o estágio sem ponto ou vírgula, por exemplo: 1090.</p>
+        <p class="field-help">Preencha apenas quem enviou uma atualização. Se alguém saiu, marque “Saiu da guild” e deixe o estágio desativado. Não use zero para indicar saída.</p>
         <details class="panel paste-panel">
           <summary>Colar uma lista pronta</summary>
           <label for="ranking-text">Cole os nomes e estágios, um por linha</label>
           <textarea id="ranking-text" rows="6" placeholder="1º Risk - 1090&#10;2º Redkio - 1089&#10;3º Lucaopower - 1013" spellcheck="false"></textarea>
-          <p class="field-help">Também aceita “Risk: 1090”. Usar a lista substitui os campos abaixo; membros fora dela ficam em branco.</p>
+          <p class="field-help">Também aceita “Risk: 1090”. A lista substitui os campos de estágio e mantém as saídas marcadas. Para incluir recém-chegados na lista, preencha seus nicknames no bloco de entradas antes de colar.</p>
           <button id="apply-list" type="button" class="button secondary">Usar esta lista</button>
           <p id="paste-status" role="status"></p>
         </details>
         <div class="member-entry-heading"><span>Membro e último registro</span><span>Novo estágio</span></div>
         <ul class="stage-entries" id="stage-entries"></ul>
-        <p class="field-help" id="filled-count" role="status">Nenhum membro preenchido.</p>
+        <p class="field-help" id="filled-count" role="status">Nenhum membro preenchido.</p><p class="field-help" id="archived-note"></p>
+      </section>
+      <section class="panel update-section" aria-labelledby="new-members-title">
+        <h2 id="new-members-title"><span class="step-number">3</span> Entradas na guild</h2>
+        <p class="field-help">Informe nickname e estágio de quem entrou nesta data. O histórico começa nesse dia. Para alguém que já saiu e voltou, use o mesmo nickname para recuperar o histórico anterior.</p>
+        <ul id="new-members" class="new-members"></ul>
+        <button id="add-member" class="button secondary" type="button">Adicionar mais um membro</button>
       </section>
       <button class="button primary" type="submit">Conferir atualização →</button>
     </form>
     <section class="panel update-section update-preview" id="preview" aria-labelledby="preview-title" tabindex="-1" hidden>
-      <h2 id="preview-title"><span class="step-number">3</span> Confira antes de baixar</h2>
-      <p id="preview-description"></p>
+      <h2 id="preview-title"><span class="step-number">4</span> Confira antes de baixar</h2>
+      <p id="preview-description"></p><p id="membership-warning" class="update-warning" hidden>Confira as entradas e saídas. Quem saiu deixa o ranking, mas seu cadastro e seus estágios anteriores continuam no arquivo.</p>
       <p id="correction-warning" class="update-warning" hidden>Há correções do mesmo dia ou estágios menores que os atuais. Confira se esses valores estão corretos antes de baixar.</p>
-      <div class="table-scroll" tabindex="0" role="region" aria-label="Prévia dos membros atualizados"><table><thead><tr><th scope="col">Membro</th><th scope="col">Valor atual</th><th scope="col">Novo estágio</th><th scope="col">Registro</th></tr></thead><tbody id="preview-body"></tbody></table></div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Prévia dos membros atualizados"><table><thead><tr><th scope="col">Membro</th><th scope="col">Valor anterior</th><th scope="col">Novo estágio</th><th scope="col">Ação</th></tr></thead><tbody id="preview-body"></tbody></table></div>
       <div class="download-actions"><button class="button primary" type="button" id="download">Baixar members.json ↓</button><button class="button secondary" type="button" id="edit-again">Voltar e corrigir</button></div>
       <p id="download-status" role="status"></p>
       <p class="field-help">Envie o arquivo baixado ao responsável pelo portal. Nenhuma alteração foi publicada por esta página.</p>
     </section>
-    <aside class="panel update-section owner-note"><h2>Recebeu o arquivo?</h2><p>O responsável pela publicação deve conferir os registros e substituir <strong>data/members.json</strong> no GitHub. O arquivo inclui o histórico completo e os retratos. Se o portal recebeu outra atualização depois da geração, peça um novo arquivo para preservar os registros mais recentes.</p><a href="https://github.com/pantalipe/leaguebr/blob/main/TUTORIAL-RANKING.md">Ver instruções de publicação ↗</a></aside>
+    <aside class="panel update-section owner-note"><h2>Recebeu o arquivo?</h2><p>O responsável pela publicação deve conferir os registros e substituir <strong>data/members.json</strong> no GitHub. O arquivo inclui os históricos completos, os retratos e os registros de entrada e saída. Se o portal recebeu outra atualização depois da geração, peça um novo arquivo para preservar os registros mais recentes.</p><a href="https://github.com/pantalipe/leaguebr/blob/main/TUTORIAL-RANKING.md">Ver instruções de publicação ↗</a></aside>
     <noscript><p class="demo-banner">Ative o JavaScript para preencher os estágios e gerar o arquivo.</p></noscript>
   </main>
   <footer class="container footer"><a class="footer-brand" href="./index.html">LeagueBR</a><p>Desenvolvimento e Companheirismo Sempre!!</p></footer>

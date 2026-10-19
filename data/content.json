@@ -6,10 +6,26 @@
   "demo": false,
   "level": null,
   "crestImage": "assets/brasao.jpg",
-  "mascot": { "name": "Jörg", "image": "assets/jorg.jpg" },
+  "mascot": {
+    "name": "Jörg",
+    "image": "assets/jorg.jpg"
+  },
   "notices": [
-    { "date": "2026-10-12", "title": "Primeiro ranking da LeagueBR", "text": "Risk lidera com 1090 estágios, seguido por Redkio com 1089 e Lucaopower com 1013. Disputa acirrada no topo: apenas 1 estágio separa os dois primeiros!" },
-    { "date": "2026-10-12", "title": "O começo do nosso histórico", "text": "Os 20 membros têm seu primeiro registro em 12/10/2026. A evolução e a média diária aparecerão após uma atualização em outra data. LoverS e NandinhoAh estão empatados no estágio 989; a ordem segue o nickname." }
+    {
+      "date": "2026-10-19",
+      "title": "Ranking da semana atualizado",
+      "text": "Risk lidera com 1109, seguido por Redkio com 1099 e kü com 1089. Boas-vindas a DaniloFnx e kü! Os históricos de Kphu e galapatus foram preservados após a saída da guild."
+    },
+    {
+      "date": "2026-10-12",
+      "title": "Primeiro ranking da LeagueBR",
+      "text": "Risk lidera com 1090 estágios, seguido por Redkio com 1089 e Lucaopower com 1013. Disputa acirrada no topo: apenas 1 estágio separa os dois primeiros!"
+    },
+    {
+      "date": "2026-10-12",
+      "title": "O começo do nosso histórico",
+      "text": "Os 20 membros têm seu primeiro registro em 12/10/2026. A evolução e a média diária aparecerão após uma atualização em outra data. LoverS e NandinhoAh estão empatados no estágio 989; a ordem segue o nickname."
+    }
   ],
   "rules": [],
   "goal": null
