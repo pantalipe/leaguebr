@@ -55,6 +55,9 @@ test("filters by accent-insensitive recipe and ingredient text, then exact facet
   assert.deepEqual(filterRecipes(recipes, { query: "sanduiche" }).map((item) => item.id), [1]);
   assert.deepEqual(filterRecipes(recipes, { query: "batata" }).map((item) => item.id), [2]);
   assert.deepEqual(filterRecipes(recipes, { ingredient: "Ovo" }).map((item) => item.id), [1]);
+  assert.deepEqual(filterRecipes(recipes, { ingredients: ["Ovo", "Trigo"] }).map((item) => item.id), [1]);
+  assert.deepEqual(filterRecipes(recipes, { ingredients: ["Ovo", "Batata"] }), []);
+  assert.equal(filterRecipes(recipes, { ingredients: [] }).length, 2);
   assert.deepEqual(filterRecipes(recipes, { type: "Prato Principal", rarity: "Excelente" }).map((item) => item.id), [2]);
 });
 

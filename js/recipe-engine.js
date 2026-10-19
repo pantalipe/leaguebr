@@ -68,13 +68,13 @@ export function calculateRecipe(preparedRecipe, stock) {
   return { maxPortions, missing };
 }
 
-export function filterRecipes(preparedRecipes, { query = "", ingredient = "", type = "", rarity = "" } = {}) {
+export function filterRecipes(preparedRecipes, { query = "", ingredient = "", ingredients = [], type = "", rarity = "" } = {}) {
   if (!Array.isArray(preparedRecipes)) fail("A lista de receitas deve ser um array.");
   const normalizedQuery = normalize(query);
-  const selectedIngredient = String(ingredient ?? "");
+  const selectedIngredients = [...new Set([ingredient, ...ingredients].filter(Boolean))];
   return preparedRecipes.filter((recipe) => {
-    const hasIngredient = Array.isArray(recipe.ingredientes) && recipe.ingredientes.includes(selectedIngredient);
+    const hasIngredients = selectedIngredients.every((item) => recipe.ingredientes.includes(item));
     const matchesText = !normalizedQuery || normalize(recipe.nome).includes(normalizedQuery) || recipe.ingredientes.some((item) => normalize(item).includes(normalizedQuery));
-    return matchesText && (!selectedIngredient || hasIngredient) && (!type || recipe.tipo === type) && (!rarity || recipe.raridade === rarity);
+    return matchesText && hasIngredients && (!type || recipe.tipo === type) && (!rarity || recipe.raridade === rarity);
   });
 }
