@@ -1,0 +1,8 @@
+[
+  { "id": "aurora-demo", "nickname": "Aurora (exemplo)", "role": "Líder", "history": [{ "date": "2026-10-13", "stage": 4020 }, { "date": "2026-10-18", "stage": 4180 }] },
+  { "id": "orion-demo", "nickname": "Orion (exemplo)", "role": "Oficial", "history": [{ "date": "2026-10-12", "stage": 3900 }, { "date": "2026-10-17", "stage": 4065 }] },
+  { "id": "risk-demo", "nickname": "Risk (exemplo)", "role": "Membro", "history": [{ "date": "2026-10-13", "stage": 3750 }, { "date": "2026-10-18", "stage": 3850 }] },
+  { "id": "lyra-demo", "nickname": "Lyra (exemplo)", "role": "Membro", "history": [{ "date": "2026-10-14", "stage": 3400 }, { "date": "2026-10-18", "stage": 3500 }] },
+  { "id": "atlas-demo", "nickname": "Atlas (exemplo)", "role": "Membro", "history": [{ "date": "2026-10-16", "stage": 3210 }, { "date": "2026-10-18", "stage": 3260 }] },
+  { "id": "nara-demo", "nickname": "Nara (exemplo)", "role": "Membro", "history": [{ "date": "2026-10-18", "stage": 2800 }] }
+]

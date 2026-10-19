@@ -1,0 +1,20 @@
+{
+  "name": "LeagueBR",
+  "game": "Legend Slayer",
+  "motto": "Desenvolvimento e Companheirismo Sempre!!",
+  "description": "Um lugar para compartilhar conquistas, crescer em equipe e ir sempre um estágio além. Bem-vindo ao portal da nossa guild.",
+  "demo": true,
+  "level": null,
+  "crestImage": "assets/brasao.jpg",
+  "mascot": { "name": "Jörg", "image": "assets/jorg.jpg" },
+  "notices": [
+    { "date": "2026-10-18", "title": "Bem-vindos ao nosso portal", "text": "Exemplo: este é o espaço da liderança para compartilhar novidades e combinar os próximos passos da guild." },
+    { "date": "2026-10-17", "title": "Cada conquista merece um registro", "text": "Exemplo: informe seu estágio à liderança para manter seu histórico atualizado. Cada membro pode ter sua própria data de atualização." }
+  ],
+  "rules": [
+    "Exemplo: trate todos os membros com respeito e companheirismo.",
+    "Exemplo: participe das atividades da guild e avise quando precisar se ausentar.",
+    "Exemplo: compartilhe suas conquistas e ajude quem está começando."
+  ],
+  "goal": { "title": "Crescer juntos", "text": "Exemplo de meta: manter os registros de progresso da equipe em dia, respeitando o ritmo de cada membro." }
+}
