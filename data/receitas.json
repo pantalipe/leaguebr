@@ -1,0 +1,632 @@
+[
+  {
+    "id": 1,
+    "tipo": "Entrada",
+    "raridade": "Comum",
+    "nome": "Sanduíche de Ovo",
+    "ingredientes": ["Ovo", "Ovo", "Trigo", "Trigo"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 500
+  },
+  {
+    "id": 2,
+    "tipo": "Entrada",
+    "raridade": "Excelente",
+    "nome": "Salada de Batata",
+    "ingredientes": ["Batata", "Batata", "Ovo", "Leite", "Alface"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 1000
+  },
+  {
+    "id": 3,
+    "tipo": "Entrada",
+    "raridade": "Excelente",
+    "nome": "Sopa de Tomate",
+    "ingredientes": ["Tomate", "Tomate", "Trigo", "Leite"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 1000
+  },
+  {
+    "id": 4,
+    "tipo": "Entrada",
+    "raridade": "Excelente",
+    "nome": "Cereal",
+    "ingredientes": ["Milho", "Milho", "Leite"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 1000
+  },
+  {
+    "id": 5,
+    "tipo": "Entrada",
+    "raridade": "Excelente",
+    "nome": "Mingau de Carne",
+    "ingredientes": ["Arroz", "Arroz", "Carne"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 1000
+  },
+  {
+    "id": 6,
+    "tipo": "Entrada",
+    "raridade": "Excelente",
+    "nome": "Dim Sum de Camarão",
+    "ingredientes": ["Camarão", "Camarão", "Trigo", "Trigo"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 1000
+  },
+  {
+    "id": 7,
+    "tipo": "Entrada",
+    "raridade": "Raro",
+    "nome": "Omelete de Queijo",
+    "ingredientes": ["Queijo", "Ovo", "Ovo", "Leite"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.02,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 8,
+    "tipo": "Entrada",
+    "raridade": "Épico",
+    "nome": "Canapé de Camarão",
+    "ingredientes": ["Queijo", "Camarão", "Camarão", "Trigo"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.03,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 9,
+    "tipo": "Entrada",
+    "raridade": "Épico",
+    "nome": "Milho com Queijo",
+    "ingredientes": ["Queijo", "Queijo", "Milho", "Milho"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.03,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 10,
+    "tipo": "Entrada",
+    "raridade": "Épico",
+    "nome": "Misto-Quente",
+    "ingredientes": ["Queijo", "Morango", "Carne", "Trigo", "Alface"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.03,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 11,
+    "tipo": "Entrada",
+    "raridade": "Épico",
+    "nome": "Salada de Ricota",
+    "ingredientes": ["Queijo", "Tomate", "Alface", "Alface"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.03,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 12,
+    "tipo": "Entrada",
+    "raridade": "Épico",
+    "nome": "Kimchi",
+    "ingredientes": ["Pimenta", "Alface", "Alface"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.03,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 13,
+    "tipo": "Entrada",
+    "raridade": "Épico",
+    "nome": "Nachos com Queijo e Bacon",
+    "ingredientes": ["Queijo", "Milho", "Milho", "Carne"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.03,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 14,
+    "tipo": "Entrada",
+    "raridade": "Lendário",
+    "nome": "Baguete ao Pesto de Manjericão",
+    "ingredientes": ["Manjericão", "Queijo", "Trigo", "Trigo"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.03,
+    "emblema_do_heroi": 2500
+  },
+  {
+    "id": 15,
+    "tipo": "Entrada",
+    "raridade": "Comum",
+    "nome": "Café da Manhã Inglês",
+    "ingredientes": ["Ovo", "Carne", "Trigo", "Leite", "Alface"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 500
+  },
+  {
+    "id": 16,
+    "tipo": "Entrada",
+    "raridade": "Comum",
+    "nome": "Salada da Ellie",
+    "ingredientes": ["Alface", "Alface", "Alface", "Alface", "Alface"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 500
+  },
+  {
+    "id": 17,
+    "tipo": "Entrada",
+    "raridade": "Excelente",
+    "nome": "Batata Frita",
+    "ingredientes": ["Batata", "Batata", "Batata", "Trigo"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.01,
+    "emblema_do_heroi": 1000
+  },
+  {
+    "id": 18,
+    "tipo": "Entrada",
+    "raridade": "Raro",
+    "nome": "Palitos de Queijo",
+    "ingredientes": ["Queijo", "Queijo", "Trigo", "Trigo"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.02,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 19,
+    "tipo": "Entrada",
+    "raridade": "Lendário",
+    "nome": "Canapé de Atum",
+    "ingredientes": ["Atum", "Queijo", "Tomate", "Trigo"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.03,
+    "emblema_do_heroi": 2500
+  },
+  {
+    "id": 20,
+    "tipo": "Entrada",
+    "raridade": "Imortal",
+    "nome": "Creme de Caviar",
+    "ingredientes": ["Caviar", "Trigo", "Leite"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.05,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 21,
+    "tipo": "Entrada",
+    "raridade": "Imortal",
+    "nome": "Canapé de Caviar",
+    "ingredientes": ["Caviar", "Queijo", "Trigo"],
+    "tipo_efeito": "Progresso de exploração",
+    "porcentagem": 0.05,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 22,
+    "tipo": "Prato Principal",
+    "raridade": "Comum",
+    "nome": "Tonkatsu de Lombo Suíno",
+    "ingredientes": ["Ovo", "Carne", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.05,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 23,
+    "tipo": "Prato Principal",
+    "raridade": "Comum",
+    "nome": "Sukiyaki",
+    "ingredientes": ["Ovo", "Carne", "Alface"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.05,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 24,
+    "tipo": "Prato Principal",
+    "raridade": "Excelente",
+    "nome": "Hambúrguer de Camarão",
+    "ingredientes": ["Camarão", "Trigo", "Alface"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 25,
+    "tipo": "Prato Principal",
+    "raridade": "Excelente",
+    "nome": "Omurice",
+    "ingredientes": ["Arroz", "Ovo", "Ovo", "Carne"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 26,
+    "tipo": "Prato Principal",
+    "raridade": "Épico",
+    "nome": "Espaguete Gratinado com Queijo",
+    "ingredientes": ["Queijo", "Tomate", "Ovo", "Carne", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3000
+  },
+  {
+    "id": 27,
+    "tipo": "Prato Principal",
+    "raridade": "Épico",
+    "nome": "Ovos no Purgatório (Shakshuka)",
+    "ingredientes": ["Queijo", "Tomate", "Ovo", "Carne"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3000
+  },
+  {
+    "id": 28,
+    "tipo": "Prato Principal",
+    "raridade": "Lendário",
+    "nome": "Bibimbap",
+    "ingredientes": ["Pimenta", "Arroz", "Ovo", "Carne", "Alface"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 29,
+    "tipo": "Prato Principal",
+    "raridade": "Lendário",
+    "nome": "Pizza Margherita",
+    "ingredientes": ["Manjericão", "Queijo", "Tomate", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 30,
+    "tipo": "Prato Principal",
+    "raridade": "Lendário",
+    "nome": "Malatang",
+    "ingredientes": ["Pimenta", "Amendoim", "Carne", "Alface"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 31,
+    "tipo": "Prato Principal",
+    "raridade": "Lendário",
+    "nome": "Pilaf Picante",
+    "ingredientes": ["Pimenta", "Arroz", "Carne"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 32,
+    "tipo": "Prato Principal",
+    "raridade": "Lendário",
+    "nome": "Sushi de Atum",
+    "ingredientes": ["Atum", "Atum", "Arroz"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 33,
+    "tipo": "Prato Principal",
+    "raridade": "Lendário",
+    "nome": "Massa ao Manjericão",
+    "ingredientes": ["Manjericão", "Queijo", "Ovo", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 34,
+    "tipo": "Prato Principal",
+    "raridade": "Lendário",
+    "nome": "Fish & Chips",
+    "ingredientes": ["Atum", "Batata", "Trigo", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 35,
+    "tipo": "Prato Principal",
+    "raridade": "Mítico",
+    "nome": "Camarão com Pimenta Doce",
+    "ingredientes": ["Pimenta", "Camarão", "Camarão", "Cana-de-açúcar"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.25,
+    "emblema_do_heroi": 4000
+  },
+  {
+    "id": 36,
+    "tipo": "Prato Principal",
+    "raridade": "Comum",
+    "nome": "Churrasco do Zeke",
+    "ingredientes": ["Carne", "Carne", "Carne", "Carne", "Carne"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.05,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 37,
+    "tipo": "Prato Principal",
+    "raridade": "Raro",
+    "nome": "Cheeseburger",
+    "ingredientes": ["Queijo", "Carne", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 2500
+  },
+  {
+    "id": 38,
+    "tipo": "Prato Principal",
+    "raridade": "Épico",
+    "nome": "Lámen Picante da Miho",
+    "ingredientes": ["Pimenta", "Pimenta", "Ovo", "Carne", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3000
+  },
+  {
+    "id": 39,
+    "tipo": "Prato Principal",
+    "raridade": "Lendário",
+    "nome": "Frango Frito Coreano (Yangnyeom)",
+    "ingredientes": ["Pimenta", "Cana-de-açúcar", "Carne", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 40,
+    "tipo": "Prato Principal",
+    "raridade": "Imortal",
+    "nome": "Pizza de Gorgonzola",
+    "ingredientes": ["Favo de mel", "Queijo", "Queijo", "Trigo"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.3,
+    "emblema_do_heroi": 5000
+  },
+  {
+    "id": 41,
+    "tipo": "Prato Principal",
+    "raridade": "Imortal",
+    "nome": "Risoto de Trufas",
+    "ingredientes": ["Trufa", "Arroz", "Carne", "Leite"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.3,
+    "emblema_do_heroi": 5000
+  },
+  {
+    "id": 42,
+    "tipo": "Prato Principal",
+    "raridade": "Imortal",
+    "nome": "Nhoque de Trufas",
+    "ingredientes": ["Trufa", "Batata", "Trigo", "Leite"],
+    "tipo_efeito": "ATQ/PV dos membros da guilda",
+    "porcentagem": 0.3,
+    "emblema_do_heroi": 5000
+  },
+  {
+    "id": 43,
+    "tipo": "Sobremesa",
+    "raridade": "Comum",
+    "nome": "Iogurte Natural",
+    "ingredientes": ["Leite", "Leite", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1000
+  },
+  {
+    "id": 44,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Bolo de Morango",
+    "ingredientes": ["Morango", "Ovo", "Trigo", "Trigo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 45,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Pastel de Nata",
+    "ingredientes": ["Cana-de-açúcar", "Ovo", "Ovo", "Trigo"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 46,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Pudim",
+    "ingredientes": ["Cana-de-açúcar", "Cana-de-açúcar", "Ovo", "Leite", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 47,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Leite Fresco com Morango",
+    "ingredientes": ["Morango", "Leite", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 48,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Donut",
+    "ingredientes": ["Cana-de-açúcar", "Ovo", "Trigo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 49,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Tanghulu de Morango",
+    "ingredientes": ["Cana-de-açúcar", "Cana-de-açúcar", "Morango", "Morango", "Morango"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 50,
+    "tipo": "Sobremesa",
+    "raridade": "Épico",
+    "nome": "Brownie",
+    "ingredientes": ["Cacau", "Ovo", "Trigo", "Trigo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.3,
+    "emblema_do_heroi": 2500
+  },
+  {
+    "id": 51,
+    "tipo": "Sobremesa",
+    "raridade": "Épico",
+    "nome": "Cacau Quente",
+    "ingredientes": ["Cacau", "Leite", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.3,
+    "emblema_do_heroi": 2500
+  },
+  {
+    "id": 52,
+    "tipo": "Sobremesa",
+    "raridade": "Lendário",
+    "nome": "Sorvete de Chocolate",
+    "ingredientes": ["Cacau", "Cana-de-açúcar", "Ovo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.3,
+    "emblema_do_heroi": 3000
+  },
+  {
+    "id": 53,
+    "tipo": "Sobremesa",
+    "raridade": "Lendário",
+    "nome": "Cookies com Gotas de Chocolate",
+    "ingredientes": ["Cacau", "Cana-de-açúcar", "Ovo", "Trigo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.3,
+    "emblema_do_heroi": 3000
+  },
+  {
+    "id": 54,
+    "tipo": "Sobremesa",
+    "raridade": "Comum",
+    "nome": "Pão",
+    "ingredientes": ["Ovo", "Trigo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1000
+  },
+  {
+    "id": 55,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Pipoca",
+    "ingredientes": ["Milho", "Milho", "Milho"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 56,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Biscoito de Arroz",
+    "ingredientes": ["Arroz", "Arroz", "Arroz", "Arroz"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 57,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Sorvete de Morango",
+    "ingredientes": ["Cana-de-açúcar", "Morango", "Ovo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 58,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Churros",
+    "ingredientes": ["Cana-de-açúcar", "Trigo", "Trigo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 59,
+    "tipo": "Sobremesa",
+    "raridade": "Excelente",
+    "nome": "Algodão-Doce da Luna",
+    "ingredientes": ["Cana-de-açúcar", "Cana-de-açúcar", "Cana-de-açúcar", "Cana-de-açúcar", "Cana-de-açúcar"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.1,
+    "emblema_do_heroi": 1500
+  },
+  {
+    "id": 60,
+    "tipo": "Sobremesa",
+    "raridade": "Raro",
+    "nome": "Cheesecake",
+    "ingredientes": ["Queijo", "Ovo", "Trigo", "Trigo", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.2,
+    "emblema_do_heroi": 2000
+  },
+  {
+    "id": 61,
+    "tipo": "Sobremesa",
+    "raridade": "Lendário",
+    "nome": "Soda de Tomate e Manjericão",
+    "ingredientes": ["Manjericão", "Tomate", "Tomate", "Tomate"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.3,
+    "emblema_do_heroi": 3000
+  },
+  {
+    "id": 62,
+    "tipo": "Sobremesa",
+    "raridade": "Mítico",
+    "nome": "Sanduíche de Pasta de Amendoim e Geleia",
+    "ingredientes": ["Amendoim", "Morango", "Trigo"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.4,
+    "emblema_do_heroi": 3500
+  },
+  {
+    "id": 63,
+    "tipo": "Sobremesa",
+    "raridade": "Imortal",
+    "nome": "Frozen Yogurt de Mel",
+    "ingredientes": ["Favo de mel", "Leite", "Leite", "Leite"],
+    "tipo_efeito": "Dano causado ao Wyvern pelos membros da guilda",
+    "porcentagem": 0.5,
+    "emblema_do_heroi": 4000
+  }
+]

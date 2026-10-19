@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#141713">
+  <title>Receitas · LeagueBR</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/recipes.css">
+  <script type="module" src="./js/recipes.js"></script>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <header class="site-header"><div class="header-inner recipes-header"><a class="brand" href="./index.html"><img src="./assets/brasao.jpg" alt="Brasão da LeagueBR"><span><strong>LeagueBR</strong><small>LEGEND SLAYER</small></span></a><a href="./index.html">← Voltar ao portal</a></div></header>
+  <main id="conteudo" class="container recipes-page">
+    <p class="eyebrow">UTILIDADES DA GUILD</p>
+    <h1>O que vamos preparar?</h1>
+    <p class="recipes-intro">Informe o que você tem no inventário e descubra os pratos disponíveis. Aperitivos, pratos principais e sobremesas ficam sempre aqui; os dias são apenas sugestões.</p>
+    <p id="recipe-status" role="status">Carregando ingredientes e receitas…</p>
+    <div id="stock-errors" class="stock-errors" role="alert" hidden></div>
+    <div id="recipe-tools" hidden>
+      <section class="panel pantry" aria-labelledby="pantry-title">
+        <div class="pantry-heading"><div><p class="eyebrow">1 · SEU INVENTÁRIO</p><h2 id="pantry-title">Ingredientes disponíveis</h2></div><button id="clear-stock" class="button secondary" type="button">Limpar estoque</button></div>
+        <p class="recipe-help">Digite a quantidade real de cada item no jogo. Deixe em branco o que não tem. Os valores ficam apenas nesta página e são apagados ao recarregá-la.</p>
+        <div id="stock-inputs" class="stock-inputs"></div>
+        <p class="recipe-help">As receitas já consideram as unidades de consumo: 2 ocorrências de Trigo equivalem a 200 itens. Cada prato usa o mesmo estoque como ponto de partida; as opções não podem ser somadas como se os ingredientes fossem separados.</p>
+      </section>
+      <section class="panel recipe-filters" aria-labelledby="filters-title">
+        <p class="eyebrow">2 · ENCONTRE SEU PRATO</p><h2 id="filters-title">Filtros e sugestões</h2>
+        <div class="filter-grid">
+          <label>Buscar receita ou ingrediente<input type="search" id="recipe-search" placeholder="Ex.: sanduíche, ovo, cacau" autocomplete="off"></label>
+          <label>Contém ingrediente<select id="ingredient-filter"><option value="">Qualquer ingrediente</option></select></label>
+          <label>Tipo de prato<select id="type-filter"><option value="">Todos os tipos</option><option value="Entrada">Aperitivos</option><option value="Prato Principal">Pratos principais</option><option value="Sobremesa">Sobremesas</option></select></label>
+          <label>Raridade<select id="rarity-filter"><option value="">Todas as raridades</option></select></label>
+          <label>Sugestão do dia<select id="day-suggestion"><option value="">Sem destaque</option><option value="Entrada">Terça-feira · Aperitivos</option><option value="Prato Principal">Quarta-feira · Pratos principais</option><option value="Sobremesa">Quinta-feira · Sobremesas</option></select></label>
+        </div>
+        <label class="possible-toggle"><input type="checkbox" id="possible-only" checked> Mostrar só o que posso preparar</label>
+        <p class="recipe-help">A sugestão destaca uma categoria sem esconder as outras. Para consultar o catálogo completo, desmarque a opção acima.</p>
+      </section>
+    </div>
+    <nav class="recipe-jumps" aria-label="Categorias de receitas"><a href="#aperitivos">Aperitivos</a><a href="#principais">Pratos principais</a><a href="#sobremesas">Sobremesas</a></nav>
+    <section class="recipe-group" id="aperitivos" data-type="Entrada" aria-labelledby="aperitivos-title"><div class="recipe-group-heading"><div><p class="eyebrow">SUGESTÃO · TERÇA-FEIRA</p><h2 id="aperitivos-title">Aperitivos</h2></div><span class="recipe-count"></span></div><p class="suggestion-label" hidden>Categoria sugerida para o dia selecionado</p><div class="recipe-grid"></div></section>
+    <section class="recipe-group" id="principais" data-type="Prato Principal" aria-labelledby="principais-title"><div class="recipe-group-heading"><div><p class="eyebrow">SUGESTÃO · QUARTA-FEIRA</p><h2 id="principais-title">Pratos principais</h2></div><span class="recipe-count"></span></div><p class="suggestion-label" hidden>Categoria sugerida para o dia selecionado</p><div class="recipe-grid"></div></section>
+    <section class="recipe-group" id="sobremesas" data-type="Sobremesa" aria-labelledby="sobremesas-title"><div class="recipe-group-heading"><div><p class="eyebrow">SUGESTÃO · QUINTA-FEIRA</p><h2 id="sobremesas-title">Sobremesas</h2></div><span class="recipe-count"></span></div><p class="suggestion-label" hidden>Categoria sugerida para o dia selecionado</p><div class="recipe-grid"></div></section>
+    <aside class="recipe-source"><p>Catálogo baseado nos arquivos fornecidos a partir de <a href="https://github.com/mooncakelvl999999-del/receitasdv">receitasdv</a>. Créditos informados na referência: Kakalover, Dance e Jordan MooMoo (Enigma), proprietário da planilha fonte.</p><p>Quantidades, efeitos e bônus seguem esses arquivos. Esta ferramenta não inclui trocas com chefs.</p></aside>
+    <noscript><p class="demo-banner">Ative o JavaScript para consultar as receitas e calcular o estoque.</p></noscript>
+  </main>
+  <footer class="container footer"><a class="footer-brand" href="./index.html">LeagueBR</a><p>Desenvolvimento e Companheirismo Sempre!!</p></footer>
+</body>
+</html>

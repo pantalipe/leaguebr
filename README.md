@@ -29,10 +29,18 @@ Abra o arquivo, selecione **Edit** (lápis), faça a alteração e escolha **Com
 
 Os retratos opcionais ficam em `portrait` no membro: `image` aponta para uma screenshot em `assets/`; `x`, `y` e `size` definem o quadrado original, em pixels. O navegador mostra somente esse trecho, sem recriar ou alterar os sprites. Para adicionar um membro sem retrato, omita `portrait`; aparece a inicial do nickname. Os nicks seguem a tabela informada e os cargos visíveis seguem as capturas, que podem ter sido feitas em outra data. Não use medalhas, status online ou outros números da imagem como estágios.
 
+## Receitas e inventário
+
+Abra [Receitas](https://pantalipe.github.io/leaguebr/receitas.html), informe as quantidades reais dos itens e consulte os pratos possíveis e o máximo de preparos por prato. Campos vazios valem zero. O estoque é temporário, não é enviado nem salvo. Desmarque **Mostrar só o que posso preparar** para ver o catálogo e os ingredientes faltantes. Há busca e filtros por ingrediente, tipo e raridade.
+
+As três categorias ficam sempre visíveis: aperitivos (terça), pratos principais (quarta) e sobremesas (quinta). A sugestão do dia só destaca uma categoria. Cada prato é uma opção independente sobre o mesmo estoque; os máximos não representam uma combinação de pratos para fazer simultaneamente. Não há simulação de trocas com chefs.
+
+Manutenção: `data/receitas.json` contém as 63 receitas fornecidas e `data/ingredientes.json` contém as **unidades de consumo**, não o estoque do jogador. Ingredientes repetidos na receita somam essas unidades: `Ovo, Ovo, Trigo, Trigo` exige 2 ovos e 200 de trigo. Preserve nomes correspondentes nos dois arquivos, IDs únicos e quantidades inteiras positivas. Efeitos e bônus são exibidos conforme os dados fornecidos. Fonte indicada pelo usuário: [receitasdv](https://github.com/mooncakelvl999999-del/receitasdv), com créditos à comunidade na página. A implementação do portal é independente, sem importar scripts ou rastreadores da referência.
+
 ## Testar localmente
 
 Na pasta do projeto, execute `python -m http.server 8000` e abra <http://localhost:8000>. Não abra o HTML por `file://`, pois o carregamento dos JSONs exige HTTP. Para encerrar, `Ctrl+C`.
 
-Com Node instalado: `node --test tests/ranking.test.mjs tests/update-ranking.test.mjs`. Os testes usam apenas recursos nativos e cobrem as regras de datas, progresso e geração das atualizações.
+Com Node instalado: `node --test tests/ranking.test.mjs tests/update-ranking.test.mjs tests/recipe-engine.test.mjs`. Os testes usam apenas recursos nativos e cobrem datas, progresso, geração das atualizações e cálculo das receitas.
 
 Os caminhos são relativos e funcionam em subdiretórios como `/leaguebr/`. Não há login, armazenamento compartilhado no navegador ou segredos no frontend. Este é um portal da comunidade, sem vínculo oficial com o jogo.
