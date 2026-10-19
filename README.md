@@ -31,7 +31,7 @@ Os retratos opcionais ficam em `portrait` no membro: `image` aponta para uma scr
 
 ## Receitas e inventário
 
-Abra [Receitas](https://pantalipe.github.io/leaguebr/receitas.html), informe as quantidades reais dos itens e consulte os pratos possíveis e o máximo de preparos por prato. Campos vazios valem zero. O estoque é temporário, não é enviado nem salvo. Desmarque **Mostrar só o que posso preparar** para ver o catálogo e os ingredientes faltantes. Há busca e filtros por ingrediente, tipo e raridade.
+Abra [Receitas](https://pantalipe.github.io/leaguebr/receitas.html): o catálogo começa mostrando todas as receitas e os ingredientes faltantes. Informe as quantidades reais dos itens e marque **Mostrar só o que posso preparar** para consultar apenas os pratos possíveis e o máximo de preparos por prato. Campos vazios valem zero. O estoque é temporário, não é enviado nem salvo. Há busca e filtros por ingrediente, tipo e raridade.
 
 As três categorias ficam sempre visíveis: aperitivos (terça), pratos principais (quarta) e sobremesas (quinta). A sugestão do dia só destaca uma categoria. Cada prato é uma opção independente sobre o mesmo estoque; os máximos não representam uma combinação de pratos para fazer simultaneamente. Não há simulação de trocas com chefs.
 
