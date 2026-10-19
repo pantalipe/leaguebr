@@ -4,7 +4,9 @@ Portal estático de Legend Slayer: HTML, CSS, JavaScript e JSON, sem instalaçã
 
 ## Atualizar pelo GitHub (inclusive no celular)
 
-**Para quem vai atualizar o ranking toda semana:** siga o [tutorial passo a passo para iniciantes](TUTORIAL-RANKING.md).
+**Jeito mais simples:** abra [Atualizar ranking](https://pantalipe.github.io/leaguebr/atualizar.html), escolha a data, preencha os estágios (ou cole uma lista), confira a prévia e baixe `members.json`. Envie o arquivo ao responsável pelo GitHub. Campos em branco não mudam; o histórico e os retratos são preservados. Essa página não publica alterações.
+
+O responsável confere e substitui `data/members.json` com o arquivo recebido. Use um arquivo recém-gerado: se houve outra atualização no portal depois, peça para gerar novamente. Consulte o [tutorial passo a passo](TUTORIAL-RANKING.md) para o envio e para a alternativa de edição manual.
 
 Abra o arquivo, selecione **Edit** (lápis), faça a alteração e escolha **Commit changes** na branch publicada. Conceda acesso de escrita somente aos líderes. Preserve aspas, vírgulas e colchetes do JSON.
 
@@ -31,6 +33,6 @@ Os retratos opcionais ficam em `portrait` no membro: `image` aponta para uma scr
 
 Na pasta do projeto, execute `python -m http.server 8000` e abra <http://localhost:8000>. Não abra o HTML por `file://`, pois o carregamento dos JSONs exige HTTP. Para encerrar, `Ctrl+C`.
 
-Com Node instalado: `node --test tests/ranking.test.mjs`. Os testes usam apenas recursos nativos e cobrem as regras de datas e progresso.
+Com Node instalado: `node --test tests/ranking.test.mjs tests/update-ranking.test.mjs`. Os testes usam apenas recursos nativos e cobrem as regras de datas, progresso e geração das atualizações.
 
 Os caminhos são relativos e funcionam em subdiretórios como `/leaguebr/`. Não há login, armazenamento compartilhado no navegador ou segredos no frontend. Este é um portal da comunidade, sem vínculo oficial com o jogo.

@@ -231,6 +231,7 @@ h1 span { color: var(--gold); }
 }
 .section-heading .eyebrow { margin-bottom: 9px; font-size: .57rem; }
 .section-caption { color: var(--muted); font-size: .65rem; }
+.update-link { color: var(--gold); text-decoration: underline; }
 .compact { margin-bottom: 15px; }
 .compact .eyebrow { font-size: .65rem; }
 .compact h2 { font-size: 1.7rem; }

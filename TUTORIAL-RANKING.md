@@ -1,6 +1,30 @@
 # Como atualizar o ranking semanal da LeagueBR
 
-Este guia é para a pessoa responsável pela atualização. Tudo é feito pelo site do GitHub, no computador ou no navegador do celular.
+Este guia serve para quem coleta os estágios e para quem publica no GitHub. Funciona no computador ou no navegador do celular.
+
+## Jeito recomendado: preencher a página e enviar o arquivo
+
+Quem coleta os estágios não precisa de conta no GitHub:
+
+1. Abra [Atualizar ranking](https://pantalipe.github.io/leaguebr/atualizar.html).
+2. Escolha a data real em que os estágios foram conferidos.
+3. Preencha os estágios ao lado dos nomes. Deixe em branco quem não enviou atualização. Se já tem uma lista, abra **Colar uma lista pronta**, cole e toque em **Usar esta lista**. Aceita linhas como `1º Risk - 1090` ou `Risk: 1090`; números aqui são apenas exemplos de formato.
+4. Toque em **Conferir atualização**. Confira nomes, data e valores. Correções do mesmo dia e reduções de estágio ficam sinalizadas.
+5. Toque em **Baixar members.json**. Procure o arquivo nos downloads do aparelho e envie-o ao responsável pelo portal, como anexo de arquivo/documento.
+
+O portal permanece igual até o responsável publicar. O arquivo gerado contém todos os membros, seus históricos anteriores e os retratos. Para corrigir um valor antes de enviar, altere o campo e confira a prévia de novo. Se o navegador renomear downloads repetidos para `members (1).json`, envie o arquivo mais recente.
+
+### Para o responsável publicar o arquivo recebido
+
+1. Confira se o arquivo acabou de ser gerado a partir dos dados atuais. Se o portal recebeu outra atualização depois da geração, peça um novo arquivo; não substitua o histórico mais recente por uma cópia antiga.
+2. Entre na sua conta do GitHub e abra a [pasta data](https://github.com/pantalipe/leaguebr/tree/main/data).
+3. Selecione **Add file → Upload files** e envie o arquivo recebido. O nome final deve ser exatamente **members.json**, dentro de **data**. Se o celular acrescentou um número ao nome do download, renomeie o arquivo antes de enviar.
+4. Confira que está substituindo `data/members.json`, sem adicionar outro arquivo na raiz. Salve com **Commit changes** diretamente na **main**.
+5. Acompanhe [Actions](https://github.com/pantalipe/leaguebr/actions) e confira o [portal](https://pantalipe.github.io/leaguebr/) após a publicação.
+
+A página verifica a base novamente antes de gerar o arquivo, mas não consegue atualizar um anexo que já foi enviado. Confirme os dados recebidos antes de publicar.
+
+## Alternativa: editar o histórico diretamente no GitHub
 
 **Links para guardar:**
 
