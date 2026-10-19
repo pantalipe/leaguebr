@@ -4,6 +4,8 @@ Portal estático de Legend Slayer: HTML, CSS, JavaScript e JSON, sem instalaçã
 
 ## Atualizar pelo GitHub (inclusive no celular)
 
+**Para quem vai atualizar o ranking toda semana:** siga o [tutorial passo a passo para iniciantes](TUTORIAL-RANKING.md).
+
 Abra o arquivo, selecione **Edit** (lápis), faça a alteração e escolha **Commit changes** na branch publicada. Conceda acesso de escrita somente aos líderes. Preserve aspas, vírgulas e colchetes do JSON.
 
 1. **Adicionar membro:** em `data/members.json`, acrescente um objeto à lista, separado por vírgula:
