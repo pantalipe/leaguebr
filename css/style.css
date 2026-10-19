@@ -285,6 +285,28 @@ h1 span { color: var(--gold); }
 .stage-value { margin: 8px 0 3px; font: 1.4rem Georgia; }
 .stage-value small { display: block; font: .56rem system-ui; color: var(--muted); }
 .progress-text { color: #a5c292; font-size: .59rem; }
+.portrait {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid #75603e;
+  background: #302b21;
+  color: var(--gold);
+  font: 1.3rem Georgia;
+}
+.portrait img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
+  transform-origin: top left;
+  image-rendering: pixelated;
+}
+.podium-card .portrait { margin-bottom: 8px; }
 
 .ranking-panel { margin-bottom: 36px; }
 .table-scroll { overflow-x: auto; }
@@ -301,7 +323,7 @@ td:nth-child(3) { color: #e2d4a5; font-variant-numeric: tabular-nums; }
 
 .member-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 36px; }
 .member-card { min-width: 0; padding: 0 19px; }
-.member-card summary { position: relative; padding: 16px 23px 16px 0; cursor: pointer; list-style: none; }
+.member-card summary { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: start; gap: 14px; padding: 16px 23px 16px 0; cursor: pointer; list-style: none; }
 .member-card summary::-webkit-details-marker { display: none; }
 .member-card summary:after { position: absolute; top: 16px; right: 0; color: var(--gold); content: "+"; }
 .member-card[open] summary:after { content: "−"; }

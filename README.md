@@ -1,6 +1,6 @@
 # LeagueBR · Portal da Guild
 
-Portal estático de Legend Slayer: HTML, CSS, JavaScript e JSON, sem instalação ou build. Os dados iniciais são fictícios. Troque os exemplos e defina `"demo": false` em `data/content.json` quando publicar informações reais. O total de membros é calculado a partir dos registros válidos; nível e meta são opcionais.
+Portal estático de Legend Slayer: HTML, CSS, JavaScript e JSON, sem instalação ou build. O histórico começa com o ranking informado pela guild em **12/10/2026**, com 20 membros. O total é calculado a partir dos registros válidos; nível e meta são opcionais. Regras aguardam a liderança. `demo: true` em `data/content.json` serve para identificar dados de demonstração, se necessário.
 
 ## Atualizar pelo GitHub (inclusive no celular)
 
@@ -22,6 +22,8 @@ Abra o arquivo, selecione **Edit** (lápis), faça a alteração e escolha **Com
 3. **Corrigir registro:** edite ou remova o registro incorreto no JSON e salve. O histórico do GitHub permite recuperar versões anteriores. Os registros são ordenados por data automaticamente; para registros no mesmo dia vale o último na lista. Com apenas um dia registrado, aparece “Sem histórico suficiente”. Correções podem gerar evolução negativa. Registros inválidos são ignorados com aviso visível.
 4. **Alterar avisos e regras:** edite `data/content.json`. `notices` contém `date`, `title` e `text`; `rules` é uma lista de textos. `level: null` oculta o valor do nível; `goal: null` remove a meta. Nome, jogo, lema e descrição também são editáveis. Avisos aparecem do mais recente ao mais antigo. Para imagens isoladas, adicione arquivos em `assets/` e configure `crestImage` e `mascot.image`, por exemplo `"assets/jorg.png"`; mantenha `null` para placeholders. Sprites usam `image-rendering: pixelated`. `assets/sede.jpg` é a screenshot fornecida pelo usuário, sem extração ou recriação de sprites.
 5. **Publicação:** em **Settings → Pages**, escolha **Deploy from a branch → main → / (root)** e salve. Acompanhe o endereço e o estado em **Settings → Pages**; o build padrão também aparece em **Actions → pages-build-deployment**. Cada commit na branch será publicado automaticamente. Não há workflow personalizado. Se a publicação falhar, confira o último build e a validade dos JSONs. O navegador mostra problemas de dados no topo da página.
+
+Os retratos opcionais ficam em `portrait` no membro: `image` aponta para uma screenshot em `assets/`; `x`, `y` e `size` definem o quadrado original, em pixels. O navegador mostra somente esse trecho, sem recriar ou alterar os sprites. Para adicionar um membro sem retrato, omita `portrait`; aparece a inicial do nickname. Os nicks seguem a tabela informada e os cargos visíveis seguem as capturas, que podem ter sido feitas em outra data. Não use medalhas, status online ou outros números da imagem como estágios.
 
 ## Testar localmente
 

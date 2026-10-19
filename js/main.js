@@ -77,7 +77,20 @@ function renderContent(content) {
     $('#goal').append(element('div', 'NOSSA META', 'eyebrow'), element('h3', content.goal.title), element('p', content.goal.text));
   }
 }
-function renderMembers(members, content) {
+// Display a viewport of the supplied screenshot without recreating the sprite.
+function memberPortrait(member, portrait) {
+  const view = element('span', member.nickname.slice(0, 1), 'portrait');
+  view.setAttribute('aria-hidden', 'true');
+  if (!portrait || ![portrait.x, portrait.y, portrait.size].every(Number.isSafeInteger) || portrait.x < 0 || portrait.y < 0 || portrait.size <= 0) return view;
+  const image = configuredImage(portrait.image, '');
+  if (!image) return view;
+  image.style.transform = `scale(${48 / portrait.size}) translate(${-portrait.x}px, ${-portrait.y}px)`;
+  image.addEventListener('error', () => view.replaceChildren(member.nickname.slice(0, 1)), { once: true });
+  view.replaceChildren(image);
+  return view;
+}
+function renderMembers(members, content, sourceMembers) {
+  const portraits = new Map(sourceMembers.map((member) => [member?.id, member?.portrait]));
   const stats = [
     ['MEMBROS REGISTRADOS', number(members.length), 'Cada jornada importa'],
     ['MAIOR ESTÁGIO', members.length ? number(members[0].currentStage) : '—', 'No histórico da equipe'],
@@ -95,7 +108,7 @@ function renderMembers(members, content) {
     top.append(element('span', `0${member.position}`, 'place'), element('small', member.position === 1 ? 'NA LIDERANÇA' : 'DESTAQUE'));
     const stage = element('p', number(member.currentStage), 'stage-value');
     stage.append(element('small', 'estágio atual'));
-    card.append(top, element('h3', member.nickname), stage, element('p', member.delta === null ? 'Sem histórico suficiente' : `${signed(member.delta)} estágios no período`, 'progress-text'));
+    card.append(top, memberPortrait(member, portraits.get(member.id)), element('h3', member.nickname), stage, element('p', member.delta === null ? 'Sem histórico suficiente' : `${signed(member.delta)} estágios no período`, 'progress-text'));
     $('#podium').append(card);
   }
   for (const member of members) {
@@ -107,7 +120,9 @@ function renderMembers(members, content) {
     const summary = element('summary');
     const meta = element('span', undefined, 'member-meta');
     meta.append(element('strong', `Estágio ${number(member.currentStage)}`), dateNode(member.lastDate));
-    summary.append(element('span', member.nickname, 'member-name'), element('span', member.role, 'member-role'), meta);
+    const identity = element('span');
+    identity.append(element('span', member.nickname, 'member-name'), element('span', member.role, 'member-role'), meta);
+    summary.append(memberPortrait(member, portraits.get(member.id)), identity);
     const history = element('div', undefined, 'history');
     history.append(element('p', progress(member)));
     if (member.dailyAverage !== null) history.append(element('p', `Média: ${number(member.dailyAverage)} estágios/dia em ${member.days} ${member.days === 1 ? 'dia' : 'dias'}.`));
@@ -138,7 +153,7 @@ async function init() {
     const [content, data] = await Promise.all([loadJSON('../data/content.json'), loadJSON('../data/members.json')]);
     renderContent(content);
     const { members, errors } = buildRanking(data);
-    renderMembers(members, content);
+    renderMembers(members, content, Array.isArray(data) ? data : []);
     $('#status').textContent = errors.length ? `Atenção: ${errors.length} problema(s) nos dados. Corrija members.json. ${errors.map((error) => `${error.id || (error.index === null ? 'Arquivo' : `Membro ${error.index + 1}`)}: ${error.message}`).join('; ')}` : '';
   } catch (error) {
     $('#status').textContent = `Não foi possível carregar todos os dados. Confira os arquivos JSON e recarregue a página. ${error.message}`;

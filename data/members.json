@@ -1,8 +1,22 @@
 [
-  { "id": "aurora-demo", "nickname": "Aurora (exemplo)", "role": "Líder", "history": [{ "date": "2026-10-13", "stage": 4020 }, { "date": "2026-10-18", "stage": 4180 }] },
-  { "id": "orion-demo", "nickname": "Orion (exemplo)", "role": "Oficial", "history": [{ "date": "2026-10-12", "stage": 3900 }, { "date": "2026-10-17", "stage": 4065 }] },
-  { "id": "risk-demo", "nickname": "Risk (exemplo)", "role": "Membro", "history": [{ "date": "2026-10-13", "stage": 3750 }, { "date": "2026-10-18", "stage": 3850 }] },
-  { "id": "lyra-demo", "nickname": "Lyra (exemplo)", "role": "Membro", "history": [{ "date": "2026-10-14", "stage": 3400 }, { "date": "2026-10-18", "stage": 3500 }] },
-  { "id": "atlas-demo", "nickname": "Atlas (exemplo)", "role": "Membro", "history": [{ "date": "2026-10-16", "stage": 3210 }, { "date": "2026-10-18", "stage": 3260 }] },
-  { "id": "nara-demo", "nickname": "Nara (exemplo)", "role": "Membro", "history": [{ "date": "2026-10-18", "stage": 2800 }] }
+  { "id": "risk", "nickname": "Risk", "role": "Membro", "portrait": { "image": "assets/membros-3.jpg", "x": 81, "y": 613, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 1090 }] },
+  { "id": "redkio", "nickname": "Redkio", "role": "Vice-Mestre", "portrait": { "image": "assets/membros-2.jpg", "x": 81, "y": 553, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 1089 }] },
+  { "id": "lucaopower", "nickname": "Lucaopower", "role": "Mestre", "portrait": { "image": "assets/membros-2.jpg", "x": 81, "y": 478, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 1013 }] },
+  { "id": "matrella", "nickname": "Matrella", "role": "Vice-Mestre", "portrait": { "image": "assets/membros-2.jpg", "x": 81, "y": 703, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 994 }] },
+  { "id": "lovers", "nickname": "LoverS", "role": "Vice-Mestre", "portrait": { "image": "assets/membros-2.jpg", "x": 81, "y": 628, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 989 }] },
+  { "id": "nandinhoah", "nickname": "NandinhoAh", "role": "Membro", "portrait": { "image": "assets/membros-3.jpg", "x": 81, "y": 688, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 989 }] },
+  { "id": "vulgoskank", "nickname": "vulgoskank", "role": "Membro", "portrait": { "image": "assets/membros-2.jpg", "x": 81, "y": 928, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 971 }] },
+  { "id": "loki", "nickname": "LOKI", "role": "Membro", "portrait": { "image": "assets/membros-3.jpg", "x": 81, "y": 763, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 960 }] },
+  { "id": "mlksombra", "nickname": "MlkSombra", "role": "Membro", "portrait": { "image": "assets/membros-3.jpg", "x": 81, "y": 988, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 920 }] },
+  { "id": "abyssx", "nickname": "abyssx", "role": "Membro", "portrait": { "image": "assets/membros-2.jpg", "x": 81, "y": 778, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 887 }] },
+  { "id": "sirpetter", "nickname": "SirPetter", "role": "Membro", "portrait": { "image": "assets/membros-3.jpg", "x": 81, "y": 838, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 880 }] },
+  { "id": "leviano7", "nickname": "Leviano7", "role": "Membro", "portrait": { "image": "assets/membros-1.jpg", "x": 81, "y": 478, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 873 }] },
+  { "id": "pantalipe", "nickname": "pantalipe", "role": "Membro", "portrait": { "image": "assets/membros-2.jpg", "x": 81, "y": 853, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 799 }] },
+  { "id": "laios27", "nickname": "Laios27", "role": "Membro", "portrait": { "image": "assets/membros-1.jpg", "x": 81, "y": 553, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 771 }] },
+  { "id": "xubirius", "nickname": "Xubirius", "role": "Membro", "portrait": { "image": "assets/membros-1.jpg", "x": 81, "y": 853, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 769 }] },
+  { "id": "kphu", "nickname": "Kphu", "role": "Membro", "history": [{ "date": "2026-10-12", "stage": 763 }] },
+  { "id": "otootavio", "nickname": "OtoOtavio", "role": "Membro", "portrait": { "image": "assets/membros-1.jpg", "x": 81, "y": 703, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 760 }] },
+  { "id": "petterpan", "nickname": "PetterPan", "role": "Membro", "portrait": { "image": "assets/membros-3.jpg", "x": 81, "y": 913, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 712 }] },
+  { "id": "vhzunivers", "nickname": "vhzunivers", "role": "Membro", "portrait": { "image": "assets/membros-1.jpg", "x": 81, "y": 778, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 680 }] },
+  { "id": "galapatus", "nickname": "galapatus", "role": "Membro", "portrait": { "image": "assets/membros-1.jpg", "x": 81, "y": 628, "size": 55 }, "history": [{ "date": "2026-10-12", "stage": 549 }] }
 ]
