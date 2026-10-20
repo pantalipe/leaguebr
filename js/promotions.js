@@ -1,4 +1,4 @@
-// Names follow the community wiki; upstream filenames are preserved verbatim.
+// Names follow the community wiki and guild corrections; upstream filenames are preserved verbatim.
 const definitions = [
   ['stone', 'Stone', '0-stone'],
   ['bronze', 'Bronze', '1-bronze'],
@@ -14,7 +14,7 @@ const definitions = [
   ['demon-metal', 'Demon Metal', '11-demonmetal'],
   ['dragonos', 'Dragonos', '12-dragonos'],
   ['ragnablood', 'Ragnablood', '13-ragnablood'],
-  ['warfrost', 'Warfrost', '14-winterfrost'],
+  ['winterfrost', 'Winterfrost', '14-winterfrost'],
   ['dark-nox', 'Dark Nox', '15-darknox'],
   ['blue-abyss', 'Blue Abyss', '16-blueabyss'],
   ['infinaut', 'Infinaut', '17-infinaut'],
@@ -30,4 +30,5 @@ export const PROMOTIONS = Object.freeze(definitions.map(([id, name, file]) => Ob
   id, name, image: `assets/promotions/${file}.png`
 })));
 
-export const getPromotion = (id) => PROMOTIONS.find((promotion) => promotion.id === id) ?? null;
+// Accept the former ID so previously downloaded member files still display a crest.
+export const getPromotion = (id) => PROMOTIONS.find((promotion) => promotion.id === (id === 'warfrost' ? 'winterfrost' : id)) ?? null;
