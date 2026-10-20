@@ -1,5 +1,6 @@
 import { buildRanking, formatDate } from './ranking.js';
 import { parseRankingText, prepareUpdate } from './update-ranking.js';
+import { PROMOTIONS, getPromotion } from './promotions.js';
 
 const $ = (selector) => document.querySelector(selector);
 const number = (value) => new Intl.NumberFormat('pt-BR').format(value);
@@ -29,12 +30,41 @@ function departureIds() {
   return new Set([...document.querySelectorAll('[data-departure-id]:checked')].map((input) => input.dataset.departureId));
 }
 function newRows() { return [...document.querySelectorAll('.new-member-row')]; }
+function promotionName(id) { return id ? getPromotion(id)?.name ?? `Promoção desconhecida (${id})` : 'Sem promoção'; }
+function promotionImage(id, img) {
+  const promotion = id ? getPromotion(id) : null;
+  img.hidden = !promotion?.image;
+  if (promotion?.image) { img.src = promotion.image; img.alt = `Emblema ${promotion.name}`; }
+  else { img.removeAttribute('src'); img.alt = ''; }
+}
+function promotionSelect(labelText, currentValue, { existing = false, value = '' } = {}) {
+  const field = node('div'); field.className = 'promotion-field';
+  const label = node('label', labelText);
+  const select = node('select'); select.className = 'promotion-select';
+  const safeId = encodeURIComponent(String(currentValue));
+  select.id = `promotion-${existing ? 'member' : 'new'}-${safeId}`;
+  label.htmlFor = select.id;
+  if (existing) select.dataset.promotionMemberId = currentValue;
+  else select.dataset.newPromotion = '';
+  const currentPromotion = existing ? sourceMembers.find(member => member.id === currentValue)?.promotion : null;
+  const placeholder = node('option', existing ? `Manter promoção atual${currentPromotion ? ` · ${promotionName(currentPromotion)}` : ''}` : 'Sem promoção');
+  placeholder.value = ''; select.append(placeholder);
+  if (existing) { const clear = node('option', 'Remover promoção atual'); clear.value = '__clear__'; select.append(clear); }
+  for (const promotion of PROMOTIONS) {
+    const option = node('option', promotion.name); option.value = promotion.id; select.append(option);
+  }
+  select.value = value;
+  const preview = node('img'); preview.className = 'promotion-preview'; preview.alt = ''; promotionImage(value || currentPromotion, preview);
+  field.append(label, select, preview);
+  return { field, select, preview };
+}
 function updateCount() {
   const count = stageInputs().filter((input) => !input.disabled && input.value.trim() !== '').length;
   const departed = departureIds().size;
-  $('#filled-count').textContent = `${count} estágio(s) preenchido(s) e ${departed} saída(s) marcada(s).`;
+  const promotions = [...document.querySelectorAll('[data-promotion-member-id]')].filter(input => !input.disabled && input.value !== '').length;
+  $('#filled-count').textContent = `${count} estágio(s) preenchido(s), ${promotions} promoção(ões) alterada(s) e ${departed} saída(s) marcada(s).`;
 }
-function renderInputs(values = new Map(), departures = new Set()) {
+function renderInputs(values = new Map(), departures = new Set(), promotionValues = new Map()) {
   $('#stage-entries').replaceChildren();
   for (const [index, member] of currentMembers.entries()) {
     const row = node('li'); row.className = 'stage-entry';
@@ -51,7 +81,10 @@ function renderInputs(values = new Map(), departures = new Set()) {
     input.id = label.htmlFor; input.type = 'text'; input.inputMode = 'numeric'; input.pattern = '[0-9]*';
     input.autocomplete = 'off'; input.dataset.memberId = member.id;
     input.value = values.get(member.id) ?? ''; input.disabled = departure.checked; input.placeholder = 'Em branco';
-    field.append(label, input); row.append(identity, field); $('#stage-entries').append(row);
+    field.append(label, input);
+    const promotion = promotionSelect(`Nova promoção de ${member.nickname}`, member.id, { existing: true, value: promotionValues.get(member.id) ?? '' });
+    promotion.select.disabled = departure.checked;
+    row.append(identity, field, promotion.field); $('#stage-entries').append(row);
   }
   const archived = sourceMembers.filter((member) => member.active === false);
   $('#archived-note').textContent = archived.length ? `Históricos preservados de ex-membros: ${archived.map((member) => member.nickname).join(', ')}. Se alguém voltar, adicione seu nickname no bloco de entradas para recuperar o cadastro.` : '';
@@ -66,10 +99,11 @@ function addNewRow() {
   const stageLabel = node('label', 'Estágio');
   const stage = node('input'); stage.type = 'text'; stage.inputMode = 'numeric'; stage.pattern = '[0-9]*'; stage.dataset.newStage = '';
   stage.setAttribute('aria-label', `Estágio do novo membro ${index}`); stageLabel.append(stage);
+  const promotion = promotionSelect(`Promoção do novo membro ${index}`, row.dataset.draftId);
   const remove = node('button', 'Remover'); remove.type = 'button'; remove.className = 'button secondary';
   remove.setAttribute('aria-label', `Remover entrada ${index}`);
   remove.addEventListener('click', () => { row.remove(); invalidatePreview(); showErrors([]); });
-  row.append(nameLabel, stageLabel, remove); $('#new-members').append(row);
+  row.append(nameLabel, stageLabel, promotion.field, remove); $('#new-members').append(row);
   invalidatePreview();
   return name;
 }
@@ -85,14 +119,15 @@ async function sourceIsCurrent() {
   const latest = await fetchMembers();
   if (JSON.stringify(latest.data) === JSON.stringify(sourceMembers)) return true;
   const values = new Map(stageInputs().map((input) => [input.dataset.memberId, input.value]));
+  const promotionValues = new Map([...document.querySelectorAll('[data-promotion-member-id]')].map(input => [input.dataset.promotionMemberId, input.value]));
   const departures = departureIds();
   sourceMembers = latest.data; currentMembers = latest.ranking;
-  renderInputs(values, departures); invalidatePreview();
+  renderInputs(values, departures, promotionValues); invalidatePreview();
   showErrors(['O portal recebeu outra atualização. Carregamos a base mais recente e preservamos os campos dos membros que continuam ativos. Confira também as entradas e saídas antes de gerar uma nova prévia.']);
   return false;
 }
 function readChanges() {
-  const entries = [], additions = [], errors = [];
+  const entries = [], additions = [], promotions = [], errors = [];
   for (const input of stageInputs()) {
     const value = input.value.trim();
     if (input.disabled || value === '') continue;
@@ -100,32 +135,46 @@ function readChanges() {
     if (!/^\d+$/.test(value) || !Number.isSafeInteger(Number(value))) errors.push(`${member.nickname}: digite um estágio inteiro, sem pontos ou vírgulas.`);
     else entries.push({ id: member.id, stage: Number(value) });
   }
+  for (const input of document.querySelectorAll('[data-promotion-member-id]')) {
+    if (input.disabled || input.value === '') continue;
+    promotions.push({ id: input.dataset.promotionMemberId, promotion: input.value === '__clear__' ? null : input.value });
+  }
   for (const row of newRows()) {
     const nickname = row.querySelector('[data-new-name]').value.trim();
     const stage = row.querySelector('[data-new-stage]').value.trim();
+    const promotion = row.querySelector('[data-new-promotion]').value;
     if (!nickname && !stage) continue;
     if (!nickname || !/^\d+$/.test(stage) || !Number.isSafeInteger(Number(stage))) errors.push('Cada entrada precisa de nickname e estágio inteiro, sem pontos ou vírgulas.');
-    else additions.push({ nickname, stage: Number(stage) });
+    else additions.push({ nickname, stage: Number(stage), ...(promotion ? { promotion } : {}) });
   }
-  return { entries, additions, departures: [...departureIds()], errors };
+  return { entries, additions, departures: [...departureIds()], promotions, errors };
 }
 function previewRow(values) {
   const row = node('tr'); values.forEach((value) => row.append(node('td', value))); $('#preview-body').append(row);
 }
 function showPreview(result) {
   const changes = new Map(result.changes.map((change) => [change.id, change]));
+  const promotions = new Map(result.promotions.map((change) => [change.id, change]));
   $('#preview-body').replaceChildren();
-  for (const member of buildRanking(result.members).members.filter((member) => changes.has(member.id))) {
-    const change = changes.get(member.id);
-    previewRow([member.nickname, number(change.previousStage), number(change.stage), change.sameDay ? 'Correção do mesmo dia' : 'Atualização de estágio']);
+  const changedIds = new Set([...changes.keys(), ...promotions.keys()]);
+  for (const member of buildRanking(result.members).members.filter((member) => changedIds.has(member.id))) {
+    const change = changes.get(member.id), promotion = promotions.get(member.id);
+    const actions = [];
+    if (change) actions.push(change.sameDay ? 'Correção do mesmo dia' : 'Atualização de estágio');
+    if (promotion) actions.push(`Promoção: ${promotionName(promotion.previousPromotion)} → ${promotionName(promotion.promotion)}`);
+    previewRow([member.nickname, change ? number(change.previousStage) : '—', change ? number(change.stage) : '—', actions.join(' · ')]);
   }
-  for (const member of result.added) previewRow([member.nickname, '—', number(member.stage), member.reactivated ? 'Voltou à guild' : 'Entrou na guild']);
+  for (const member of result.added) {
+    const saved = result.members.find(item => item.id === member.id);
+    const action = member.reactivated ? 'Voltou à guild' : 'Entrou na guild';
+    previewRow([member.nickname, '—', number(member.stage), saved?.promotion ? `${action} · Promoção: ${promotionName(saved.promotion)}` : action]);
+  }
   for (const member of result.departed) {
     const original = currentMembers.find((item) => item.id === member.id);
     previewRow([member.nickname, number(original.currentStage), '—', 'Saiu da guild']);
   }
   const activeCount = buildRanking(result.members).members.length;
-  $('#preview-description').textContent = `Data: ${formatDate($('#ranking-date').value)}. ${result.changes.length} estágio(s), ${result.added.length} entrada(s) e ${result.departed.length} saída(s). O arquivo terá ${activeCount} membros ativos, com históricos de ex-membros preservados.`;
+  $('#preview-description').textContent = `Data: ${formatDate($('#ranking-date').value)}. ${result.changes.length} estágio(s), ${result.promotions.length} promoção(ões), ${result.added.length} entrada(s) e ${result.departed.length} saída(s). O arquivo terá ${activeCount} membros ativos, com históricos de ex-membros preservados.`;
   $('#correction-warning').hidden = !result.changes.some((change) => change.sameDay || change.delta < 0);
   $('#membership-warning').hidden = !result.added.length && !result.departed.length;
   candidate = result.members; $('#preview').hidden = false; $('#preview').focus();
@@ -134,6 +183,14 @@ $('#update-form').addEventListener('input', (event) => {
   if (event.target.matches('[data-departure-id]')) {
     const stage = stageInputs().find((input) => input.dataset.memberId === event.target.dataset.departureId);
     if (stage) stage.disabled = event.target.checked;
+    const promotion = [...document.querySelectorAll('[data-promotion-member-id]')].find(input => input.dataset.promotionMemberId === event.target.dataset.departureId);
+    if (promotion) promotion.disabled = event.target.checked;
+  }
+  if (event.target.matches('.promotion-select')) {
+    const existing = event.target.dataset.promotionMemberId;
+    const savedPromotion = existing ? sourceMembers.find(member => member.id === existing)?.promotion : null;
+    const selectedPromotion = event.target.value === '__clear__' ? null : event.target.value || savedPromotion;
+    promotionImage(selectedPromotion, event.target.parentElement.querySelector('.promotion-preview'));
   }
   invalidatePreview(); updateCount(); showErrors([]);
 });
@@ -143,7 +200,8 @@ $('#apply-list').addEventListener('click', () => {
   const result = parseRankingText($('#ranking-text').value, [...sourceMembers.filter((member) => member.active !== false), ...drafts]);
   if (result.errors.length) { showErrors(result.errors); return; }
   const values = new Map(result.entries.map((entry) => [entry.id, String(entry.stage)]));
-  const departures = departureIds(); renderInputs(values, departures);
+  const promotionValues = new Map([...document.querySelectorAll('[data-promotion-member-id]')].map(input => [input.dataset.promotionMemberId, input.value]));
+  const departures = departureIds(); renderInputs(values, departures, promotionValues);
   newRows().forEach((row) => { row.querySelector('[data-new-stage]').value = values.get(row.dataset.draftId) ?? ''; });
   invalidatePreview(); showErrors([]);
   $('#paste-status').textContent = `${values.size} membro(s) preenchido(s). Confira os estágios e as saídas marcadas.`;
@@ -153,9 +211,9 @@ $('#update-form').addEventListener('submit', async (event) => {
   const button = $('#update-form button[type="submit"]'); button.disabled = true;
   try {
     if (!await sourceIsCurrent()) return;
-    const { entries, additions, departures, errors } = readChanges();
+    const { entries, additions, departures, promotions, errors } = readChanges();
     if (errors.length) { showErrors(errors); return; }
-    const result = prepareUpdate(sourceMembers, $('#ranking-date').value, entries, { additions, departures });
+    const result = prepareUpdate(sourceMembers, $('#ranking-date').value, entries, { additions, departures, promotions });
     if (result.errors.length) { showErrors(result.errors); return; }
     showPreview(result);
   } catch (error) { showErrors([error.message]); }

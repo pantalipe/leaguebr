@@ -1,4 +1,5 @@
 import { buildRanking, formatDate, parseDay } from './ranking.js';
+import { getPromotion } from './promotions.js';
 
 const $ = (selector) => document.querySelector(selector);
 const number = (value) => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(value);
@@ -89,8 +90,24 @@ function memberPortrait(member, portrait) {
   view.replaceChildren(image);
   return view;
 }
+function promotionBadge(id) {
+  const promotion = getPromotion(id);
+  const badge = element('span', undefined, 'promotion-badge');
+  badge.title = `Promoção: ${promotion?.name ?? 'Não informada'}`;
+  if (promotion) {
+    const image = configuredImage(promotion.image, '');
+    image.width = 32;
+    image.height = 32;
+    image.addEventListener('error', () => image.remove(), { once: true });
+    badge.append(image);
+  }
+  badge.append(element('span', promotion?.name ?? 'Não informada'));
+  badge.setAttribute('aria-label', badge.title);
+  return badge;
+}
 function renderMembers(members, content, sourceMembers) {
   const portraits = new Map(sourceMembers.map((member) => [member?.id, member?.portrait]));
+  const promotions = new Map(sourceMembers.map((member) => [member?.id, member?.promotion]));
   const stats = [
     ['MEMBROS REGISTRADOS', number(members.length), 'Cada jornada importa'],
     ['MAIOR ESTÁGIO', members.length ? number(members[0].currentStage) : '—', 'No histórico da equipe'],
@@ -105,7 +122,9 @@ function renderMembers(members, content, sourceMembers) {
   for (const member of members.slice(0, 3)) {
     const card = element('article', undefined, 'podium-card');
     const top = element('div', undefined, 'podium-top');
-    top.append(element('span', `0${member.position}`, 'place'), element('small', member.position === 1 ? 'NA LIDERANÇA' : 'DESTAQUE'));
+    const position = element('span', undefined, 'position-promotion');
+    position.append(element('span', `0${member.position}`, 'place'), promotionBadge(promotions.get(member.id)));
+    top.append(position, element('small', member.position === 1 ? 'NA LIDERANÇA' : 'DESTAQUE'));
     const stage = element('p', number(member.currentStage), 'stage-value');
     stage.append(element('small', 'estágio atual'));
     card.append(top, memberPortrait(member, portraits.get(member.id)), element('h3', member.nickname), stage, element('p', member.delta === null ? 'Sem histórico suficiente' : `${signed(member.delta)} estágios no período`, 'progress-text'));
@@ -114,14 +133,24 @@ function renderMembers(members, content, sourceMembers) {
   for (const member of members) {
     const row = element('tr');
     const values = [String(member.position).padStart(2, '0'), member.nickname, number(member.currentStage), member.delta === null ? 'Sem histórico suficiente' : signed(member.delta), member.previousDate ? formatDate(member.previousDate) : '—', member.dailyAverage === null ? '—' : number(member.dailyAverage), formatDate(member.lastDate)];
-    values.forEach((value, index) => row.append(element('td', value, index === 3 ? (member.delta < 0 ? 'negative' : 'positive') : undefined)));
+    values.forEach((value, index) => {
+      const cell = element('td', index === 0 ? undefined : value, index === 3 ? (member.delta < 0 ? 'negative' : 'positive') : undefined);
+      if (index === 0) {
+        const position = element('span', undefined, 'position-promotion');
+        position.append(element('span', value), promotionBadge(promotions.get(member.id)));
+        cell.append(position);
+      }
+      row.append(cell);
+    });
     $('#ranking-body').append(row);
     const card = element('details', undefined, 'panel member-card');
     const summary = element('summary');
     const meta = element('span', undefined, 'member-meta');
     meta.append(element('strong', `Estágio ${number(member.currentStage)}`), dateNode(member.lastDate));
     const identity = element('span');
-    identity.append(element('span', member.nickname, 'member-name'), element('span', member.role, 'member-role'), meta);
+    const position = element('span', undefined, 'position-promotion member-position');
+    position.append(element('span', `#${String(member.position).padStart(2, '0')}`), promotionBadge(promotions.get(member.id)));
+    identity.append(element('span', member.nickname, 'member-name'), position, element('span', member.role, 'member-role'), meta);
     summary.append(memberPortrait(member, portraits.get(member.id)), identity);
     const history = element('div', undefined, 'history');
     history.append(element('p', progress(member)));

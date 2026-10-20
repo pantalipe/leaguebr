@@ -36,6 +36,12 @@ Na página de atualização, marque **Saiu da guild** para quem saiu; o estágio
 
 Ex-membros continuam no mesmo arquivo com `active: false` e `leftAt`, preservando seu histórico, mas ficam fora do ranking e da contagem pública. Ausência de `active` significa membro ativo. Novos membros recebem `active: true`, `joinedAt` e apenas o primeiro estágio informado; não há média diária inventada. Para um retorno, use o mesmo nickname no bloco de entradas: o cadastro e o histórico serão recuperados. Não use estágio zero para representar saída; zero continua sendo um estágio válido de um membro ativo.
 
+## Promoções dos membros
+
+Na página **Atualizar ranking**, selecione a promoção de cada membro, confira a prévia e baixe `members.json` pelo fluxo habitual. É possível atualizar somente a promoção, sem registrar outro estágio. O brasão aparece ao lado da posição no ranking, no pódio e nos cards de membros. Cargo na guild e promoção são campos independentes.
+
+No JSON, use o campo opcional `"promotion": "dragonos"`. Os IDs aceitos estão em `js/promotions.js`. Ausência, `null` ou ID desconhecido aparece como **Não informada**, sem brasão inventado; estágio não determina promoção. Os cadastros existentes aguardam informação da liderança. Os 24 brasões foram obtidos na [Slayer Legend Wiki](https://slayerlegend.wiki/character/promotions), a partir do [SlayerLegendCDN](https://github.com/BenDol/SlayerLegendCDN/tree/main/game-assets/images/promotions); origem e correspondências estão em `assets/promotions/README.md`.
+
 ## Receitas e inventário
 
 Abra [Receitas](https://pantalipe.github.io/leaguebr/receitas.html): o catálogo começa com todas as receitas e suas imagens. Toque nos botões com ícones para ativar ou desativar ingredientes; receitas precisam conter todos os selecionados. Tipo e raridade também usam botões. **Limpar filtros** restaura o catálogo sem apagar o estoque.

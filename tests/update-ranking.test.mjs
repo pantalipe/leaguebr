@@ -9,7 +9,8 @@ async function loadModule(path, replacements = []) {
 }
 
 const rankingUrl = `data:text/javascript;base64,${Buffer.from(await readFile(new URL("../js/ranking.js", import.meta.url))).toString("base64")}`;
-const api = await loadModule("../js/update-ranking.js", [["\"./ranking.js\"", JSON.stringify(rankingUrl)]]);
+const promotionsUrl = `data:text/javascript;base64,${Buffer.from(await readFile(new URL("../js/promotions.js", import.meta.url))).toString("base64")}`;
+const api = await loadModule("../js/update-ranking.js", [["\"./ranking.js\"", JSON.stringify(rankingUrl)], ["\"./promotions.js\"", JSON.stringify(promotionsUrl)]]);
 const { parseRankingText, prepareUpdate } = api;
 const source = [
   { id: "risk", nickname: "Risk", role: "Líder", portrait: "risk.png", extra: { keep: true }, history: [{ date: "2025-01-01", stage: 1000 }, { date: "2025-01-02", stage: 1050 }] },
@@ -128,4 +129,50 @@ test("new identifiers avoid accent collisions and metadata dates constrain depar
   assert.deepEqual(result.errors, []);
   assert.deepEqual(result.added.map(member => member.id), ["ku-2", "member"]);
   assert.ok(prepareUpdate(roster, "2025-01-03", [], { departures: ["ku"] }).errors.length);
+});
+
+test("updates or clears a promotion without adding a history entry", () => {
+  const roster = structuredClone(source);
+  roster[0].promotion = "gold";
+  const changed = prepareUpdate(roster, "2025-01-03", [], { promotions: [{ id: "risk", promotion: "mithril" }] });
+  assert.deepEqual(changed.errors, []);
+  assert.equal(changed.members[0].promotion, "mithril");
+  assert.deepEqual(changed.members[0].history, roster[0].history);
+  assert.deepEqual(changed.promotions, [{ id: "risk", nickname: "Risk", previousPromotion: "gold", promotion: "mithril" }]);
+
+  const cleared = prepareUpdate(changed.members, "2025-01-03", [], { promotions: [{ id: "risk", promotion: null }] });
+  assert.deepEqual(cleared.errors, []);
+  assert.equal(Object.hasOwn(cleared.members[0], "promotion"), false);
+  assert.deepEqual(cleared.members[0].history, roster[0].history);
+  assert.equal(cleared.promotions[0].promotion, null);
+});
+
+test("combines promotion and stage changes and assigns promotions to new or returning members", () => {
+  const combined = prepareUpdate(source, "2025-01-03", [{ id: "risk", stage: 1070 }], { promotions: [{ id: "risk", promotion: "gold" }] });
+  assert.deepEqual(combined.errors, []);
+  assert.equal(combined.members[0].promotion, "gold");
+  assert.deepEqual(combined.members[0].history.at(-1), { date: "2025-01-03", stage: 1070 });
+
+  const added = prepareUpdate(source, "2025-01-03", [], { additions: [{ nickname: "Newbie", stage: 100, promotion: "bronze" }] });
+  assert.deepEqual(added.errors, []);
+  assert.equal(added.members.at(-1).promotion, "bronze");
+
+  const archived = structuredClone(source);
+  Object.assign(archived[0], { active: false, leftAt: "2025-01-02", promotion: "silver" });
+  const returned = prepareUpdate(archived, "2025-01-03", [], { additions: [{ nickname: "Risk", stage: 1100, promotion: "gold" }] });
+  assert.deepEqual(returned.errors, []);
+  assert.equal(returned.members[0].promotion, "gold");
+});
+
+test("rejects unknown and duplicate promotion changes atomically", () => {
+  for (const promotions of [
+    [{ id: "risk", promotion: "unknown" }],
+    [{ id: "risk", promotion: "gold" }, { id: "risk", promotion: "silver" }],
+  ]) {
+    const result = prepareUpdate(source, "2025-01-03", [{ id: "mat", stage: 920 }], { promotions });
+    assert.ok(result.errors.length);
+    assert.deepEqual(result.members, source);
+    assert.deepEqual(result.changes, []);
+    assert.deepEqual(result.promotions, []);
+  }
 });
