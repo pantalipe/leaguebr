@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#141713">
+  <title>Histórico oficial de sorteios · LeagueBR</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/raffle.css">
+  <script type="module" src="./js/raffle-history.js"></script>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <header class="site-header"><div class="header-inner raffle-header"><a class="brand" href="./index.html"><img src="./assets/brasao.jpg" alt="Brasão da LeagueBR"><span><strong>LeagueBR</strong><small>LEGEND SLAYER</small></span></a><a href="./sorteio.html">← Ir para sorteio</a></div></header>
+  <main id="conteudo" class="container raffle-page">
+    <p class="eyebrow">RESULTADOS APROVADOS PELA GUILD</p>
+    <h1>Histórico oficial</h1>
+    <p class="raffle-intro">Aqui aparecem os sorteios conferidos pela liderança e publicados pelo responsável pelo portal. Sortear ou importar um arquivo não publica um resultado automaticamente.</p>
+    <p id="history-status" role="status">Carregando histórico…</p>
+    <p id="history-error" class="demo-banner" role="alert" hidden></p>
+    <div id="official-history"></div>
+    <details class="panel raffle-panel" id="history-tools">
+      <summary>Preparar publicação de um resultado</summary>
+      <h2>Importar e conferir</h2>
+      <p class="raffle-help">Para o responsável pelo portal: selecione o arquivo recebido, confira o vencedor e as listas e baixe o histórico atualizado. Esta ferramenta prepara um arquivo; a publicação depende de quem tem acesso de escrita ao GitHub.</p>
+      <label class="raffle-label" for="result-file">Arquivo do sorteio (JSON ou TXT)<input type="file" id="result-file" accept=".json,.txt,application/json,text/plain" disabled></label>
+      <p id="import-error" class="demo-banner" role="alert" hidden></p>
+      <section id="import-preview" hidden aria-labelledby="import-title">
+        <h2 id="import-title" tabindex="-1">Confira o resultado recebido</h2>
+        <p class="raffle-help">Prévia local · ainda não é um resultado oficial. Confirme a procedência com quem realizou o sorteio; a validação do arquivo não comprova sua autenticidade.</p>
+        <div id="pending-result"></div>
+        <label class="approval-check"><input type="checkbox" id="approve-result"> Conferi o resultado e aprovo sua inclusão no histórico oficial.</label>
+        <button type="button" id="download-history" class="button primary" disabled>Baixar histórico atualizado</button>
+      </section>
+      <p id="import-status" role="status"></p>
+      <p class="raffle-help">Depois do download, substitua <strong>data/raffles.json</strong> no repositório pelo arquivo <strong>raffles.json</strong> gerado e publique pelo GitHub. Preserve o arquivo completo: ele inclui os sorteios anteriores. Se houver outra publicação nesse intervalo, importe novamente sobre o histórico mais recente antes de substituir o arquivo.</p>
+    </details>
+    <noscript><p class="demo-banner">Ative o JavaScript para consultar o histórico e preparar a publicação.</p></noscript>
+  </main>
+  <footer class="container footer"><a class="footer-brand" href="./index.html">LeagueBR</a><a href="./sorteio.html">Realizar sorteio ↗</a></footer>
+</body>
+</html>

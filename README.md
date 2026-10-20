@@ -56,14 +56,28 @@ Manutenção: `data/receitas.json` contém as 63 receitas fornecidas e `data/ing
 
 Abra **Sorteio** na navegação do portal (`sorteio.html`). A página carrega os membros ativos de `data/members.json`, incluindo quem ainda não tem histórico de estágio. Ex-membros (`active: false`) ficam fora automaticamente. Desmarque quem não participa naquela semana, dê um nome ao sorteio e use **Conferir sorteio**. A conferência mostra os participantes e os excluídos; **Voltar e ajustar** permite corrigir a seleção antes de **Sortear vencedor**.
 
-Cada participante tem uma chance igual, com seleção aleatória via Web Crypto e sem influência de estágio ou cargo. O resultado fica fixo na tela; **Baixar resultado** gera um TXT com identificação, data/hora, vencedor, participantes e excluídos. **Preparar novo sorteio** permite outro sorteio e preserva a seleção anterior; use **Selecionar todos** para reincluir os membros. Nenhuma dessas ações modifica o cadastro da guild.
+Cada participante tem uma chance igual, com seleção aleatória via Web Crypto e sem influência de estágio ou cargo. O resultado fica fixo na tela; **Baixar resultado** gera um JSON com identificação, data/hora, vencedor, participantes e excluídos. Envie esse arquivo ao responsável pelo portal. **Preparar novo sorteio** permite outro sorteio e preserva a seleção anterior; use **Selecionar todos** para reincluir os membros. Nenhuma dessas ações modifica o cadastro da guild.
 
-O sorteio é manual: a página não executa sorteios agendados. Os dados desta sessão são apagados ao sair ou recarregar; baixe o arquivo para guardá-los. Não há histórico compartilhado, publicação automática de vencedores ou restrição de execução a líderes. O arquivo é um registro local, sem certificação independente do resultado.
+O sorteio é manual: a página não executa sorteios agendados. Qualquer visitante pode sortear. Os dados desta sessão são apagados ao sair ou recarregar; baixe o arquivo para guardá-los. O arquivo é um registro local, sem certificação independente do resultado.
+
+### Publicar no histórico oficial
+
+1. Abra **Histórico de sorteios** (`historico-sorteios.html`) e expanda **Preparar publicação de um resultado**.
+2. Selecione o JSON recebido. Arquivos TXT da primeira versão do sorteio também são aceitos.
+3. Confira a procedência, o nome do sorteio, data, vencedor, participantes e excluídos. Marque **Conferi o resultado e aprovo sua inclusão no histórico oficial**.
+4. Clique em **Baixar histórico atualizado**. O arquivo `raffles.json` inclui os resultados anteriores e o novo, sem duplicar IDs ou datas. Um vencedor fora dos participantes, listas sobrepostas, contagens TXT inconsistentes ou dados inválidos bloqueiam a importação.
+5. No GitHub, substitua **data/raffles.json** pelo arquivo gerado, confira o diff e publique na branch do Pages. Só quem tem acesso de escrita ao repositório pode tornar um resultado oficial. Sortear, importar ou marcar a aprovação na ferramenta pública não publica nada.
+
+O histórico público começa vazio e mostra somente os registros desse arquivo, do mais recente ao mais antigo, com horários de Brasília. Cada registro preserva os nicknames da época, mesmo que os membros mudem de nome ou saiam da guild. O JSON de resultado leva apenas IDs e nicknames das listas, sem copiar o histórico de estágios ou retratos.
+
+A ferramenta verifica novamente o histórico ao importar e antes do download para evitar sobrescrever uma atualização publicada durante a conferência. Ainda é necessário usar um arquivo recém-gerado ao substituir o JSON no GitHub; se outra atualização aconteceu depois do download, importe o resultado novamente sobre a versão mais recente. Importações são locais, não ficam salvas no navegador e não alteram o histórico mostrado até a publicação. Para corrigir ou remover um resultado aprovado, edite o registro em `data/raffles.json` no GitHub e confira o diff; o histórico do Git permite recuperar versões anteriores.
 
 ## Testar localmente
 
 Na pasta do projeto, execute `python -m http.server 8000` e abra <http://localhost:8000>. Não abra o HTML por `file://`, pois o carregamento dos JSONs exige HTTP. Para encerrar, `Ctrl+C`.
 
 Com Node instalado: `node --test tests/*.test.mjs`. Os testes usam apenas recursos nativos e cobrem datas, progresso, geração das atualizações, cálculo das receitas e sorteio.
+
+Para o fluxo completo de sorteio e histórico, com o servidor acima aberto e Playwright disponível no `NODE_PATH`, execute `node tests/raffle-history.browser.cjs`. O teste usa Edge em modo headless, valida download/importação/conferência, preservação dos resultados anteriores, bloqueio de duplicados e de histórico desatualizado, erros e layout móvel. Crie `.qa/` para as capturas locais. `PORTAL_TEST_URL` permite trocar o endereço padrão `http://127.0.0.1:8000`. Os resultados de teste são simulados apenas no navegador e não são gravados no histórico oficial.
 
 Os caminhos são relativos e funcionam em subdiretórios como `/leaguebr/`. Não há login, armazenamento compartilhado no navegador ou segredos no frontend. Este é um portal da comunidade, sem vínculo oficial com o jogo.

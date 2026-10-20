@@ -27,4 +27,14 @@
 #winner-name { color: var(--gold); font: 500 clamp(2.2rem, 7vw, 4rem) Georgia, serif; overflow-wrap: anywhere; margin-block: 24px; }
 #result-detail, #download-status { color: var(--muted); font-size: .88rem; overflow-wrap: anywhere; }
 .local-note { border-top: 1px solid var(--line); padding-top: 20px; }
+.raffle-page a:not(.brand):not(.skip) { color: var(--gold); }
+.history-card h3 { margin-top: 0; font-size: 1.2rem; overflow-wrap: anywhere; }
+.history-card .history-winner { color: var(--gold); font-size: 1.4rem; overflow-wrap: anywhere; margin-block: 12px; }
+.history-card time, .history-card > p:last-of-type { color: var(--muted); font-size: .85rem; }
+.history-card details { margin-top: 18px; }
+.history-card h4 { margin-bottom: 8px; }
+.raffle-page summary { cursor: pointer; color: var(--gold); min-height: 44px; }
+#history-tools > h2, #import-preview > h2 { margin-top: 24px; }
+.approval-check { display: flex; align-items: center; gap: 12px; margin-block: 20px; }
+.approval-check input { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--gold); }
 @media (max-width: 480px) { .participant-list { grid-template-columns: 1fr; } .raffle-panel { padding: 18px; } }

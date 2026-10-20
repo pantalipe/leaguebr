@@ -1,4 +1,5 @@
 import { eligibleMembers, drawWinner } from './raffle-engine.js';
+import { normalizeResult } from './raffle-history-engine.js';
 
 const $ = id => document.getElementById(id);
 let members = [];
@@ -60,7 +61,7 @@ $('draw').addEventListener('click', () => {
   $('draw').disabled = true;
   try {
     const winner = drawWinner(snapshot.participants);
-    result = { ...snapshot, winner, drawnAt: new Date().toISOString() };
+    result = normalizeResult({ ...snapshot, winner, drawnAt: new Date().toISOString() });
     $('raffle-error').hidden = true;
     $('winner-name').textContent = winner.nickname;
     $('result-detail').textContent = `${result.name} · ${new Date(result.drawnAt).toLocaleString('pt-BR')} · ${result.participants.length} participante(s)`;
@@ -88,17 +89,15 @@ $('new-raffle').addEventListener('click', () => {
 
 $('download-result').addEventListener('click', () => {
   if (!result) return;
-  const names = list => list.map(member => `- ${member.nickname} [${member.id}]`).join('\n');
-  const text = `LeagueBR — ${result.name}\nData: ${new Date(result.drawnAt).toLocaleString('pt-BR')}\nData ISO: ${result.drawnAt}\nVencedor: ${result.winner.nickname} [${result.winner.id}]\n\nParticipantes (${result.participants.length}):\n${names(result.participants)}\n\nFora do sorteio (${result.excluded.length}):\n${names(result.excluded) || 'Nenhum.'}\n\nSorteio manual no navegador, com chances iguais por participante.\n`;
-  const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+  const url = URL.createObjectURL(new Blob([`${JSON.stringify(result, null, 2)}\n`], { type: 'application/json' }));
   const link = document.createElement('a');
   link.href = url;
-  link.download = `sorteio-leaguebr-${result.drawnAt.replace(/[:.]/g, '-')}.txt`;
+  link.download = `sorteio-leaguebr-${result.drawnAt.replace(/[:.]/g, '-')}.json`;
   document.body.append(link);
   link.click();
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  $('download-status').textContent = 'Download solicitado. Guarde o arquivo antes de sair desta página.';
+  $('download-status').textContent = 'Download solicitado. Envie o JSON ao responsável pelo portal para conferência e publicação no histórico oficial.';
 });
 
 for (const [id, checked] of [['select-all', true], ['select-none', false]]) {
