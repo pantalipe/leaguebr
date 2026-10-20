@@ -92,8 +92,10 @@ function memberPortrait(member, portrait) {
 }
 function promotionBadge(id) {
   const promotion = getPromotion(id);
+  if (!promotion) return element('span', 'Promoção não informada', 'sr-only');
   const badge = element('span', undefined, 'promotion-badge');
-  badge.title = `Promoção: ${promotion?.name ?? 'Não informada'}`;
+  badge.title = `Promoção: ${promotion.name}`;
+  badge.setAttribute('role', 'img');
   if (promotion) {
     const image = configuredImage(promotion.image, '');
     image.width = 32;
@@ -101,7 +103,6 @@ function promotionBadge(id) {
     image.addEventListener('error', () => image.remove(), { once: true });
     badge.append(image);
   }
-  badge.append(element('span', promotion?.name ?? 'Não informada'));
   badge.setAttribute('aria-label', badge.title);
   return badge;
 }

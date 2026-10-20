@@ -279,12 +279,12 @@ h1 span { color: var(--gold); }
 .podium-card:first-child { border-color: #9a8046; background: linear-gradient(115deg, #3d3521, #22271d); }
 .podium-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 5px; margin-bottom: 10px; }
 .place { color: var(--gold); font: 1.25rem Georgia; }
-.position-promotion { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.position-promotion { display: inline-flex; align-items: center; flex-wrap: nowrap; gap: 8px; flex-shrink: 0; white-space: nowrap; }
 .promotion-badge { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); font: 500 .68rem system-ui; }
 .promotion-badge img { width: 32px; height: 32px; object-fit: contain; image-rendering: pixelated; flex-shrink: 0; }
 .member-position { margin-top: 5px; color: var(--gold); font-size: .7rem; }
 .podium-top .position-promotion { gap: 5px; }
-.podium-top .promotion-badge { font-size: .55rem; flex-wrap: wrap; }
+.podium-top { flex-wrap: wrap; }
 .podium-top .promotion-badge img { width: 26px; height: 26px; }
 .podium-card:nth-child(2) .place { color: #b9c4c4; }
 .podium-card:nth-child(3) .place { color: #bd9277; }
