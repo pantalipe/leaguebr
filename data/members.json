@@ -255,6 +255,7 @@
     "id": "pantalipe",
     "nickname": "pantalipe",
     "role": "Membro",
+    "promotion": "warfrost",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
