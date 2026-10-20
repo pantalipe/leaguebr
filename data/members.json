@@ -3,6 +3,7 @@
     "id": "risk",
     "nickname": "Risk",
     "role": "Membro",
+    "promotion": "infinaut",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -24,6 +25,7 @@
     "id": "redkio",
     "nickname": "Redkio",
     "role": "Vice-Mestre",
+    "promotion": "infinaut",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -45,6 +47,7 @@
     "id": "lucaopower",
     "nickname": "Lucaopower",
     "role": "Mestre",
+    "promotion": "infinaut",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -66,6 +69,7 @@
     "id": "matrella",
     "nickname": "Matrella",
     "role": "Vice-Mestre",
+    "promotion": "blue-abyss",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -87,6 +91,7 @@
     "id": "lovers",
     "nickname": "LoverS",
     "role": "Vice-Mestre",
+    "promotion": "blue-abyss",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -108,6 +113,7 @@
     "id": "nandinhoah",
     "nickname": "NandinhoAh",
     "role": "Membro",
+    "promotion": "blue-abyss",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -129,6 +135,7 @@
     "id": "vulgoskank",
     "nickname": "vulgoskank",
     "role": "Membro",
+    "promotion": "blue-abyss",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -150,6 +157,7 @@
     "id": "loki",
     "nickname": "LOKI",
     "role": "Membro",
+    "promotion": "dark-nox",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -171,6 +179,7 @@
     "id": "mlksombra",
     "nickname": "MlkSombra",
     "role": "Membro",
+    "promotion": "dark-nox",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -192,6 +201,7 @@
     "id": "abyssx",
     "nickname": "abyssx",
     "role": "Membro",
+    "promotion": "dark-nox",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -213,6 +223,7 @@
     "id": "sirpetter",
     "nickname": "SirPetter",
     "role": "Membro",
+    "promotion": "dark-nox",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -234,6 +245,7 @@
     "id": "leviano7",
     "nickname": "Leviano7",
     "role": "Membro",
+    "promotion": "dark-nox",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -277,6 +289,7 @@
     "id": "laios27",
     "nickname": "Laios27",
     "role": "Membro",
+    "promotion": "ragnablood",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -298,6 +311,7 @@
     "id": "xubirius",
     "nickname": "Xubirius",
     "role": "Membro",
+    "promotion": "winterfrost",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -332,6 +346,7 @@
     "id": "otootavio",
     "nickname": "OtoOtavio",
     "role": "Membro",
+    "promotion": "ragnablood",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -353,6 +368,7 @@
     "id": "petterpan",
     "nickname": "PetterPan",
     "role": "Membro",
+    "promotion": "ragnablood",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -374,6 +390,7 @@
     "id": "vhzunivers",
     "nickname": "vhzunivers",
     "role": "Membro",
+    "promotion": "dragonos",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -414,6 +431,7 @@
     "id": "danilofnx",
     "nickname": "DaniloFnx",
     "role": "Membro",
+    "promotion": "dark-nox",
     "active": true,
     "joinedAt": "2026-10-19",
     "portrait": {
@@ -433,6 +451,7 @@
     "id": "ku",
     "nickname": "kü",
     "role": "Membro",
+    "promotion": "infinaut",
     "portrait": {
       "image": "assets/membros-4.jpg",
       "x": 81,
