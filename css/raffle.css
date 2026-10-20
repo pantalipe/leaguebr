@@ -1,0 +1,30 @@
+.raffle-header { flex-direction: row; justify-content: space-between; gap: 16px; }
+.raffle-header > a:last-child { color: var(--gold); font-size: .78rem; }
+.raffle-page { max-width: 900px; padding-block: 40px; }
+.raffle-page h1 { font-size: clamp(2.3rem, 7vw, 3.4rem); }
+.raffle-intro, .raffle-help { color: var(--muted); }
+.raffle-help { font-size: .85rem; margin-block: 18px; }
+.raffle-panel { min-width: 0; margin-block: 28px; padding: 24px; border: 1px solid var(--line); }
+.raffle-panel legend { padding-inline: 8px; color: var(--gold); }
+.raffle-panel h2 { margin-bottom: 18px; }
+.raffle-panel h3 { font-size: .95rem; margin-block: 20px 8px; color: var(--gold); }
+.raffle-label { display: block; font-size: .88rem; }
+.raffle-label input { display: block; width: 100%; min-height: 46px; margin-top: 8px; padding: 10px; border: 1px solid #626344; background: var(--bg); color: var(--text); }
+.raffle-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 18px; }
+.raffle-page button { cursor: pointer; }
+.raffle-page .secondary { background: transparent; color: var(--text); }
+.raffle-page button:disabled { opacity: .5; cursor: default; }
+.raffle-page button:focus-visible, .raffle-page input:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.participant-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-block: 16px 24px; }
+.participant { display: flex; align-items: center; gap: 10px; padding: 12px; min-height: 48px; border: 1px solid var(--line); cursor: pointer; overflow-wrap: anywhere; }
+.participant:has(input:checked) { background: #293320; border-color: #777043; }
+.participant input { width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--gold); }
+.name-list { display: flex; flex-wrap: wrap; gap: 8px 24px; padding-left: 20px; overflow-wrap: anywhere; }
+#review-name { font-weight: 650; overflow-wrap: anywhere; }
+#selection-count { color: var(--blue); }
+.result-panel { border-color: var(--gold); text-align: center; }
+.result-panel .raffle-actions { justify-content: center; }
+#winner-name { color: var(--gold); font: 500 clamp(2.2rem, 7vw, 4rem) Georgia, serif; overflow-wrap: anywhere; margin-block: 24px; }
+#result-detail, #download-status { color: var(--muted); font-size: .88rem; overflow-wrap: anywhere; }
+.local-note { border-top: 1px solid var(--line); padding-top: 20px; }
+@media (max-width: 480px) { .participant-list { grid-template-columns: 1fr; } .raffle-panel { padding: 18px; } }

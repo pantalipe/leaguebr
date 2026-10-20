@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#141713">
+  <title>Sorteio semanal · LeagueBR</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/raffle.css">
+  <script type="module" src="./js/raffle.js"></script>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <header class="site-header"><div class="header-inner raffle-header"><a class="brand" href="./index.html"><img src="./assets/brasao.jpg" alt="Brasão da LeagueBR"><span><strong>LeagueBR</strong><small>LEGEND SLAYER</small></span></a><a href="./index.html">← Voltar ao portal</a></div></header>
+  <main id="conteudo" class="container raffle-page">
+    <p class="eyebrow">UMA CHANCE PARA CADA MEMBRO</p>
+    <h1>Sorteio da semana</h1>
+    <p class="raffle-intro">Reúna a guild, confira a lista e descubra quem leva o prêmio. Cada participante tem a mesma chance de ganhar.</p>
+    <p id="raffle-status" role="status">Carregando membros…</p>
+    <p id="raffle-error" class="demo-banner" role="alert" hidden></p>
+    <form id="raffle-form" hidden>
+      <fieldset id="raffle-settings" class="panel raffle-panel">
+        <legend>1 · Prepare os participantes</legend>
+        <label class="raffle-label" for="raffle-name">Identificação do sorteio<input id="raffle-name" type="text" maxlength="120" value="Sorteio semanal" required></label>
+        <p class="raffle-help">Todos os membros ativos começam selecionados. Desmarque quem ficará fora apenas deste sorteio; o cadastro da guild continua igual.</p>
+        <div class="raffle-actions"><button type="button" id="select-all" class="button secondary">Selecionar todos</button><button type="button" id="select-none" class="button secondary">Desmarcar todos</button></div>
+        <p id="selection-count" role="status"></p>
+        <div id="participant-list" class="participant-list"></div>
+        <button class="button primary" id="review" type="submit" disabled>Conferir sorteio →</button>
+      </fieldset>
+    </form>
+    <section id="raffle-review" class="panel raffle-panel" aria-labelledby="review-title" hidden>
+      <p class="eyebrow">LISTA FECHADA</p><h2 id="review-title" tabindex="-1">2 · Confira antes de sortear</h2>
+      <p id="review-name"></p><p id="review-count"></p>
+      <h3>Participantes</h3><ul id="review-participants" class="name-list"></ul>
+      <h3>Fora deste sorteio</h3><p id="excluded-empty" hidden>Nenhum membro excluído.</p><ul id="review-excluded" class="name-list"></ul>
+      <p class="raffle-help">Será escolhido um vencedor entre os participantes acima.</p>
+      <div class="raffle-actions"><button type="button" class="button primary" id="draw">Sortear vencedor</button><button type="button" class="button secondary" id="edit">Voltar e ajustar</button></div>
+    </section>
+    <section id="raffle-result" class="panel raffle-panel result-panel" aria-labelledby="result-title" hidden>
+      <p class="eyebrow">A SORTE ESCOLHEU</p><h2 id="result-title" tabindex="-1">Vencedor da semana</h2>
+      <p id="winner-name"></p><p id="result-detail"></p>
+      <div class="raffle-actions"><button type="button" class="button primary" id="download-result">Baixar resultado</button><button type="button" class="button secondary" id="new-raffle">Preparar novo sorteio</button></div>
+      <p id="download-status" role="status"></p>
+    </section>
+    <p class="raffle-help local-note">O sorteio é manual e acontece neste navegador. Baixe o resultado para guardar o vencedor, a data e as listas de participantes e excluídos. Ao recarregar ou sair da página, esses dados são apagados. O portal não publica resultados nem mantém histórico compartilhado e não possui controle de acesso para líderes.</p>
+    <noscript><p class="demo-banner">Ative o JavaScript para selecionar os participantes e realizar o sorteio.</p></noscript>
+  </main>
+  <footer class="container footer"><a class="footer-brand" href="./index.html">LeagueBR</a><p>Desenvolvimento e Companheirismo Sempre!!</p></footer>
+</body>
+</html>

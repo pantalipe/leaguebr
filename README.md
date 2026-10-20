@@ -52,10 +52,18 @@ As três categorias ficam sempre visíveis: aperitivos (terça), pratos principa
 
 Manutenção: `data/receitas.json` contém as 63 receitas fornecidas e `data/ingredientes.json` contém as **unidades de consumo**, não o estoque do jogador. Ingredientes repetidos na receita somam essas unidades: `Ovo, Ovo, Trigo, Trigo` exige 2 ovos e 200 de trigo. Preserve nomes correspondentes nos dois arquivos, IDs únicos e quantidades inteiras positivas. Efeitos e bônus são exibidos conforme os dados fornecidos. Fonte indicada pelo usuário: [receitasdv](https://github.com/mooncakelvl999999-del/receitasdv), com créditos à comunidade na página. A implementação do portal é independente, sem importar scripts ou rastreadores da referência.
 
+## Sorteio semanal
+
+Abra **Sorteio** na navegação do portal (`sorteio.html`). A página carrega os membros ativos de `data/members.json`, incluindo quem ainda não tem histórico de estágio. Ex-membros (`active: false`) ficam fora automaticamente. Desmarque quem não participa naquela semana, dê um nome ao sorteio e use **Conferir sorteio**. A conferência mostra os participantes e os excluídos; **Voltar e ajustar** permite corrigir a seleção antes de **Sortear vencedor**.
+
+Cada participante tem uma chance igual, com seleção aleatória via Web Crypto e sem influência de estágio ou cargo. O resultado fica fixo na tela; **Baixar resultado** gera um TXT com identificação, data/hora, vencedor, participantes e excluídos. **Preparar novo sorteio** permite outro sorteio e preserva a seleção anterior; use **Selecionar todos** para reincluir os membros. Nenhuma dessas ações modifica o cadastro da guild.
+
+O sorteio é manual: a página não executa sorteios agendados. Os dados desta sessão são apagados ao sair ou recarregar; baixe o arquivo para guardá-los. Não há histórico compartilhado, publicação automática de vencedores ou restrição de execução a líderes. O arquivo é um registro local, sem certificação independente do resultado.
+
 ## Testar localmente
 
 Na pasta do projeto, execute `python -m http.server 8000` e abra <http://localhost:8000>. Não abra o HTML por `file://`, pois o carregamento dos JSONs exige HTTP. Para encerrar, `Ctrl+C`.
 
-Com Node instalado: `node --test tests/ranking.test.mjs tests/update-ranking.test.mjs tests/recipe-engine.test.mjs`. Os testes usam apenas recursos nativos e cobrem datas, progresso, geração das atualizações e cálculo das receitas.
+Com Node instalado: `node --test tests/*.test.mjs`. Os testes usam apenas recursos nativos e cobrem datas, progresso, geração das atualizações, cálculo das receitas e sorteio.
 
 Os caminhos são relativos e funcionam em subdiretórios como `/leaguebr/`. Não há login, armazenamento compartilhado no navegador ou segredos no frontend. Este é um portal da comunidade, sem vínculo oficial com o jogo.
