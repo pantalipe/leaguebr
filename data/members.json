@@ -432,6 +432,12 @@
     "id": "ku",
     "nickname": "kü",
     "role": "Membro",
+    "portrait": {
+      "image": "assets/membros-4.jpg",
+      "x": 81,
+      "y": 984,
+      "size": 55
+    },
     "active": true,
     "joinedAt": "2026-10-19",
     "history": [
