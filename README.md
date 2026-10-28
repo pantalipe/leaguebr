@@ -44,6 +44,8 @@ No JSON, use o campo opcional `"promotion": "dragonos"`. Os IDs aceitos estão e
 
 ## Receitas e inventário
 
+Para orientar os membros, consulte o [tutorial de receitas, leitura de prints e trocas da loja](TUTORIAL-RECEITAS.md).
+
 Abra [Receitas](https://pantalipe.github.io/leaguebr/receitas.html): o catálogo começa com todas as receitas e suas imagens. Toque nos botões com ícones para ativar ou desativar ingredientes; receitas precisam conter todos os selecionados. Tipo e raridade também usam botões. **Limpar filtros** restaura o catálogo sem apagar o estoque.
 
 Para calcular quantidades, abra **Calcular com meu estoque**, informe os itens e ative **Mostrar só o que posso preparar**. Campos vazios valem zero. O estoque é temporário, não é enviado nem salvo. Os cards mostram os ingredientes em ícones; toque em **Ingredientes e efeitos** para ver custos, bônus e faltantes. As imagens originais estão em `assets/ingredients/` e `assets/recipes/`, copiadas da referência e servidas localmente, com pixel art preservada.
