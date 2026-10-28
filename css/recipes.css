@@ -7,6 +7,7 @@
 #recipe-status { color: var(--gold); margin-block: 16px; font-size: .88rem; }
 
 .recipes-page button { font: inherit; cursor: pointer; }
+.recipes-page .button.secondary { background: #151b14; color: var(--text); }
 .recipes-page input, .recipes-page select { width: 100%; min-height: 46px; padding: 10px 12px; background: #111811; color: var(--text); border: 1px solid #626344; border-radius: 2px; font: inherit; }
 .recipes-page input:focus-visible, .recipes-page select:focus-visible, .recipes-page button:focus-visible, .recipes-page summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 .recipes-page input[aria-invalid="true"] { border-color: #e29b78; }
@@ -24,6 +25,17 @@
 .stock-inputs label input { grid-column: 2; min-height: 42px; }
 .stock-inputs small { grid-column: 2; font-size: .67rem; color: var(--muted); }
 .recipe-help { color: var(--muted); font-size: .8rem; line-height: 1.65; margin-block: 13px 0; }
+.stock-import { margin-block: 18px 24px; padding: 16px; border: 1px solid var(--line); }
+.stock-import h3, .stock-import h4 { margin-block: 0 12px; }
+.stock-import > label { display: grid; gap: 8px; margin-top: 14px; font-size: .85rem; }
+.stock-import input[type="file"] { min-width: 0; padding: 8px; font-size: .8rem; }
+.stock-print-items { display: grid; gap: 12px; margin-top: 14px; }
+.stock-print-row { display: grid; grid-template-columns: minmax(0, 1fr) 100px; gap: 12px; align-items: center; }
+.stock-print-row label { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: .85rem; }
+.stock-print-row input[type="checkbox"] { width: 20px; min-height: 20px; flex-shrink: 0; }
+.stock-print-row img { width: 30px; height: 30px; object-fit: contain; image-rendering: pixelated; }
+.stock-print-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+#stock-print-preview { margin-top: 18px; }
 
 .filter-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .filter-heading h2 { margin: 0; }

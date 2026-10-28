@@ -26,21 +26,36 @@
         <div id="ingredient-filters"></div>
         <fieldset class="filter-set"><legend>Tipo de prato</legend><div id="type-filters" class="filter-buttons"></div></fieldset>
         <fieldset class="filter-set"><legend>Raridade</legend><div id="rarity-filters" class="filter-buttons"></div></fieldset>
-        <fieldset class="filter-set"><legend>Sugestão do dia · só destaca, não esconde pratos</legend><div id="day-filters" class="filter-buttons"></div></fieldset>
+        <fieldset class="filter-set"><legend>Sugestão do dia · aparece primeiro, sem esconder pratos</legend><div id="day-filters" class="filter-buttons"></div></fieldset>
         <div class="filter-actions"><button id="possible-only" class="filter-pill" type="button" aria-label="Mostrar só o que posso preparar" aria-pressed="false">Mostrar só o que posso preparar</button><p class="recipe-help">Use seu estoque abaixo para calcular os pratos disponíveis.</p></div>
       </section>
       <details class="panel pantry" id="pantry">
         <summary>Calcular com meu estoque</summary>
         <div class="pantry-heading"><h2>Ingredientes disponíveis</h2><button id="clear-stock" class="button secondary" type="button">Limpar estoque</button></div>
         <p class="recipe-help">Digite a quantidade real de cada item no jogo. Deixe em branco o que não tem. Os valores ficam apenas nesta página e são apagados ao recarregá-la.</p>
+        <section class="stock-import" aria-labelledby="stock-import-title">
+          <h3 id="stock-import-title">Importar estoque por print</h3>
+          <p class="recipe-help" id="stock-print-help">Escolha um print da lista de ingredientes com quantidades como 348/100. Prefira o print original, sem reduzir a imagem. Os ícones podem estar em qualquer ordem. Confira a leitura antes de aplicar; itens ausentes no print mantêm seu estoque atual. Preços da loja não são estoque.</p>
+          <label for="stock-print">Selecionar print do estoque<input id="stock-print" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="stock-print-help"></label>
+          <p id="stock-print-status" class="recipe-help" role="status" aria-live="polite">A imagem é processada neste navegador e não é enviada a um servidor.</p>
+          <button id="cancel-print" class="button secondary" type="button" hidden>Descartar leitura</button>
+          <div id="stock-print-preview" hidden>
+            <h4>Confira as quantidades reconhecidas</h4>
+            <p class="recipe-help">Corrija os números ou desmarque os itens que não deseja importar. Aplicar substitui apenas as quantidades marcadas; não soma estoques de prints diferentes.</p>
+            <div id="stock-print-items" class="stock-print-items"></div>
+            <div class="stock-print-actions"><button id="apply-print" class="button primary" type="button">Aplicar ao estoque</button></div>
+          </div>
+        </section>
         <div id="stock-inputs" class="stock-inputs"></div>
         <p class="recipe-help">As receitas já consideram as unidades de consumo: 2 ocorrências de Trigo equivalem a 200 itens. Cada prato usa o mesmo estoque como ponto de partida; as opções não podem ser somadas como se os ingredientes fossem separados.</p>
       </details>
     </div>
     <nav class="recipe-jumps" aria-label="Categorias de receitas"><a href="#aperitivos">Aperitivos</a><a href="#principais">Pratos principais</a><a href="#sobremesas">Sobremesas</a></nav>
+    <div id="recipe-groups">
     <section class="recipe-group" id="aperitivos" data-type="Entrada" aria-labelledby="aperitivos-title"><div class="recipe-group-heading"><div><p class="eyebrow">SUGESTÃO · TERÇA-FEIRA</p><h2 id="aperitivos-title">Aperitivos</h2></div><span class="recipe-count"></span></div><p class="suggestion-label" hidden>Categoria sugerida para o dia selecionado</p><div class="recipe-grid"></div></section>
     <section class="recipe-group" id="principais" data-type="Prato Principal" aria-labelledby="principais-title"><div class="recipe-group-heading"><div><p class="eyebrow">SUGESTÃO · QUARTA-FEIRA</p><h2 id="principais-title">Pratos principais</h2></div><span class="recipe-count"></span></div><p class="suggestion-label" hidden>Categoria sugerida para o dia selecionado</p><div class="recipe-grid"></div></section>
     <section class="recipe-group" id="sobremesas" data-type="Sobremesa" aria-labelledby="sobremesas-title"><div class="recipe-group-heading"><div><p class="eyebrow">SUGESTÃO · QUINTA-FEIRA</p><h2 id="sobremesas-title">Sobremesas</h2></div><span class="recipe-count"></span></div><p class="suggestion-label" hidden>Categoria sugerida para o dia selecionado</p><div class="recipe-grid"></div></section>
+    </div>
     <aside class="recipe-source"><p>Catálogo e imagens de ingredientes e pratos da referência <a href="https://github.com/mooncakelvl999999-del/receitasdv">receitasdv</a>. Créditos informados na referência: Kakalover, Dance e Jordan MooMoo (Enigma), proprietário da planilha fonte.</p><p>Quantidades, efeitos e bônus seguem os arquivos fornecidos. Esta ferramenta não inclui trocas com chefs.</p></aside>
     <noscript><p class="demo-banner">Ative o JavaScript para consultar as receitas e calcular o estoque.</p></noscript>
   </main>

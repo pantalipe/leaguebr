@@ -9,6 +9,8 @@ const ingredientGroups = [
 ];
 let recipes = [];
 const filters = { ingredients: new Set(), type: '', rarity: '', day: '', possibleOnly: false };
+const categoryOrder = ['Entrada', 'Prato Principal', 'Sobremesa'];
+let printRequest = 0;
 
 function node(tag, text, className) {
   const result = document.createElement(tag);
@@ -82,6 +84,11 @@ function recipeCard(recipe, availability, hasStock) {
   return card;
 }
 function render() {
+  const priority = filters.type || filters.day;
+  const groups = [...document.querySelectorAll('.recipe-group')];
+  groups.sort((a, b) => Number(b.dataset.type === priority) - Number(a.dataset.type === priority) || categoryOrder.indexOf(a.dataset.type) - categoryOrder.indexOf(b.dataset.type));
+  const groupContainer = $('#recipe-groups');
+  if (groups.some((group, index) => groupContainer.children[index] !== group)) groupContainer.append(...groups);
   const { stock, errors, hasStock } = readStock();
   const errorBox = $('#stock-errors'); errorBox.replaceChildren(); errorBox.hidden = !errors.length;
   if (errors.length) {
@@ -107,6 +114,83 @@ function render() {
     }
   }
   $('#recipe-status').textContent = errors.length ? 'Confira as quantidades destacadas no estoque.' : `${visible.length} receita(s) exibida(s) · ${recipes.length} no catálogo.${hasStock ? ' Cada prato é calculado separadamente.' : ''}`;
+}
+function discardPrint(message = 'Leitura descartada. Seu estoque foi mantido.') {
+  printRequest++;
+  $('#stock-print-preview').hidden = true;
+  $('#stock-print-items').replaceChildren();
+  $('#stock-print').value = '';
+  $('#cancel-print').hidden = true;
+  $('#stock-print-status').textContent = message;
+}
+function configurePrintImport(units) {
+  $('#stock-print').addEventListener('change', async (event) => {
+    const request = ++printRequest;
+    $('#stock-print-preview').hidden = true;
+    $('#stock-print-items').replaceChildren();
+    const file = event.target.files[0];
+    $('#cancel-print').hidden = !file;
+    if (!file) return;
+    const status = $('#stock-print-status');
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 15 * 1024 * 1024) {
+      status.textContent = 'Escolha uma imagem PNG, JPG ou WebP de até 15 MB.';
+      return;
+    }
+    status.textContent = 'Preparando leitura do print…';
+    event.target.disabled = true;
+    try {
+      const { readStockImage } = await import('./stock-reader.js');
+      if (request !== printRequest) return;
+      const result = await readStockImage(file, { onProgress: (message) => {
+        if (request === printRequest) status.textContent = String(message);
+      } });
+      if (request !== printRequest) return;
+      const seen = new Set();
+      const items = result.items.filter((item) => {
+        if (!Object.hasOwn(units, item.ingredient) || seen.has(item.ingredient) || !Number.isSafeInteger(item.quantity) || item.quantity < 0) return false;
+        seen.add(item.ingredient); return true;
+      });
+      for (const item of items) {
+        const row = node('div', undefined, 'stock-print-row');
+        const label = node('label');
+        const use = node('input'); use.type = 'checkbox'; use.checked = true;
+        use.setAttribute('aria-label', `Usar ${item.ingredient}`);
+        label.append(use, ingredientImage(item.ingredient), node('span', item.ingredient));
+        const quantity = node('input'); quantity.type = 'number'; quantity.min = '0'; quantity.step = '1'; quantity.max = String(Number.MAX_SAFE_INTEGER); quantity.inputMode = 'numeric'; quantity.value = String(item.quantity); quantity.dataset.printIngredient = item.ingredient;
+        quantity.setAttribute('aria-label', `Quantidade reconhecida de ${item.ingredient}`);
+        row.append(label, quantity); $('#stock-print-items').append(row);
+      }
+      $('#stock-print-preview').hidden = !items.length;
+      const warnings = (result.warnings || []).join(' ');
+      status.textContent = items.length ? `${items.length} ingrediente(s) reconhecido(s). Confira os ícones e números antes de aplicar. ${warnings}` : `Nenhum estoque reconhecido com segurança. Use a tela de ingredientes com números como 348/100, ou preencha manualmente. ${warnings}`;
+    } catch (error) {
+      if (request === printRequest) status.textContent = `Não foi possível ler o print. ${error.message} Seu estoque foi mantido; você pode preencher manualmente.`;
+    } finally {
+      event.target.disabled = false;
+    }
+  });
+  $('#cancel-print').addEventListener('click', () => discardPrint());
+  $('#apply-print').addEventListener('click', () => {
+    const selected = [...$('#stock-print-items').children].filter((row) => row.querySelector('[type="checkbox"]').checked);
+    let valid = true;
+    for (const row of selected) {
+      const input = row.querySelector('[data-print-ingredient]');
+      const okay = /^\d+$/.test(input.value) && input.validity.valid && Number.isSafeInteger(Number(input.value));
+      input.setAttribute('aria-invalid', String(!okay));
+      if (!okay) valid = false;
+    }
+    if (!valid || !selected.length) {
+      $('#stock-print-status').textContent = !valid ? 'Corrija as quantidades destacadas: use inteiros não negativos, sem separadores.' : 'Marque pelo menos um ingrediente para aplicar.';
+      return;
+    }
+    for (const row of selected) {
+      const source = row.querySelector('[data-print-ingredient]');
+      const target = [...document.querySelectorAll('[data-ingredient]')].find((input) => input.dataset.ingredient === source.dataset.printIngredient);
+      if (target) target.value = source.value;
+    }
+    discardPrint(`${selected.length} ingrediente(s) aplicado(s). Itens não selecionados e ausentes no print foram mantidos.`);
+    render();
+  });
 }
 function configureControls(units) {
   const names = Object.keys(units);
@@ -155,7 +239,7 @@ function configureControls(units) {
   });
   $('#recipe-search').addEventListener('input', render);
   $('#stock-inputs').addEventListener('input', render);
-  $('#clear-stock').addEventListener('click', () => { document.querySelectorAll('[data-ingredient]').forEach((input) => { input.value = ''; }); render(); });
+  $('#clear-stock').addEventListener('click', () => { discardPrint('Estoque limpo.'); document.querySelectorAll('[data-ingredient]').forEach((input) => { input.value = ''; }); render(); });
   $('#clear-filters').addEventListener('click', () => {
     filters.ingredients.clear(); filters.type = ''; filters.rarity = ''; filters.day = ''; filters.possibleOnly = false;
     $('#recipe-search').value = ''; render();
@@ -180,6 +264,7 @@ async function init() {
     recipes = prepareRecipes(rawRecipes, units);
     filters.day = { 2: 'Entrada', 3: 'Prato Principal', 4: 'Sobremesa' }[new Date().getDay()] || '';
     configureControls(units);
+    configurePrintImport(units);
     $('#recipe-tools').hidden = false; render();
   } catch (error) { $('#recipe-status').textContent = `Não foi possível carregar a ferramenta. ${error.message}`; }
 }
