@@ -1,4 +1,6 @@
 import { prepareRecipes, calculateRecipe, filterRecipes } from './recipe-engine.js';
+import { calculateRecipeWithTrades } from './trade-engine.js';
+import { configureShop } from './shop.js';
 
 const $ = (selector) => document.querySelector(selector);
 const number = (value) => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(value);
@@ -11,6 +13,8 @@ let recipes = [];
 const filters = { ingredients: new Set(), type: '', rarity: '', day: '', possibleOnly: false };
 const categoryOrder = ['Entrada', 'Prato Principal', 'Sobremesa'];
 let printRequest = 0;
+let shopOffers = [];
+let simulateShop = false;
 
 function node(tag, text, className) {
   const result = document.createElement(tag);
@@ -55,14 +59,16 @@ function readStock() {
   }
   return { stock, errors, hasStock };
 }
-function recipeCard(recipe, availability, hasStock) {
+function recipeCard(recipe, availability, hasStock, afterTrades) {
   const card = node('article', undefined, 'panel dish-card');
   const visual = node('div', undefined, 'dish-visual');
   visual.append(assetImage(`recipes/recipe-${recipe.id}.png`, recipe.nome, 'dish-image'));
   const identity = node('div');
   identity.append(node('p', recipe.raridade, 'dish-rarity'), node('h3', recipe.nome));
   visual.append(identity); card.append(visual);
-  if (hasStock) card.append(node('p', availability.maxPortions ? `Até ${number(availability.maxPortions)} preparo(s)` : 'Faltam ingredientes', `dish-availability${availability.maxPortions ? '' : ' unavailable'}`));
+  if (hasStock) card.append(node('p', availability.maxPortions ? `Estoque atual: até ${number(availability.maxPortions)} preparo(s)` : 'Estoque atual: faltam ingredientes', `dish-availability${availability.maxPortions ? '' : ' unavailable'}`));
+  const improvesWithTrades = afterTrades && afterTrades.maxPortions > availability.maxPortions;
+  if (improvesWithTrades) card.append(node('p', `Após trocas: até ${number(afterTrades.maxPortions)} preparo(s)`, 'dish-availability trade-availability'));
   const icons = node('div', undefined, 'dish-ingredient-icons');
   for (const [ingredient, quantity] of Object.entries(recipe.requirements)) {
     const chip = node('span', undefined, 'ingredient-chip');
@@ -78,6 +84,12 @@ function recipeCard(recipe, availability, hasStock) {
   }
   details.append(costs);
   if (hasStock && availability.missing.length) details.append(node('p', `Para 1 preparo, faltam: ${availability.missing.map((item) => `${number(item.missing)} ${item.ingredient}`).join(' · ')}.`, 'dish-missing'));
+  if (improvesWithTrades) {
+    details.append(node('h4', `Trocas para até ${number(afterTrades.maxPortions)} preparo(s)`));
+    const plan = node('ul', undefined, 'dish-trades');
+    afterTrades.purchases.forEach((purchase) => plan.append(node('li', `${purchase.count} troca(s): pagar ${number(purchase.totalCost)} ${purchase.costIngredient} para receber ${number(purchase.quantity)} ${purchase.ingredient}.`)));
+    details.append(plan, node('p', 'Plano independente para este prato. Confira os limites da equipe no jogo antes de trocar.', 'recipe-help'));
+  }
   if (recipe.tipo_efeito) details.append(node('p', `${recipe.tipo_efeito}${recipe.porcentagem ? `: +${number(recipe.porcentagem * 100)}%` : ''}`, 'dish-effect'));
   if (recipe.emblema_do_heroi !== undefined) details.append(node('p', `Emblema do herói: ${number(recipe.emblema_do_heroi)}`, 'dish-emblems'));
   card.append(details);
@@ -98,8 +110,8 @@ function render() {
   document.querySelectorAll('[data-facet]').forEach((button) => pressed(button, filters[button.dataset.facet] === button.dataset.value));
   pressed($('#possible-only'), filters.possibleOnly);
   const filtered = filterRecipes(recipes, { query: $('#recipe-search').value, ingredients: [...filters.ingredients], type: filters.type, rarity: filters.rarity });
-  const options = errors.length ? [] : filtered.map((recipe) => ({ recipe, availability: calculateRecipe(recipe, stock) }));
-  const visible = filters.possibleOnly ? options.filter((option) => option.availability.maxPortions > 0) : options;
+  const options = errors.length ? [] : filtered.map((recipe) => ({ recipe, availability: calculateRecipe(recipe, stock), afterTrades: simulateShop ? calculateRecipeWithTrades(recipe, stock, shopOffers) : null }));
+  const visible = filters.possibleOnly ? options.filter((option) => (option.afterTrades || option.availability).maxPortions > 0) : options;
   for (const group of document.querySelectorAll('.recipe-group')) {
     const isSuggested = group.dataset.type === filters.day;
     group.classList.toggle('suggested', isSuggested);
@@ -107,13 +119,13 @@ function render() {
     const dishes = visible.filter((option) => option.recipe.tipo === group.dataset.type);
     group.querySelector('.recipe-count').textContent = `${dishes.length} receita(s)`;
     const grid = group.querySelector('.recipe-grid'); grid.replaceChildren();
-    dishes.forEach(({ recipe, availability }) => grid.append(recipeCard(recipe, availability, hasStock)));
+    dishes.forEach(({ recipe, availability, afterTrades }) => grid.append(recipeCard(recipe, availability, hasStock, afterTrades)));
     if (!dishes.length) {
       const message = errors.length ? 'Corrija as quantidades no estoque para consultar os pratos.' : filters.type && filters.type !== group.dataset.type ? 'Outra categoria está selecionada no filtro de tipo.' : filters.possibleOnly ? 'Nenhum prato disponível com este estoque e estes filtros. Abra “Calcular com meu estoque” ou desative o filtro de pratos disponíveis.' : 'Nenhuma receita contém todos os ingredientes e filtros selecionados.';
       grid.append(node('p', message, 'recipe-empty'));
     }
   }
-  $('#recipe-status').textContent = errors.length ? 'Confira as quantidades destacadas no estoque.' : `${visible.length} receita(s) exibida(s) · ${recipes.length} no catálogo.${hasStock ? ' Cada prato é calculado separadamente.' : ''}`;
+  $('#recipe-status').textContent = errors.length ? 'Confira as quantidades destacadas no estoque.' : `${visible.length} receita(s) exibida(s) · ${recipes.length} no catálogo.${simulateShop ? ' Inclui possibilidades após as trocas confirmadas.' : ''}${hasStock ? ' Cada prato é calculado separadamente.' : ''}`;
 }
 function discardPrint(message = 'Leitura descartada. Seu estoque foi mantido.') {
   printRequest++;
@@ -138,6 +150,7 @@ function configurePrintImport(units) {
     }
     status.textContent = 'Preparando leitura do print…';
     event.target.disabled = true;
+    $('#shop-print').disabled = true;
     try {
       const { readStockImage } = await import('./stock-reader.js');
       if (request !== printRequest) return;
@@ -167,6 +180,7 @@ function configurePrintImport(units) {
       if (request === printRequest) status.textContent = `Não foi possível ler o print. ${error.message} Seu estoque foi mantido; você pode preencher manualmente.`;
     } finally {
       event.target.disabled = false;
+      $('#shop-print').disabled = false;
     }
   });
   $('#cancel-print').addEventListener('click', () => discardPrint());
@@ -265,6 +279,16 @@ async function init() {
     filters.day = { 2: 'Entrada', 3: 'Prato Principal', 4: 'Sobremesa' }[new Date().getDay()] || '';
     configureControls(units);
     configurePrintImport(units);
+    configureShop(units, {
+      onApply: ({ items, offers }) => {
+        for (const item of items) {
+          const input = [...document.querySelectorAll('[data-ingredient]')].find((candidate) => candidate.dataset.ingredient === item.ingredient);
+          if (input) input.value = String(item.quantity);
+        }
+        shopOffers = offers; simulateShop = offers.length > 0; render();
+      },
+      onToggle: (active) => { simulateShop = active; render(); }
+    });
     $('#recipe-tools').hidden = false; render();
   } catch (error) { $('#recipe-status').textContent = `Não foi possível carregar a ferramenta. ${error.message}`; }
 }

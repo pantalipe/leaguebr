@@ -103,7 +103,7 @@ async function variant(page, bytes, scale, scramble = false) {
     console.log('OCR case: original');
     await upload(path.basename(stockPath), stock, 'image/jpeg');
     await page.locator('#stock-print-preview').waitFor({ state: 'visible', timeout: 120000 });
-    await page.locator('.stock-import').screenshot({ path: '.qa/stock-reader-real-mobile.png' });
+    await page.locator('[aria-labelledby=stock-import-title]').screenshot({ path: '.qa/stock-reader-real-mobile.png' });
     await checkItems('original screenshot');
 
     const scrambled = await variant(page, stock, 1, true);
@@ -112,7 +112,7 @@ async function variant(page, bytes, scale, scramble = false) {
     console.log('OCR case: scrambled inventory cells');
     await upload('stock-scrambled.png', scrambled, 'image/png');
     await page.locator('#stock-print-preview').waitFor({ state: 'visible', timeout: 120000 });
-    await page.locator('.stock-import').screenshot({ path: '.qa/stock-reader-scrambled-mobile.png' });
+    await page.locator('[aria-labelledby=stock-import-title]').screenshot({ path: '.qa/stock-reader-scrambled-mobile.png' });
     await checkItems('scrambled screenshot');
     const resized = await variant(page, stock, 0.75, false);
     await fs.writeFile('.qa/stock-reader-resized.png', resized);
@@ -120,7 +120,7 @@ async function variant(page, bytes, scale, scramble = false) {
     console.log('OCR case: resized to 75%');
     await upload('stock-resized.png', resized, 'image/png');
     await page.locator('#stock-print-preview').waitFor({ state: 'visible', timeout: 120000 });
-    await page.locator('.stock-import').screenshot({ path: '.qa/stock-reader-resized-mobile.png' });
+    await page.locator('[aria-labelledby=stock-import-title]').screenshot({ path: '.qa/stock-reader-resized-mobile.png' });
     await expectAccurateSubset();
 
     if (shop) {

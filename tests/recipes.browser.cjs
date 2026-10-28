@@ -60,7 +60,7 @@ const recognized = [
     await page.locator('#stock-print-preview').waitFor({ state: 'visible' });
     assert.equal(await page.locator('#stock-print-items [type="checkbox"]').count(), recognized.length);
     assert.equal(await page.getByLabel('Quantidade reconhecida de Trigo').inputValue(), '120');
-    await page.locator('.stock-import').screenshot({ path: '.qa/recipes-import-mobile.png' });
+    await page.locator('[aria-labelledby=stock-import-title]').screenshot({ path: '.qa/recipes-import-mobile.png' });
 
     // Only selected detections are imported, with edited amounts, while prior
     // pantry values for ingredients absent from the image remain available.

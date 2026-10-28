@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#141713">
   <title>Receitas · LeagueBR</title>
   <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./css/recipes.css">
-  <script type="module" src="./js/recipes.js"></script>
+  <link rel="stylesheet" href="./css/recipes.css?v=shop-20261028">
+  <script type="module" src="./js/recipes.js?v=shop-20261028"></script>
 </head>
 <body>
   <a class="skip" href="#conteudo">Ir para o conteúdo</a>
@@ -46,6 +46,24 @@
             <div class="stock-print-actions"><button id="apply-print" class="button primary" type="button">Aplicar ao estoque</button></div>
           </div>
         </section>
+        <section class="stock-import" aria-labelledby="shop-import-title">
+          <h3 id="shop-import-title">Loja e trocas possíveis</h3>
+          <p class="recipe-help" id="shop-print-help">Importe o print da loja para ler o estoque no topo e as ofertas. Cada troca entrega uma unidade de consumo do produto. Confira os custos e o contador de trocas: o limite é compartilhado pela equipe do terreno e pode mudar depois do print.</p>
+          <label for="shop-print">Selecionar print da loja<input id="shop-print" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="shop-print-help"></label>
+          <p id="shop-print-status" class="recipe-help" role="status" aria-live="polite">A leitura é feita neste navegador. Produtos à venda só entram na simulação, sem aumentar seu estoque real.</p>
+          <div class="stock-print-actions"><button id="manual-shop" class="button secondary" type="button">Informar ou editar ofertas</button><button id="cancel-shop" class="button secondary" type="button" hidden>Descartar leitura da loja</button></div>
+          <div id="shop-preview" hidden>
+            <h4>Confira o estoque do topo</h4>
+            <div id="shop-stock-items" class="stock-print-items"></div>
+            <h4 class="shop-offers-heading">Confira as ofertas</h4>
+            <p class="recipe-help">O contador informa trocas já usadas e o limite total da equipe. Aplicar substitui as ofertas anteriores; estoques ausentes são preservados. Use ofertas do mesmo terreno.</p>
+            <div id="shop-offer-items" class="shop-offer-items"></div>
+            <div class="stock-print-actions"><button id="add-shop-offer" class="button secondary" type="button">Adicionar oferta</button><button id="apply-shop" class="button primary" type="button">Usar estoque e ofertas</button></div>
+          </div>
+          <div id="shop-summary" class="recipe-help" hidden></div>
+          <div class="stock-print-actions"><button id="simulate-shop" class="filter-pill" type="button" aria-pressed="false" disabled>Considerar trocas da loja</button><button id="clear-shop" class="button secondary" type="button" hidden>Limpar ofertas</button></div>
+          <p class="recipe-help">Cada receita usa o mesmo estoque e os mesmos limites como ponto de partida. Os planos não devem ser somados para preparar pratos simultaneamente. A simulação reserva também os ingredientes que a própria receita consome.</p>
+        </section>
         <div id="stock-inputs" class="stock-inputs"></div>
         <p class="recipe-help">As receitas já consideram as unidades de consumo: 2 ocorrências de Trigo equivalem a 200 itens. Cada prato usa o mesmo estoque como ponto de partida; as opções não podem ser somadas como se os ingredientes fossem separados.</p>
       </details>
@@ -56,7 +74,7 @@
     <section class="recipe-group" id="principais" data-type="Prato Principal" aria-labelledby="principais-title"><div class="recipe-group-heading"><div><p class="eyebrow">SUGESTÃO · QUARTA-FEIRA</p><h2 id="principais-title">Pratos principais</h2></div><span class="recipe-count"></span></div><p class="suggestion-label" hidden>Categoria sugerida para o dia selecionado</p><div class="recipe-grid"></div></section>
     <section class="recipe-group" id="sobremesas" data-type="Sobremesa" aria-labelledby="sobremesas-title"><div class="recipe-group-heading"><div><p class="eyebrow">SUGESTÃO · QUINTA-FEIRA</p><h2 id="sobremesas-title">Sobremesas</h2></div><span class="recipe-count"></span></div><p class="suggestion-label" hidden>Categoria sugerida para o dia selecionado</p><div class="recipe-grid"></div></section>
     </div>
-    <aside class="recipe-source"><p>Catálogo e imagens de ingredientes e pratos da referência <a href="https://github.com/mooncakelvl999999-del/receitasdv">receitasdv</a>. Créditos informados na referência: Kakalover, Dance e Jordan MooMoo (Enigma), proprietário da planilha fonte.</p><p>Quantidades, efeitos e bônus seguem os arquivos fornecidos. Esta ferramenta não inclui trocas com chefs.</p></aside>
+    <aside class="recipe-source"><p>Catálogo e imagens de ingredientes e pratos da referência <a href="https://github.com/mooncakelvl999999-del/receitasdv">receitasdv</a>. Créditos informados na referência: Kakalover, Dance e Jordan MooMoo (Enigma), proprietário da planilha fonte.</p><p>Quantidades, efeitos e bônus seguem os arquivos fornecidos. As trocas simuladas usam somente as ofertas conferidas nesta página.</p></aside>
     <noscript><p class="demo-banner">Ative o JavaScript para consultar as receitas e calcular o estoque.</p></noscript>
   </main>
   <footer class="container footer"><a class="footer-brand" href="./index.html">LeagueBR</a><p>Desenvolvimento e Companheirismo Sempre!!</p></footer>

@@ -254,4 +254,4 @@ export async function readStockImage(file, { onProgress, ingredientAssets } = {}
   }
 }
 
-export const stockReaderInternals = { numericLines, mergeQuantities };
+export const stockReaderInternals = { numericLines, mergeQuantities, normalizedTemplate, comparePatch, resizeTemplate, loadTemplates };
