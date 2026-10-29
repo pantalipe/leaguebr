@@ -3,7 +3,7 @@
     "id": "risk",
     "nickname": "Risk",
     "role": "Membro",
-    "promotion": "infinaut",
+    "promotion": "cyclos",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -21,7 +21,7 @@
       },
       {
         "date": "2026-10-28",
-        "stage": 1158
+        "stage": 1159
       }
     ]
   },
@@ -29,7 +29,7 @@
     "id": "redkio",
     "nickname": "Redkio",
     "role": "Vice-Mestre",
-    "promotion": "infinaut",
+    "promotion": "cyclos",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -125,7 +125,7 @@
       },
       {
         "date": "2026-10-28",
-        "stage": 1005
+        "stage": 1008
       }
     ]
   },
@@ -450,7 +450,7 @@
       },
       {
         "date": "2026-10-28",
-        "stage": 787
+        "stage": 790
       }
     ]
   },
@@ -476,7 +476,7 @@
       },
       {
         "date": "2026-10-28",
-        "stage": 733
+        "stage": 736
       }
     ]
   },
@@ -519,7 +519,7 @@
       },
       {
         "date": "2026-10-28",
-        "stage": 965
+        "stage": 966
       }
     ]
   },
