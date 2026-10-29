@@ -30,6 +30,48 @@ test("reports malformed, unknown, ambiguous and conflicting lines", () => {
   assert.equal(result.errors.length, 3);
 });
 
+test('imports optional promotion names and IDs while retaining legacy lines', () => {
+  const result = parseRankingText('*PÓDIO:*\n🥇 1º Risk - 1.090 - BLACK MYTHRIL\nMatrella | 994 | dark-nox\nLoverS: 989', source);
+  assert.deepEqual(result, { entries: [
+    { id: 'risk', stage: 1090, promotion: 'black-mithril' },
+    { id: 'mat', stage: 994, promotion: 'dark-nox' },
+    { id: 'lover', stage: 989 },
+  ], errors: [] });
+  assert.equal(parseRankingText('Risk - 1090 - warfrost', source).entries[0].promotion, 'winterfrost');
+  assert.equal(parseRankingText('Risk - 1090 - Sem promoção', source).entries[0].promotion, null);
+});
+
+test('preserves nicknames containing hyphens and numbers with optional promotion', () => {
+  const members = [{ id: 'numeric-name', nickname: 'Player-123' }];
+  assert.deepEqual(parseRankingText('Player-123 - 1000', members), { entries: [{ id: 'numeric-name', stage: 1000 }], errors: [] });
+  assert.deepEqual(parseRankingText('Player-123 - 1000 - Dark Nox', members), { entries: [{ id: 'numeric-name', stage: 1000, promotion: 'dark-nox' }], errors: [] });
+});
+
+test('merges compatible duplicate promotions and rejects conflicts or unknown promotions', () => {
+  const compatible = parseRankingText('Risk: 1090\nRisk - 1090 - Gold\nRisk - 1090 - gold\nRisk: 1090', source);
+  assert.deepEqual(compatible, { entries: [{ id: 'risk', stage: 1090, promotion: 'gold' }], errors: [] });
+  for (const text of ['Risk - 1090 - Gold\nRisk - 1090 - Silver', 'Risk - 1090 - Unknown', 'Risk - 1090 - Sem promoção\nRisk - 1090 - Gold']) {
+    assert.ok(parseRankingText(text, source).errors.length, text);
+  }
+});
+
+test('imported stage and promotion changes preserve omitted promotions and source data', () => {
+  const roster = structuredClone(source);
+  roster[0].promotion = 'gold';
+  roster[1].promotion = 'silver';
+  const original = structuredClone(roster);
+  const parsed = parseRankingText('Risk - 1090 - Mithril\nMatrella: 994', roster);
+  assert.deepEqual(parsed.errors, []);
+  const result = prepareUpdate(roster, '2025-01-03', parsed.entries, {
+    promotions: parsed.entries.filter(entry => Object.hasOwn(entry, 'promotion')),
+  });
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.members[0].promotion, 'mithril');
+  assert.equal(result.members[1].promotion, 'silver');
+  assert.equal(result.members[0].history.at(-1).stage, 1090);
+  assert.deepEqual(roster, original);
+});
+
 test("appends dates while preserving source metadata and independent member histories", () => {
   const original = structuredClone(source);
   const result = prepareUpdate(source, "2025-01-03", [{ id: "risk", stage: 1070 }, { id: "mat", stage: 920 }]);

@@ -8,14 +8,26 @@ Quem coleta os estágios não precisa de conta no GitHub:
 
 1. Abra [Atualizar ranking](https://pantalipe.github.io/leaguebr/atualizar.html).
 2. Escolha a data real em que os estágios foram conferidos.
-3. Preencha os estágios ao lado dos nomes. Deixe em branco quem não enviou atualização. Se já tem uma lista, abra **Colar uma lista pronta**, cole e toque em **Usar esta lista**. Aceita linhas como `1º Risk - 1090` ou `Risk: 1090`; números aqui são apenas exemplos de formato.
+3. Preencha os estágios ao lado dos nomes e escolha a promoção de quem mudou. Deixe em branco quem não enviou atualização. Se já tem uma lista, abra **Colar uma lista pronta**, cole e toque em **Usar esta lista**. Aceita linhas como `1º Risk - 1090`, `Risk: 1090`, `Risk - 1090 - Black Mythril` ou `Risk | 1090 | Black Mythril`; números e promoções aqui são apenas exemplos de formato.
 4. Toque em **Conferir atualização**. Confira nomes, data e valores. Correções do mesmo dia e reduções de estágio ficam sinalizadas.
 5. Toque em **Baixar members.json**. Procure o arquivo nos downloads do aparelho e envie-o ao responsável pelo portal, como anexo de arquivo/documento.
 
 O portal permanece igual até o responsável publicar. O arquivo gerado contém todos os membros, seus históricos anteriores e os retratos. Para corrigir um valor antes de enviar, altere o campo e confira a prévia de novo. Se o navegador renomear downloads repetidos para `members (1).json`, envie o arquivo mais recente.
 
+Na lista, a promoção é opcional: use o nome mostrado no seletor da página. Quando omitida, a seleção manual é preservada; se estiver em “Manter promoção atual”, o cadastro permanece igual. Para remover uma promoção, use `Risk - 1090 - Sem promoção`. Uma promoção desconhecida ou duas promoções conflitantes para o mesmo membro impedem a aplicação da lista inteira; corrija a linha indicada e tente novamente. Confira estágios e promoções na prévia antes de baixar.
 
-### Como registrar entradas, saídas e retornos
+
+### Importar prints dos membros
+
+Abra **Importar prints dos membros**, selecione até **20 imagens** (uma por membro) e toque em **Ler imagens**. Use o print da janela **Informações de usuário**, com nick, emblema e **Fase** visíveis. A leitura é local, no navegador, e mostra o progresso por arquivo. Cada imagem pode ter até 15 MB.
+
+Confira as miniaturas e corrija membro, estágio e promoção em cada resultado. Nicks sem correspondência segura precisam ser selecionados manualmente; promoção não reconhecida mantém o cadastro. Para quem acabou de entrar, escolha **Novo membro** e confira o nick no campo abaixo. Para quem voltou, selecione seu cadastro com **(retorno)**. Desmarque imagens incorretas ou repetidas.
+
+Se enviou os prints de **todos os membros atuais**, marque **Este lote contém todos os membros atuais da guild**. Os cadastros ativos que não aparecem entre os selecionados serão sugeridos como saída. Em um lote parcial, ausências não geram saída e as saídas já marcadas manualmente são mantidas.
+
+Toque em **Usar resultados selecionados** e confira os nomes nas listas de entradas, retornos e saídas sugeridas. Toque em **Confirmar dados, entradas e saídas** para preencher o formulário; depois use **Conferir atualização** para revisar o arquivo completo. A guild pode ter no máximo 20 membros ativos. O lote não pode aplicar duas imagens para o mesmo membro. A importação não publica nem baixa nada automaticamente; históricos de saídas e retornos são preservados.
+
+### Entradas, saídas e retornos
 
 - **Quem saiu:** marque **Saiu da guild** abaixo do nickname. Não coloque estágio zero para sinalizar saída. O campo de estágio fica desativado e o histórico anterior é mantido fora do ranking ativo.
 - **Quem entrou:** no bloco **Entradas na guild**, preencha nickname e estágio. Toque em **Adicionar mais um membro** para outras entradas. Deixe a linha vazia se ninguém entrou.

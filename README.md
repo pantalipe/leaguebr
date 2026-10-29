@@ -4,7 +4,7 @@ Portal estático de Legend Slayer: HTML, CSS, JavaScript e JSON, sem instalaçã
 
 ## Atualizar pelo GitHub (inclusive no celular)
 
-**Jeito mais simples:** abra [Atualizar ranking](https://pantalipe.github.io/leaguebr/atualizar.html), escolha a data, preencha os estágios (ou cole uma lista), confira a prévia e baixe `members.json`. Envie o arquivo ao responsável pelo GitHub. Campos em branco não mudam; o histórico e os retratos são preservados. Essa página não publica alterações.
+**Jeito mais simples:** abra [Atualizar ranking](https://pantalipe.github.io/leaguebr/atualizar.html), escolha a data, preencha os estágios e promoções (ou cole uma lista, ou importe até 20 prints), confira a prévia e baixe `members.json`. A lista aceita `Nick - estágio - Promoção`, com promoção opcional. Nos prints, confira os dados lidos e as entradas/retornos; declare o lote completo para conferir saídas por ausência. A composição final tem no máximo 20 membros ativos. Envie o arquivo ao responsável pelo GitHub. Campos em branco não mudam; o histórico e os retratos são preservados. Essa página não publica alterações.
 
 O responsável confere e substitui `data/members.json` com o arquivo recebido. Use um arquivo recém-gerado: se houve outra atualização no portal depois, peça para gerar novamente. Consulte o [tutorial passo a passo](TUTORIAL-RANKING.md) para o envio e para a alternativa de edição manual.
 
@@ -95,6 +95,8 @@ A ferramenta verifica novamente o histórico ao importar e antes do download par
 Na pasta do projeto, execute `python -m http.server 8000` e abra <http://localhost:8000>. Não abra o HTML por `file://`, pois o carregamento dos JSONs exige HTTP. Para encerrar, `Ctrl+C`.
 
 Com Node instalado: `node --test tests/*.test.mjs`. Os testes usam apenas recursos nativos e cobrem datas, progresso, geração das atualizações, cálculo das receitas e sorteio.
+
+Para a atualização do ranking, com servidor local e Playwright no `NODE_PATH`, rode `node tests/update-ranking.browser.cjs` e `node tests/member-import.browser.cjs`. Cobrem lista com promoção, download, lote de 20 resultados simulados, correções, duplicatas, entradas, saídas, retornos e limite da guild. `node tests/member-reader.browser.cjs` usa OCR real: configure `MEMBER_SCREENSHOT_DIR` com os quatro prints de referência (84438, 84436, 84453 e 84452 em JPG). Repete esses quatro prints cinco vezes para verificar o processamento de 20 arquivos; isso não substitui validar 20 membros distintos. Sem os arquivos, informa que o teste foi pulado. `PORTAL_TEST_URL` troca o endereço padrão do servidor. Prints de usuários ficam fora do Git.
 
 Para loja e simulação, execute `node tests/shop.browser.cjs`. O teste usa respostas de leitura simuladas para validar conferência, limites, custos, preservação do estoque e layout móvel. `node tests/shop-reader.browser.cjs` usa OCR real com `SHOP_SCREENSHOT` (ou `.qa/shop-original.jpg`), verifica as cinco quantidades da barra e as ofertas do print de referência, e repete a leitura após reordenar os ingredientes e os cartões. Ambos exigem o servidor local e Playwright disponível no `NODE_PATH`.
 

@@ -28,11 +28,31 @@
       <section class="update-section" aria-labelledby="stages-title">
         <h2 id="stages-title"><span class="step-number">2</span> Estágios e promoções</h2>
         <p class="field-help">Preencha apenas quem enviou uma atualização. Para mudar a promoção, escolha uma nova; deixe “Manter promoção atual” para preservar o cadastro. Se alguém saiu, marque “Saiu da guild” e deixe os campos desativados. Não use zero para indicar saída.</p>
+        <details class="panel paste-panel" id="member-import">
+          <summary>Importar prints dos membros</summary>
+          <label for="member-images">Selecione até 20 imagens, uma por membro</label>
+          <input id="member-images" type="file" accept="image/*" multiple>
+          <p class="field-help">Use a tela “Informações de usuário”, com nick, emblema e Fase visíveis. A leitura acontece neste navegador. Confira cada resultado e corrija os campos antes de aplicar. Promoções não reconhecidas preservam o cadastro. Para quem entrou, escolha “Novo membro” e confirme o nick; para quem voltou, selecione o cadastro com “(retorno)”.</p>
+          <button id="read-member-images" type="button" class="button secondary">Ler imagens</button>
+          <p id="member-image-status" role="status" aria-live="polite"></p>
+          <div id="member-image-review" hidden>
+            <p class="field-help">Selecione os resultados que deseja usar. Imagens repetidas para o mesmo membro precisam ser desmarcadas; nenhum dado será aplicado enquanto houver conflito.</p>
+            <ul id="member-image-results" class="member-image-results"></ul>
+            <label class="member-status"><input id="member-roster-complete" type="checkbox">Este lote contém todos os membros atuais da guild</label>
+            <p class="field-help">Marque apenas quando houver um print de cada membro atual. Os cadastrados ausentes serão sugeridos como saída e aparecerão na conferência abaixo.</p>
+            <button id="apply-member-images" type="button" class="button secondary">Usar resultados selecionados</button>
+            <div id="member-roster-confirmation" hidden>
+              <h3>Conferir composição da guild</h3>
+              <div id="member-roster-summary"></div>
+              <button id="confirm-member-images" type="button" class="button secondary">Confirmar dados, entradas e saídas</button>
+            </div>
+          </div>
+        </details>
         <details class="panel paste-panel">
           <summary>Colar uma lista pronta</summary>
-          <label for="ranking-text">Cole os nomes e estágios, um por linha</label>
-          <textarea id="ranking-text" rows="6" placeholder="1º Risk - 1090&#10;2º Redkio - 1089&#10;3º Lucaopower - 1013" spellcheck="false"></textarea>
-          <p class="field-help">Também aceita “Risk: 1090”. A lista substitui os campos de estágio e mantém as saídas marcadas. Para incluir recém-chegados na lista, preencha seus nicknames no bloco de entradas antes de colar.</p>
+          <label for="ranking-text">Cole nick, estágio e promoção opcional, um membro por linha</label>
+          <textarea id="ranking-text" rows="6" placeholder="1º Risk - 1090 - Black Mythril&#10;2º Redkio - 1089&#10;3º Lucaopower - 1013 - Dark Nox" spellcheck="false"></textarea>
+          <p class="field-help">Aceita “Risk - 1090 - Black Mythril”, “Risk | 1090 | Black Mythril” ou apenas “Risk: 1090”. Use o nome da promoção exibido no seletor; “Sem promoção” remove a atual. A lista substitui os estágios e preserva as promoções já selecionadas quando omitidas e as saídas marcadas. Para incluir recém-chegados, preencha seus nicknames no bloco de entradas antes de colar.</p>
           <button id="apply-list" type="button" class="button secondary">Usar esta lista</button>
           <p id="paste-status" role="status"></p>
         </details>

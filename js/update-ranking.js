@@ -1,5 +1,5 @@
 import { buildRanking, parseDay } from "./ranking.js";
-import { getPromotion } from "./promotions.js";
+import { PROMOTIONS, getPromotion } from "./promotions.js";
 
 const safeStage = (value) => Number.isSafeInteger(value) && value >= 0;
 
@@ -12,6 +12,14 @@ function parseStage(value) {
   if (!/^(?:\d+|\d{1,3}(?:\.\d{3})+)$/.test(cleaned)) return null;
   const stage = Number(cleaned.replaceAll(".", ""));
   return safeStage(stage) ? stage : null;
+}
+
+function parsePromotion(value) {
+  const normalized = value.trim().toLocaleLowerCase('pt-BR').replace(/[-\s]+/g, ' ');
+  if (normalized === 'sem promoção') return null;
+  return PROMOTIONS.find(item => [item.id, item.name].some(name =>
+    name.toLocaleLowerCase('pt-BR').replace(/[-\s]+/g, ' ') === normalized
+  ))?.id ?? getPromotion(value.trim().toLowerCase())?.id;
 }
 
 /** Parse a pasted ranking, returning recognized member entries and all line errors. */
@@ -34,12 +42,14 @@ export function parseRankingText(text, sourceMembers) {
   const headings = /^(?:PÓDIO|PODIO|TABELA\s+COMPLETA)\s*:?$/i;
   const patterns = [
     /^(.+?)\s*[-–—:]\s*([\d.]+)(?:\s*[-–—]\s*empatado)?\s*$/iu,
+    /^(.+)\s*[-–—:|]\s*([\d.]+)\s*[-–—:|]\s*(.+?)\s*$/u,
     /^(.+?)\s+([\d.]+)\s*$/u,
   ];
   for (const [index, raw] of text.split(/\r?\n/).entries()) {
     let line = raw.trim().replace(/^\*+|\*+$/g, "").trim();
     if (!line || headings.test(line)) continue;
     line = line.replace(/^(?:🥇|🥈|🥉)\uFE0F?\s*/u, "").replace(/^\d+\s*[º°ª.)]\s*/u, "");
+    line = line.replace(/\s*[-–—]\s*empatado\s*$/iu, '');
     let match;
     for (const pattern of patterns) {
       match = line.match(pattern);
@@ -59,17 +69,27 @@ export function parseRankingText(text, sourceMembers) {
       errors.push(`Linha ${index + 1}: estágio inválido (“${match[2]}”).`);
       continue;
     }
+    const promotion = match[3] === undefined ? undefined : parsePromotion(match[3]);
+    if (match[3] !== undefined && promotion === undefined) {
+      errors.push(`Linha ${index + 1}: promoção desconhecida (“${match[3]}”). Use o nome exibido no seletor de promoções.`);
+      continue;
+    }
     const member = byNickname.get(normalizeNickname(nickname));
     if (!member) {
       errors.push(`Linha ${index + 1}: membro desconhecido (“${nickname}”).`);
       continue;
     }
     if (seen.has(member.id)) {
-      if (seen.get(member.id) !== stage) errors.push(`Linha ${index + 1}: estágio conflitante para ${member.nickname}.`);
+      const previous = seen.get(member.id);
+      if (previous.stage !== stage) errors.push(`Linha ${index + 1}: estágio conflitante para ${member.nickname}.`);
+      if (promotion !== undefined && previous.promotion !== undefined && previous.promotion !== promotion) {
+        errors.push(`Linha ${index + 1}: promoção conflitante para ${member.nickname}.`);
+      } else if (promotion !== undefined) previous.promotion = promotion;
       continue;
     }
-    seen.set(member.id, stage);
-    entries.push({ id: member.id, stage });
+    const entry = { id: member.id, stage, ...(promotion !== undefined ? { promotion } : {}) };
+    seen.set(member.id, entry);
+    entries.push(entry);
   }
   if (!entries.length && !errors.length) errors.push("Cole ao menos um nickname com seu estágio.");
   return { entries, errors };

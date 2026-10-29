@@ -1,6 +1,7 @@
 import { buildRanking, formatDate } from './ranking.js';
 import { parseRankingText, prepareUpdate } from './update-ranking.js';
 import { PROMOTIONS, getPromotion } from './promotions.js';
+import { initMemberImport } from './member-import.js';
 
 const $ = (selector) => document.querySelector(selector);
 const number = (value) => new Intl.NumberFormat('pt-BR').format(value);
@@ -49,7 +50,7 @@ function promotionSelect(labelText, currentValue, { existing = false, value = ''
   const currentPromotion = existing ? sourceMembers.find(member => member.id === currentValue)?.promotion : null;
   const placeholder = node('option', existing ? `Manter promoção atual${currentPromotion ? ` · ${promotionName(currentPromotion)}` : ''}` : 'Sem promoção');
   placeholder.value = ''; select.append(placeholder);
-  if (existing) { const clear = node('option', 'Remover promoção atual'); clear.value = '__clear__'; select.append(clear); }
+  const clear = node('option', existing ? 'Remover promoção atual' : 'Remover promoção anterior (retorno)'); clear.value = '__clear__'; select.append(clear);
   for (const promotion of PROMOTIONS) {
     const option = node('option', promotion.name); option.value = promotion.id; select.append(option);
   }
@@ -145,7 +146,7 @@ function readChanges() {
     const promotion = row.querySelector('[data-new-promotion]').value;
     if (!nickname && !stage) continue;
     if (!nickname || !/^\d+$/.test(stage) || !Number.isSafeInteger(Number(stage))) errors.push('Cada entrada precisa de nickname e estágio inteiro, sem pontos ou vírgulas.');
-    else additions.push({ nickname, stage: Number(stage), ...(promotion ? { promotion } : {}) });
+    else additions.push({ nickname, stage: Number(stage), ...(promotion ? { promotion: promotion === '__clear__' ? null : promotion } : {}) });
   }
   return { entries, additions, departures: [...departureIds()], promotions, errors };
 }
@@ -195,16 +196,71 @@ $('#update-form').addEventListener('input', (event) => {
   invalidatePreview(); updateCount(); showErrors([]);
 });
 $('#add-member').addEventListener('click', () => addNewRow().focus());
+initMemberImport({
+  getDepartures: () => [...departureIds()],
+  getMembers: () => {
+    const drafts = newRows().map(row => {
+      const nickname = row.querySelector('[data-new-name]').value.trim();
+      return { id: row.dataset.draftId, nickname, draft: true, returning: sourceMembers.some(member => member.active === false && member.nickname.toLocaleLowerCase('pt-BR') === nickname.toLocaleLowerCase('pt-BR')) };
+    }).filter(member => member.nickname);
+    return [...sourceMembers.filter(member => !drafts.some(draft => draft.nickname.toLocaleLowerCase('pt-BR') === member.nickname.toLocaleLowerCase('pt-BR') && member.active === false)), ...drafts];
+  },
+  onInvalidate: invalidatePreview,
+  onError: showErrors,
+  onApply: (entries, { departures: suggested = [], completeRoster = false } = {}) => {
+    const departures = completeRoster ? new Set(suggested) : departureIds();
+    if (entries.some(entry => departures.has(entry.id))) {
+      showErrors(['Uma imagem selecionada corresponde a um membro marcado como saída. Desmarque essa imagem ou corrija a saída antes de aplicar.']); return false;
+    }
+    if (completeRoster) {
+      for (const row of newRows()) if (!entries.some(entry => entry.id === row.dataset.draftId)) row.remove();
+    }
+    const values = new Map(stageInputs().map(input => [input.dataset.memberId, input.value]));
+    const promotionValues = new Map([...document.querySelectorAll('[data-promotion-member-id]')].map(input => [input.dataset.promotionMemberId, input.value]));
+    for (const entry of entries) { values.set(entry.id, String(entry.stage)); if (entry.promotion) promotionValues.set(entry.id, entry.promotion); }
+    renderInputs(values, departures, promotionValues);
+    for (const row of newRows()) {
+      const entry = entries.find(value => value.id === row.dataset.draftId);
+      if (!entry) continue;
+      row.querySelector('[data-new-stage]').value = String(entry.stage);
+      if (entry.promotion) {
+        row.querySelector('[data-new-promotion]').value = entry.promotion;
+        promotionImage(entry.promotion, row.querySelector('.promotion-preview'));
+      }
+    }
+    for (const entry of entries) {
+      if (!entry.isNew && !sourceMembers.some(member => member.id === entry.id && member.active === false)) continue;
+      const existing = newRows().find(row => row.querySelector('[data-new-name]').value.trim().toLocaleLowerCase('pt-BR') === entry.nickname.toLocaleLowerCase('pt-BR'));
+      const row = existing || addNewRow().closest('.new-member-row');
+      row.querySelector('[data-new-name]').value = entry.nickname;
+      row.querySelector('[data-new-stage]').value = String(entry.stage);
+      if (entry.promotion) {
+        row.querySelector('[data-new-promotion]').value = entry.promotion;
+        promotionImage(entry.promotion, row.querySelector('.promotion-preview'));
+      }
+    }
+  },
+});
 $('#apply-list').addEventListener('click', () => {
   const drafts = newRows().map((row) => ({ id: row.dataset.draftId, nickname: row.querySelector('[data-new-name]').value.trim() })).filter((member) => member.nickname);
   const result = parseRankingText($('#ranking-text').value, [...sourceMembers.filter((member) => member.active !== false), ...drafts]);
   if (result.errors.length) { showErrors(result.errors); return; }
   const values = new Map(result.entries.map((entry) => [entry.id, String(entry.stage)]));
   const promotionValues = new Map([...document.querySelectorAll('[data-promotion-member-id]')].map(input => [input.dataset.promotionMemberId, input.value]));
+  const importedPromotions = new Map(result.entries.filter(entry => Object.hasOwn(entry, 'promotion')).map(entry => [entry.id, entry.promotion === null ? '__clear__' : entry.promotion]));
+  for (const [id, promotion] of importedPromotions) promotionValues.set(id, promotion);
   const departures = departureIds(); renderInputs(values, departures, promotionValues);
-  newRows().forEach((row) => { row.querySelector('[data-new-stage]').value = values.get(row.dataset.draftId) ?? ''; });
+  newRows().forEach((row) => {
+    row.querySelector('[data-new-stage]').value = values.get(row.dataset.draftId) ?? '';
+    if (importedPromotions.has(row.dataset.draftId)) {
+      const select = row.querySelector('[data-new-promotion]');
+      const value = importedPromotions.get(row.dataset.draftId);
+      select.value = value;
+      promotionImage(select.value, row.querySelector('.promotion-preview'));
+    }
+  });
   invalidatePreview(); showErrors([]);
-  $('#paste-status').textContent = `${values.size} membro(s) preenchido(s). Confira os estágios e as saídas marcadas.`;
+  $('#paste-status').textContent = `${values.size} membro(s) preenchido(s). Confira os estágios, as promoções e as saídas marcadas.`;
 });
 $('#update-form').addEventListener('submit', async (event) => {
   event.preventDefault(); invalidatePreview(); showErrors([]);
@@ -215,6 +271,7 @@ $('#update-form').addEventListener('submit', async (event) => {
     if (errors.length) { showErrors(errors); return; }
     const result = prepareUpdate(sourceMembers, $('#ranking-date').value, entries, { additions, departures, promotions });
     if (result.errors.length) { showErrors(result.errors); return; }
+    if (buildRanking(result.members).members.length > 20) { showErrors(['A guild pode ter no máximo 20 membros ativos. Confira as entradas e saídas.']); return; }
     showPreview(result);
   } catch (error) { showErrors([error.message]); }
   finally { button.disabled = false; }

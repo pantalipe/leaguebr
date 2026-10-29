@@ -50,6 +50,15 @@
 .owner-note p { color: var(--muted); margin-bottom: 14px; }
 .owner-note a { color: var(--gold); text-decoration: underline; }
 .ranking-actions { display: grid; gap: 8px; }
+.member-image-results { list-style: none; padding: 0; }
+.member-image-result { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 12px; border-top: 1px solid var(--line); padding-block: 16px; }
+.member-image-result img { width: 90px; height: auto; }
+.member-image-result strong { overflow-wrap: anywhere; }
+.member-image-result label { margin-top: 12px; }
+.member-image-result label[hidden] { display: none; }
+.member-image-result input[type="checkbox"] { width: 20px; min-height: 20px; display: block; }
+.member-image-result select { width: 100%; min-height: 42px; background: #101710; color: var(--text); font: inherit; }
+.member-image-result p { color: var(--muted); font-size: .8rem; margin-top: 12px; }
 @media (min-width: 651px) {
   .updater { padding-top: 52px; }
   .update-section { padding: 28px; }
