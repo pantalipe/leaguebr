@@ -90,6 +90,8 @@ const recipes = [
     assert.match(await entreeCards.nth(1).innerText(), /Após trocas: 1 preparo disponível/);
     await page.locator('#day-filters [data-value="Entrada"]').click();
     assert.match(await page.locator('#recipe-recommendation').innerText(), /Camarão, arroz e leite \(Raro\) · 1\.500 emblemas/);
+    assert.match(await entreeCards.first().innerText(), /Maior recompensa · 1\.500 emblemas do herói/);
+    assert.match(await entreeCards.first().locator('h3').innerText(), /Camarão, arroz e leite/);
 
     await page.getByRole('button', { name: 'Mostrar só o que posso preparar' }).click();
     assert.equal(await page.locator('#recipe-groups [data-type="Entrada"] .dish-card').count(), 2, 'possible-only includes trade-enabled recipes');

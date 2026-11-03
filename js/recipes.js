@@ -59,8 +59,12 @@ function readStock() {
   }
   return { stock, errors, hasStock };
 }
-function recipeCard(recipe, availability, hasStock, afterTrades) {
+function recipeCard(recipe, availability, hasStock, afterTrades, recommended) {
   const card = node('article', undefined, 'panel dish-card');
+  if (recommended) {
+    card.classList.add('dish-recommended');
+    card.append(node('p', `Maior recompensa · ${number(recipe.emblema_do_heroi)} emblemas do herói`, 'dish-recommendation'));
+  }
   const visual = node('div', undefined, 'dish-visual');
   visual.append(assetImage(`recipes/recipe-${recipe.id}.png`, recipe.nome, 'dish-image'));
   const identity = node('div');
@@ -119,10 +123,14 @@ function render() {
     const isSuggested = group.dataset.type === filters.day;
     group.classList.toggle('suggested', isSuggested);
     group.querySelector('.suggestion-label').hidden = !isSuggested;
-    const dishes = visible.filter((option) => option.recipe.tipo === group.dataset.type);
+    const dishes = visible.filter((option) => option.recipe.tipo === group.dataset.type)
+      .sort((a, b) => Number(b === recommendation) - Number(a === recommendation));
     group.querySelector('.recipe-count').textContent = `${dishes.length} receita(s)`;
     const grid = group.querySelector('.recipe-grid'); grid.replaceChildren();
-    dishes.forEach(({ recipe, availability, afterTrades }) => grid.append(recipeCard(recipe, availability, hasStock, afterTrades)));
+    dishes.forEach(option => {
+      const { recipe, availability, afterTrades } = option;
+      grid.append(recipeCard(recipe, availability, hasStock, afterTrades, option === recommendation));
+    });
     if (!dishes.length) {
       const message = errors.length ? 'Corrija as quantidades no estoque para consultar os pratos.' : filters.type && filters.type !== group.dataset.type ? 'Outra categoria está selecionada no filtro de tipo.' : filters.possibleOnly ? 'Nenhum prato disponível com este estoque e estes filtros. Abra “Calcular com meu estoque” ou desative o filtro de pratos disponíveis.' : 'Nenhuma receita contém todos os ingredientes e filtros selecionados.';
       grid.append(node('p', message, 'recipe-empty'));
