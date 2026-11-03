@@ -17,6 +17,7 @@
     <h1>O que vamos preparar?</h1>
     <p class="recipes-intro">Toque nos ingredientes para filtrar os pratos. Explore o catálogo ou abra seu estoque para descobrir o que pode preparar. Os três tipos ficam sempre visíveis.</p>
     <p id="recipe-status" role="status">Carregando ingredientes e receitas…</p>
+    <p id="recipe-recommendation" role="status" hidden></p>
     <div id="stock-errors" class="stock-errors" role="alert" hidden></div>
     <div id="recipe-tools" hidden>
       <section class="panel recipe-filters" aria-labelledby="filters-title">
@@ -65,7 +66,7 @@
           <p class="recipe-help">Cada receita usa o mesmo estoque e os mesmos limites como ponto de partida. Os planos não devem ser somados para preparar pratos simultaneamente. A simulação reserva também os ingredientes que a própria receita consome.</p>
         </section>
         <div id="stock-inputs" class="stock-inputs"></div>
-        <p class="recipe-help">As receitas já consideram as unidades de consumo: 2 ocorrências de Trigo equivalem a 200 itens. Cada prato usa o mesmo estoque como ponto de partida; as opções não podem ser somadas como se os ingredientes fossem separados.</p>
+        <p class="recipe-help">Cada receita pode ser preparada uma vez por dia. As quantidades já consideram as unidades de consumo. Duas ocorrências de Trigo equivalem a 200 itens. Cada prato é calculado separadamente com o mesmo estoque.</p>
       </details>
     </div>
     <nav class="recipe-jumps" aria-label="Categorias de receitas"><a href="#aperitivos">Aperitivos</a><a href="#principais">Pratos principais</a><a href="#sobremesas">Sobremesas</a></nav>

@@ -15,10 +15,10 @@ test("buys only the shortages and preserves the input snapshot", () => {
   const beforeStock = structuredClone(stock);
   const beforeOffers = structuredClone(offers);
   const result = calculateRecipeWithTrades(recipe({ Leite: 10, Carne: 2, Camarão: 2, Arroz: 3 }), stock, offers);
-  assert.equal(result.maxPortions, 2);
+  assert.equal(result.maxPortions, 1);
   assert.deepEqual(result.purchases, [
-    { ingredient: "Camarão", count: 2, quantity: 4, costIngredient: "Leite", totalCost: 100 },
-    { ingredient: "Arroz", count: 2, quantity: 6, costIngredient: "Carne", totalCost: 20 },
+    { ingredient: "Camarão", count: 1, quantity: 2, costIngredient: "Leite", totalCost: 50 },
+    { ingredient: "Arroz", count: 1, quantity: 3, costIngredient: "Carne", totalCost: 10 },
   ]);
   assert.deepEqual(stock, beforeStock);
   assert.deepEqual(offers, beforeOffers);
@@ -42,20 +42,23 @@ test("uses recipe inventory unit yields for the confirmed shop trades", () => {
   ];
   const stock = { Leite: 273, Carne: 32 };
   const result = calculateRecipeWithTrades(recipe({ Camarão: 10, Arroz: 10 }), stock, offers);
-  assert.equal(result.maxPortions, 3);
+  assert.equal(result.maxPortions, 1);
   assert.deepEqual(result.purchases, [
-    { ingredient: "Camarão", count: 3, quantity: 30, costIngredient: "Leite", totalCost: 150 },
-    { ingredient: "Arroz", count: 3, quantity: 30, costIngredient: "Carne", totalCost: 30 },
+    { ingredient: "Camarão", count: 1, quantity: 10, costIngredient: "Leite", totalCost: 50 },
+    { ingredient: "Arroz", count: 1, quantity: 10, costIngredient: "Carne", totalCost: 10 },
   ]);
-  assert.equal(calculateRecipeWithTrades(recipe({ Camarão: 10, Arroz: 10, Leite: 50 }), stock, offers).maxPortions, 2);
+  assert.equal(calculateRecipeWithTrades(recipe({ Camarão: 10, Arroz: 10, Leite: 50 }), stock, offers).maxPortions, 1);
 });
 
-test("respects stock, exhausted and zero-limit offers, and optimizes large bounds logarithmically", () => {
+test("respects stock, exhausted and zero-limit offers, and caps preparation at one portion", () => {
   const offer = { ingredient: "Fish", quantity: 4, costIngredient: "Coin", cost: 1, remaining: 3 };
   assert.equal(calculateRecipeWithTrades(recipe({ Fish: 2 }), { Fish: 2 }, [offer]).maxPortions, 1);
   assert.equal(calculateRecipeWithTrades(recipe({ Fish: 1 }), { Coin: 0 }, [{ ...offer, remaining: 0 }]).maxPortions, 0);
   const huge = calculateRecipeWithTrades(recipe({ Fish: 1 }), { Coin: 3 }, [{ ...offer, remaining: Number.MAX_SAFE_INTEGER }]);
-  assert.equal(huge.maxPortions, 12);
+  assert.equal(huge.maxPortions, 1);
+  assert.deepEqual(huge.purchases, [
+    { ingredient: "Fish", count: 1, quantity: 4, costIngredient: "Coin", totalCost: 1 },
+  ]);
 });
 
 test("rejects invalid, duplicate, and chained offers", () => {

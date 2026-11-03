@@ -20,8 +20,8 @@ const recognized = {
   warnings: [],
 };
 const recipes = [
-  { id: 1, nome: 'Camarão com arroz', raridade: 'Comum', tipo: 'Entrada', ingredientes: ['Camarão', 'Arroz'] },
-  { id: 2, nome: 'Camarão, arroz e leite', raridade: 'Comum', tipo: 'Entrada', ingredientes: ['Camarão', 'Arroz', 'Leite'] },
+  { id: 1, nome: 'Camarão com arroz', raridade: 'Comum', tipo: 'Entrada', ingredientes: ['Camarão', 'Arroz'], emblema_do_heroi: 500 },
+  { id: 2, nome: 'Camarão, arroz e leite', raridade: 'Raro', tipo: 'Entrada', ingredientes: ['Camarão', 'Arroz', 'Leite'], emblema_do_heroi: 1500 },
 ];
 
 (async () => {
@@ -83,15 +83,18 @@ const recipes = [
 
     const entreeCards = page.locator('#recipe-groups [data-type="Entrada"] .dish-card');
     assert.equal(await entreeCards.count(), 2);
-    assert.match(await entreeCards.nth(0).innerText(), /Após trocas: até 3 preparo\(s\)/);
+    assert.match(await entreeCards.nth(0).innerText(), /Após trocas: 1 preparo disponível/);
     await entreeCards.nth(0).locator('details summary').click();
-    assert.match(await entreeCards.nth(0).innerText(), /3 troca\(s\): pagar 150 Leite para receber 30 Camarão/);
-    assert.match(await entreeCards.nth(0).innerText(), /3 troca\(s\): pagar 30 Carne para receber 30 Arroz/);
-    assert.match(await entreeCards.nth(1).innerText(), /Após trocas: até 2 preparo\(s\)/, 'recipe milk consumption is reserved against the same stock');
+    assert.match(await entreeCards.nth(0).innerText(), /1 troca\(s\): pagar 50 Leite para receber 10 Camarão/);
+    assert.match(await entreeCards.nth(0).innerText(), /1 troca\(s\): pagar 10 Carne para receber 10 Arroz/);
+    assert.match(await entreeCards.nth(1).innerText(), /Após trocas: 1 preparo disponível/);
+    await page.locator('#day-filters [data-value="Entrada"]').click();
+    assert.match(await page.locator('#recipe-recommendation').innerText(), /Camarão, arroz e leite \(Raro\) · 1\.500 emblemas/);
 
     await page.getByRole('button', { name: 'Mostrar só o que posso preparar' }).click();
     assert.equal(await page.locator('#recipe-groups [data-type="Entrada"] .dish-card').count(), 2, 'possible-only includes trade-enabled recipes');
     await page.locator('#simulate-shop').click();
+    assert.equal(await page.locator('#recipe-recommendation').isVisible(), false);
     assert.equal(await page.locator('#recipe-groups [data-type="Entrada"] .dish-card').count(), 0, 'disabling simulation returns possible-only to real stock');
     await page.getByRole('button', { name: 'Mostrar só o que posso preparar' }).click();
     await page.locator('#simulate-shop').click();

@@ -17,7 +17,7 @@ Se algum ingrediente não aparecer na leitura, preencha sua quantidade nos campo
 
 ## 2. Ver quais receitas você pode preparar
 
-Ative **Mostrar só o que posso preparar**. Cada receita mostra quantos preparos seu estoque permite. Abra **Ingredientes e efeitos** para consultar os ingredientes necessários, os efeitos e o que ainda falta.
+Ative **Mostrar só o que posso preparar**. A ferramenta calcula um preparo por receita por dia e destaca a opção disponível que rende mais emblemas do herói. Abra **Ingredientes e efeitos** para consultar os ingredientes necessários, os efeitos e o que ainda falta.
 
 Os botões de ingredientes no topo são filtros de busca: selecionar Carne e Ovo procura receitas que tenham os dois. Para registrar quanto você possui, use os campos de **Calcular com meu estoque**.
 

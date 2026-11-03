@@ -66,9 +66,9 @@ function recipeCard(recipe, availability, hasStock, afterTrades) {
   const identity = node('div');
   identity.append(node('p', recipe.raridade, 'dish-rarity'), node('h3', recipe.nome));
   visual.append(identity); card.append(visual);
-  if (hasStock) card.append(node('p', availability.maxPortions ? `Estoque atual: até ${number(availability.maxPortions)} preparo(s)` : 'Estoque atual: faltam ingredientes', `dish-availability${availability.maxPortions ? '' : ' unavailable'}`));
+  if (hasStock) card.append(node('p', availability.maxPortions ? 'Estoque atual: 1 preparo disponível' : 'Estoque atual: faltam ingredientes', `dish-availability${availability.maxPortions ? '' : ' unavailable'}`));
   const improvesWithTrades = afterTrades && afterTrades.maxPortions > availability.maxPortions;
-  if (improvesWithTrades) card.append(node('p', `Após trocas: até ${number(afterTrades.maxPortions)} preparo(s)`, 'dish-availability trade-availability'));
+  if (improvesWithTrades) card.append(node('p', 'Após trocas: 1 preparo disponível', 'dish-availability trade-availability'));
   const icons = node('div', undefined, 'dish-ingredient-icons');
   for (const [ingredient, quantity] of Object.entries(recipe.requirements)) {
     const chip = node('span', undefined, 'ingredient-chip');
@@ -85,7 +85,7 @@ function recipeCard(recipe, availability, hasStock, afterTrades) {
   details.append(costs);
   if (hasStock && availability.missing.length) details.append(node('p', `Para 1 preparo, faltam: ${availability.missing.map((item) => `${number(item.missing)} ${item.ingredient}`).join(' · ')}.`, 'dish-missing'));
   if (improvesWithTrades) {
-    details.append(node('h4', `Trocas para até ${number(afterTrades.maxPortions)} preparo(s)`));
+    details.append(node('h4', 'Trocas para 1 preparo'));
     const plan = node('ul', undefined, 'dish-trades');
     afterTrades.purchases.forEach((purchase) => plan.append(node('li', `${purchase.count} troca(s): pagar ${number(purchase.totalCost)} ${purchase.costIngredient} para receber ${number(purchase.quantity)} ${purchase.ingredient}.`)));
     details.append(plan, node('p', 'Plano independente para este prato. Confira os limites da equipe no jogo antes de trocar.', 'recipe-help'));
@@ -112,6 +112,9 @@ function render() {
   const filtered = filterRecipes(recipes, { query: $('#recipe-search').value, ingredients: [...filters.ingredients], type: filters.type, rarity: filters.rarity });
   const options = errors.length ? [] : filtered.map((recipe) => ({ recipe, availability: calculateRecipe(recipe, stock), afterTrades: simulateShop ? calculateRecipeWithTrades(recipe, stock, shopOffers) : null }));
   const visible = filters.possibleOnly ? options.filter((option) => (option.afterTrades || option.availability).maxPortions > 0) : options;
+  const recommendation = options
+    .filter(({ recipe, availability, afterTrades }) => (!priority || recipe.tipo === priority) && (afterTrades || availability).maxPortions && recipe.emblema_do_heroi > 0)
+    .sort((a, b) => b.recipe.emblema_do_heroi - a.recipe.emblema_do_heroi || b.availability.maxPortions - a.availability.maxPortions)[0];
   for (const group of document.querySelectorAll('.recipe-group')) {
     const isSuggested = group.dataset.type === filters.day;
     group.classList.toggle('suggested', isSuggested);
@@ -126,6 +129,12 @@ function render() {
     }
   }
   $('#recipe-status').textContent = errors.length ? 'Confira as quantidades destacadas no estoque.' : `${visible.length} receita(s) exibida(s) · ${recipes.length} no catálogo.${simulateShop ? ' Inclui possibilidades após as trocas confirmadas.' : ''}${hasStock ? ' Cada prato é calculado separadamente.' : ''}`;
+  $('#recipe-recommendation').hidden = !recommendation;
+  if (recommendation) {
+    const { recipe, availability } = recommendation;
+    const trades = availability.maxPortions ? '' : ' · requer trocas';
+    $('#recipe-recommendation').textContent = `Maior recompensa disponível: ${recipe.nome} (${recipe.raridade}) · ${number(recipe.emblema_do_heroi)} emblemas do herói${trades}.`;
+  }
 }
 function discardPrint(message = 'Leitura descartada. Seu estoque foi mantido.') {
   printRequest++;

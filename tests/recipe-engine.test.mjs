@@ -16,13 +16,13 @@ test("prepares repeated ingredients as summed raw inventory units", () => {
   assert.equal(prepared.nome, "Sanduíche de Ovo");
 });
 
-test("calculates exact thresholds, shortages, and multiple portions", () => {
+test("calculates exact shortages and caps daily preparation at one", () => {
   const [prepared] = prepareRecipes([recipe()], units);
   assert.deepEqual(calculateRecipe(prepared, { Ovo: 2, Trigo: 199 }), {
     maxPortions: 0,
     missing: [{ ingredient: "Trigo", required: 200, available: 199, missing: 1 }],
   });
-  assert.deepEqual(calculateRecipe(prepared, { Ovo: 6, Trigo: 600 }), { maxPortions: 3, missing: [] });
+  assert.deepEqual(calculateRecipe(prepared, { Ovo: 6, Trigo: 600 }), { maxPortions: 1, missing: [] });
   assert.equal(calculateRecipe(prepared, {}).maxPortions, 0);
 });
 
@@ -30,8 +30,8 @@ test("stock is not mutated and each recipe is calculated independently", () => {
   const prepared = prepareRecipes([recipe(), { ...recipe(["Batata", "Alface"]), id: 2, nome: "Salada" }], units);
   const stock = { Ovo: 4, Trigo: 400, Batata: 20, Alface: 40 };
   const original = structuredClone(stock);
-  assert.equal(calculateRecipe(prepared[0], stock).maxPortions, 2);
-  assert.equal(calculateRecipe(prepared[1], stock).maxPortions, 2);
+  assert.equal(calculateRecipe(prepared[0], stock).maxPortions, 1);
+  assert.equal(calculateRecipe(prepared[1], stock).maxPortions, 1);
   assert.deepEqual(stock, original);
 });
 

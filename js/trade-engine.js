@@ -29,13 +29,11 @@ function validate(preparedRecipe, stock, offers) {
   return byProduct;
 }
 
-function planFor(portions, requirements, stock, byProduct) {
+function planFor(requirements, stock, byProduct) {
   const purchases = [];
   let totalCostsByCurrency = new Map();
   for (const [ingredient, required] of Object.entries(requirements)) {
-    const totalRequired = required * portions;
-    if (!Number.isSafeInteger(totalRequired)) return null;
-    const shortage = Math.max(0, totalRequired - (stock[ingredient] ?? 0));
+    const shortage = Math.max(0, required - (stock[ingredient] ?? 0));
     if (!shortage) continue;
     const offer = byProduct.get(ingredient);
     if (!offer) return null;
@@ -49,13 +47,13 @@ function planFor(portions, requirements, stock, byProduct) {
     if (!Number.isSafeInteger(totalCostsByCurrency.get(offer.costIngredient))) return null;
   }
   for (const [currency, cost] of totalCostsByCurrency) {
-    const required = requirements[currency] ? requirements[currency] * portions : 0;
-    if (!Number.isSafeInteger(required) || cost + required > (stock[currency] ?? 0)) return null;
+    const required = requirements[currency] ?? 0;
+    if (cost + required > (stock[currency] ?? 0)) return null;
   }
   return purchases;
 }
 
-/** Calculate the maximum portions possible after buying ingredients from fixed shop offers.
+/** Calculate whether one portion is possible after buying ingredients from fixed shop offers.
  * Offers are independent swaps: each buys `quantity` units for `cost` units of `costIngredient`.
  * The supplied stock and offers are read only; this function never advances purchases or stock.
  */
@@ -64,21 +62,9 @@ export function calculateRecipeWithTrades(preparedRecipe, stock, offers) {
   for (const offer of offers) {
     if (Object.hasOwn(preparedRecipe.requirements, offer.costIngredient) && byProduct.has(offer.costIngredient)) fail("Trocas encadeadas não são aceitas.");
   }
-  let upper = Number.MAX_SAFE_INTEGER;
-  for (const [ingredient, required] of Object.entries(preparedRecipe.requirements)) {
-    let supply = stock[ingredient] ?? 0;
-    const offer = byProduct.get(ingredient);
-    if (offer) supply = Math.min(Number.MAX_SAFE_INTEGER, supply + Math.min(Number.MAX_SAFE_INTEGER - supply, offer.quantity * offer.remaining));
-    upper = Math.min(upper, Math.floor(supply / required));
-  }
-  let low = 0;
-  let high = upper;
-  while (low < high) {
-    const middle = low + Math.ceil((high - low) / 2);
-    if (planFor(middle, preparedRecipe.requirements, stock, byProduct)) low = middle;
-    else high = middle - 1;
-  }
-  const purchases = planFor(low, preparedRecipe.requirements, stock, byProduct) ?? [];
+  const onePortionPlan = planFor(preparedRecipe.requirements, stock, byProduct);
+  const maxPortions = onePortionPlan ? 1 : 0;
+  const purchases = onePortionPlan ?? [];
   const effectiveStock = { ...stock };
   for (const purchase of purchases) effectiveStock[purchase.ingredient] = (effectiveStock[purchase.ingredient] ?? 0) + purchase.quantity;
   for (const purchase of purchases) effectiveStock[purchase.costIngredient] = (effectiveStock[purchase.costIngredient] ?? 0) - purchase.totalCost;
@@ -86,5 +72,5 @@ export function calculateRecipeWithTrades(preparedRecipe, stock, offers) {
     const available = effectiveStock[ingredient] ?? 0;
     return { ingredient, required, available, missing: Math.max(0, required - available) };
   }).filter((item) => item.missing > 0);
-  return { maxPortions: low, missing, purchases };
+  return { maxPortions, missing, purchases };
 }

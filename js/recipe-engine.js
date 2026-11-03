@@ -62,10 +62,7 @@ export function calculateRecipe(preparedRecipe, stock) {
     const available = stock[ingredient] ?? 0;
     return { ingredient, required, available, missing: Math.max(0, required - available) };
   }).filter((item) => item.missing > 0);
-  const maxPortions = Object.entries(preparedRecipe.requirements).reduce((maximum, [ingredient, required]) => {
-    return Math.min(maximum, Math.floor((stock[ingredient] ?? 0) / required));
-  }, Number.MAX_SAFE_INTEGER);
-  return { maxPortions, missing };
+  return { maxPortions: missing.length ? 0 : 1, missing };
 }
 
 export function filterRecipes(preparedRecipes, { query = "", ingredient = "", ingredients = [], type = "", rarity = "" } = {}) {
