@@ -48,6 +48,15 @@ const roster = [
       await page.getByRole('button', { name: 'Conferir atualização →', exact: true }).click();
       await page.locator('#preview').waitFor({ state: 'visible' });
       assert.match(await page.locator('#preview-body').innerText(), /Gold → Black Mythril/);
+      const message = await page.getByLabel('Ranking da atualização').inputValue();
+      assert.match(message, /\*PÓDIO:\*\n🥇 1º Risk - 1091 \| \*\+91\*\n🥈 2º Matrella - 994 \| \*\+94\*\n🥉 3º Newbie - 100 \| \*Entrada na guild\*/);
+      assert.match(message, /Maior up: Matrella \+94\./);
+      assert.doesNotMatch(message, /Leaving|Todo mundo subiu/);
+      await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+      await page.getByRole('button', { name: 'Copiar texto para o WhatsApp' }).click();
+      await page.getByText('Texto copiado.', { exact: true }).waitFor();
+      const copied = await page.evaluate(() => navigator.clipboard.readText());
+      assert.equal(copied.replace(/\r\n/g, '\n'), message);
       const downloaded = page.waitForEvent('download');
       await page.getByRole('button', { name: 'Baixar members.json ↓', exact: true }).click();
       const download = await downloaded;

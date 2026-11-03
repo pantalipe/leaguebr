@@ -72,6 +72,22 @@ test('imported stage and promotion changes preserve omitted promotions and sourc
   assert.deepEqual(roster, original);
 });
 
+test('same-promotion imports do not report a promotion change', () => {
+  const roster = structuredClone(source);
+  roster[0].promotion = 'cyclos';
+  const parsed = parseRankingText('Risk - 1090 - Cyclos', roster);
+  assert.deepEqual(parsed.errors, []);
+
+  const result = prepareUpdate(roster, '2025-01-03', parsed.entries, {
+    promotions: parsed.entries.filter(entry => Object.hasOwn(entry, 'promotion')),
+  });
+
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(result.promotions, []);
+  assert.equal(result.members[0].promotion, 'cyclos');
+  assert.deepEqual(roster[0].history, source[0].history);
+});
+
 test("appends dates while preserving source metadata and independent member histories", () => {
   const original = structuredClone(source);
   const result = prepareUpdate(source, "2025-01-03", [{ id: "risk", stage: 1070 }, { id: "mat", stage: 920 }]);

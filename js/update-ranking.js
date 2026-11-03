@@ -165,6 +165,7 @@ export function prepareUpdate(sourceMembers, date, entries, { additions = [], de
       continue;
     }
     const previousPromotion = member.promotion ?? null;
+    if (previousPromotion === entry.promotion) continue;
     if (entry.promotion === null) delete member.promotion;
     else member.promotion = entry.promotion;
     promotionChanges.push({ id: member.id, nickname: member.nickname, previousPromotion, promotion: entry.promotion });

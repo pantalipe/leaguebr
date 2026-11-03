@@ -20,7 +20,7 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
         onProgress('Lendo lote…');
         return files.map((file, index) => ({fileName: file.name, memberId: index < 19 ? 'member-' + index : null,
           nickname: index < 19 ? 'Member ' + index : '', stage: index < 19 ? 200 + index : null,
-          promotion: index === 0 ? 'mithril' : null, warnings: index === 19 ? ['Imagem ilegível'] : []}));
+          promotion: index === 0 ? 'mithril' : index === 1 ? 'gold' : null, warnings: index === 19 ? ['Imagem ilegível'] : []}));
       }` }));
     await page.goto(`${base}/atualizar.html`);
     await page.locator('#update-form').waitFor({ state: 'visible' });
@@ -52,6 +52,7 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
     assert.equal(await page.getByLabel('Novo estágio de Member 0', { exact: true }).inputValue(), '200');
     assert.equal(await page.getByLabel('Novo estágio de Member 19', { exact: true }).inputValue(), '219');
     assert.equal(await page.getByLabel('Nova promoção de Member 0', { exact: true }).inputValue(), 'mithril');
+    assert.equal(await page.getByLabel('Nova promoção de Member 1', { exact: true }).inputValue(), '');
     assert.equal(await page.getByLabel('Nova promoção de Member 19', { exact: true }).inputValue(), '');
 
     // A new member replaces a missing member only after declaring a complete roster and reviewing it.
@@ -72,6 +73,8 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
     await page.locator('#preview').waitFor({ state: 'visible' });
     assert.match(await page.locator('#preview-body').innerText(), /Entrou na guild/);
     assert.match(await page.locator('#preview-body').innerText(), /Saiu da guild/);
+    assert.doesNotMatch(await page.locator('#preview-body').innerText(), /Gold → Gold/);
+    assert.match(await page.getByLabel('Ranking da atualização').inputValue(), /\*TABELA COMPLETA ORDENADA:\*\n\n4º Member 16 - 216 \| \*\+100\*/);
 
     // Replacing that draft with an archived member recovers its history, preserving the promotion.
     await page.getByRole('button', { name: 'Voltar e corrigir', exact: true }).click();

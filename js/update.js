@@ -153,12 +153,35 @@ function readChanges() {
 function previewRow(values) {
   const row = node('tr'); values.forEach((value) => row.append(node('td', value))); $('#preview-body').append(row);
 }
+function whatsappMessage(ranking, changes, additions) {
+  const added = new Map(additions.map(member => [member.id, member]));
+  const medals = ['🥇 ', '🥈 ', '🥉 '];
+  const signed = (delta) => delta > 0 ? `+${delta}` : String(delta);
+  const lines = ranking.map(({ id, position, nickname, currentStage }) => {
+    const delta = changes.get(id)?.delta ?? 0;
+    const addition = added.get(id);
+    const progress = addition ? (addition.reactivated ? '*Voltou à guild*' : '*Entrada na guild*') : `*${signed(delta)}*`;
+    return `${medals[position - 1] ?? ''}${position}º ${nickname} - ${currentStage} | ${progress}`;
+  });
+  const gains = ranking.map(member => changes.get(member.id)).filter(change => change?.delta > 0);
+  const sections = [`*PÓDIO:*\n${lines.slice(0, 3).join('\n') || 'Sem membros ativos.'}`];
+  if (lines.length > 3) sections.push(`*TABELA COMPLETA ORDENADA:*\n\n${lines.slice(3).join('\n')}`);
+  if (gains.length) {
+    const maxGain = Math.max(...gains.map(change => change.delta));
+    const leaders = gains.filter(change => change.delta === maxGain).map(change => change.nickname);
+    const summary = gains.length === ranking.length ? 'Todo mundo subiu nessa. ' : '';
+    sections.push(`${summary}Maior up: ${leaders.join(', ')} ${signed(maxGain)}.`);
+  }
+  sections.push('@⁨todos⁩ Tabela atualizada, parabéns gurizada, todos tendo seu progresso pouco a pouco!');
+  return sections.join('\n\n');
+}
 function showPreview(result) {
   const changes = new Map(result.changes.map((change) => [change.id, change]));
   const promotions = new Map(result.promotions.map((change) => [change.id, change]));
+  const ranking = buildRanking(result.members).members;
   $('#preview-body').replaceChildren();
   const changedIds = new Set([...changes.keys(), ...promotions.keys()]);
-  for (const member of buildRanking(result.members).members.filter((member) => changedIds.has(member.id))) {
+  for (const member of ranking.filter((member) => changedIds.has(member.id))) {
     const change = changes.get(member.id), promotion = promotions.get(member.id);
     const actions = [];
     if (change) actions.push(change.sameDay ? 'Correção do mesmo dia' : 'Atualização de estágio');
@@ -174,7 +197,9 @@ function showPreview(result) {
     const original = currentMembers.find((item) => item.id === member.id);
     previewRow([member.nickname, number(original.currentStage), '—', 'Saiu da guild']);
   }
-  const activeCount = buildRanking(result.members).members.length;
+  const activeCount = ranking.length;
+  $('#whatsapp-text').value = whatsappMessage(ranking, changes, result.added);
+  $('#whatsapp-status').textContent = '';
   $('#preview-description').textContent = `Data: ${formatDate($('#ranking-date').value)}. ${result.changes.length} estágio(s), ${result.promotions.length} promoção(ões), ${result.added.length} entrada(s) e ${result.departed.length} saída(s). O arquivo terá ${activeCount} membros ativos, com históricos de ex-membros preservados.`;
   $('#correction-warning').hidden = !result.changes.some((change) => change.sameDay || change.delta < 0);
   $('#membership-warning').hidden = !result.added.length && !result.departed.length;
@@ -217,7 +242,13 @@ initMemberImport({
     }
     const values = new Map(stageInputs().map(input => [input.dataset.memberId, input.value]));
     const promotionValues = new Map([...document.querySelectorAll('[data-promotion-member-id]')].map(input => [input.dataset.promotionMemberId, input.value]));
-    for (const entry of entries) { values.set(entry.id, String(entry.stage)); if (entry.promotion) promotionValues.set(entry.id, entry.promotion); }
+    for (const entry of entries) {
+      values.set(entry.id, String(entry.stage));
+      if (entry.promotion) {
+        const savedPromotion = sourceMembers.find(member => member.id === entry.id)?.promotion;
+        promotionValues.set(entry.id, entry.promotion === savedPromotion ? '' : entry.promotion);
+      }
+    }
     renderInputs(values, departures, promotionValues);
     for (const row of newRows()) {
       const entry = entries.find(value => value.id === row.dataset.draftId);
@@ -277,6 +308,16 @@ $('#update-form').addEventListener('submit', async (event) => {
   finally { button.disabled = false; }
 });
 $('#edit-again').addEventListener('click', () => { invalidatePreview(); $('#ranking-date').focus(); });
+$('#copy-whatsapp').addEventListener('click', async () => {
+  const message = $('#whatsapp-text');
+  try {
+    await navigator.clipboard.writeText(message.value);
+    $('#whatsapp-status').textContent = 'Texto copiado.';
+  } catch {
+    message.select();
+    $('#whatsapp-status').textContent = 'Texto selecionado. Use o comando de copiar do seu dispositivo.';
+  }
+});
 $('#download').addEventListener('click', async () => {
   if (!candidate) return;
   const reviewedMembers = candidate;
