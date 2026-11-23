@@ -3,7 +3,7 @@
     "id": "risk",
     "nickname": "Risk",
     "role": "Membro",
-    "promotion": "cyclos",
+    "promotion": "ancient-canine",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -30,6 +30,10 @@
       {
         "date": "2026-11-12",
         "stage": 1180
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1229
       }
     ]
   },
@@ -64,6 +68,10 @@
       {
         "date": "2026-11-12",
         "stage": 1175
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1190
       }
     ]
   },
@@ -98,6 +106,10 @@
       {
         "date": "2026-11-12",
         "stage": 1074
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1099
       }
     ]
   },
@@ -132,6 +144,10 @@
       {
         "date": "2026-11-12",
         "stage": 1062
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1081
       }
     ]
   },
@@ -166,6 +182,10 @@
       {
         "date": "2026-11-12",
         "stage": 1079
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1119
       }
     ]
   },
@@ -200,6 +220,10 @@
       {
         "date": "2026-11-12",
         "stage": 1040
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1060
       }
     ]
   },
@@ -234,6 +258,10 @@
       {
         "date": "2026-11-12",
         "stage": 1040
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1067
       }
     ]
   },
@@ -268,6 +296,10 @@
       {
         "date": "2026-11-12",
         "stage": 1020
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1061
       }
     ]
   },
@@ -275,7 +307,7 @@
     "id": "mlksombra",
     "nickname": "MlkSombra",
     "role": "Membro",
-    "promotion": "blue-abyss",
+    "promotion": "infinaut",
     "portrait": {
       "image": "assets/membros-3.jpg",
       "x": 81,
@@ -302,6 +334,10 @@
       {
         "date": "2026-11-12",
         "stage": 1012
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1059
       }
     ]
   },
@@ -309,7 +345,7 @@
     "id": "abyssx",
     "nickname": "abyssx",
     "role": "Membro",
-    "promotion": "dark-nox",
+    "promotion": "blue-abyss",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -336,6 +372,10 @@
       {
         "date": "2026-11-12",
         "stage": 936
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 961
       }
     ]
   },
@@ -370,6 +410,10 @@
       {
         "date": "2026-11-12",
         "stage": 920
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 939
       }
     ]
   },
@@ -377,7 +421,7 @@
     "id": "leviano7",
     "nickname": "Leviano7",
     "role": "Membro",
-    "promotion": "dark-nox",
+    "promotion": "blue-abyss",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -404,6 +448,10 @@
       {
         "date": "2026-11-12",
         "stage": 939
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 985
       }
     ]
   },
@@ -411,7 +459,7 @@
     "id": "pantalipe",
     "nickname": "pantalipe",
     "role": "Membro",
-    "promotion": "winterfrost",
+    "promotion": "dark-nox",
     "portrait": {
       "image": "assets/membros-2.jpg",
       "x": 81,
@@ -438,6 +486,10 @@
       {
         "date": "2026-11-12",
         "stage": 839
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 902
       }
     ]
   },
@@ -445,7 +497,7 @@
     "id": "laios27",
     "nickname": "Laios27",
     "role": "Membro",
-    "promotion": "winterfrost",
+    "promotion": "dark-nox",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -472,6 +524,10 @@
       {
         "date": "2026-11-12",
         "stage": 840
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 889
       }
     ]
   },
@@ -506,6 +562,10 @@
       {
         "date": "2026-11-12",
         "stage": 880
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 906
       }
     ]
   },
@@ -526,7 +586,7 @@
     "id": "otootavio",
     "nickname": "OtoOtavio",
     "role": "Membro",
-    "promotion": "winterfrost",
+    "promotion": "dark-nox",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -553,6 +613,10 @@
       {
         "date": "2026-11-12",
         "stage": 839
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 869
       }
     ]
   },
@@ -592,7 +656,7 @@
     "id": "vhzunivers",
     "nickname": "vhzunivers",
     "role": "Membro",
-    "promotion": "ragnablood",
+    "promotion": "winterfrost",
     "portrait": {
       "image": "assets/membros-1.jpg",
       "x": 81,
@@ -619,6 +683,10 @@
       {
         "date": "2026-11-12",
         "stage": 774
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 816
       }
     ]
   },
@@ -640,11 +708,15 @@
       {
         "date": "2026-11-12",
         "stage": 611
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 656
       }
     ],
     "active": true,
     "joinedAt": "2026-11-12",
-    "promotion": "demon-metal"
+    "promotion": "dragonos"
   },
   {
     "id": "danilofnx",
@@ -675,6 +747,10 @@
       {
         "date": "2026-11-12",
         "stage": 987
+      },
+      {
+        "date": "2026-11-23",
+        "stage": 1001
       }
     ]
   },
@@ -689,7 +765,7 @@
       "y": 984,
       "size": 55
     },
-    "active": true,
+    "active": false,
     "joinedAt": "2026-10-19",
     "history": [
       {
@@ -708,6 +784,21 @@
         "date": "2026-11-12",
         "stage": 1129
       }
-    ]
+    ],
+    "leftAt": "2026-11-23"
+  },
+  {
+    "id": "deft",
+    "nickname": "Deft",
+    "role": "Membro",
+    "active": true,
+    "joinedAt": "2026-11-23",
+    "history": [
+      {
+        "date": "2026-11-23",
+        "stage": 1059
+      }
+    ],
+    "promotion": "infinaut"
   }
 ]
