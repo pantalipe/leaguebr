@@ -2,13 +2,13 @@
 
 :root {
   color-scheme: dark;
-  --bg: #111612;
-  --panel: #1c211b;
-  --text: #ecebdf;
-  --muted: #aaa99a;
-  --gold: #d9b66e;
-  --line: #3c3c2b;
-  --blue: #79cbe3;
+  --bg: #160e0a;
+  --panel: #2b1c13;
+  --text: #fff3da;
+  --muted: #c6af95;
+  --gold: #f3bc35;
+  --line: #66503a;
+  --blue: #ffd76c;
 }
 
 * { box-sizing: border-box; }
@@ -20,7 +20,7 @@ html {
 
 body {
   margin: 0;
-  background: radial-gradient(ellipse at 75% 12%, #29332050, transparent 45%), var(--bg);
+  background: radial-gradient(ellipse at 75% 12%, #80301b40, transparent 45%), var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   line-height: 1.6;
@@ -50,7 +50,7 @@ section[id] { scroll-margin-top: 16px; }
   top: 0;
   z-index: 5;
   border-bottom: 1px solid var(--line);
-  background: #141813f5;
+  background: #21140ef5;
 }
 
 .header-inner {
@@ -73,15 +73,32 @@ section[id] { scroll-margin-top: 16px; }
   letter-spacing: .22em;
 }
 .brand-mark {
+  position: relative;
+  flex: 0 0 auto;
   width: 29px;
-  height: 35px;
+  height: 39px;
+  overflow: hidden;
+  display: inline-block;
+  background: url('../assets/guild-info.jpg') 17.26% 28.36% / 877.22% auto no-repeat;
+  color: transparent;
+}
+/* Show the original crest from the guild capture without altering its pixels. */
+.brand .crest-crop img {
+  position: absolute;
+  width: 877.22%;
+  height: auto;
+  max-width: none;
+  left: -134.18%;
+  top: -314.15%;
+  image-rendering: pixelated;
+}
+.brand-mark.crest-fallback {
   display: grid;
   place-items: center;
-  border: 1px solid #5c8ac0;
-  background: #173e76;
-  clip-path: polygon(0 0, 100% 0, 100% 84%, 50% 100%, 0 84%);
-  color: #d8e9ff;
-  font: 700 20px Georgia;
+  background: #44301f;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font: 700 1.25rem Georgia, serif;
 }
 .brand img {
   width: 29px;
@@ -96,7 +113,7 @@ nav {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
-  color: #bdbeb0;
+  color: #ddc6a9;
   font-size: .77rem;
 }
 nav a:hover { color: var(--gold); }
@@ -126,7 +143,7 @@ h1 {
   letter-spacing: -.035em;
 }
 h1 span { color: var(--gold); }
-.motto { margin-bottom: 14px; color: #dedbc8; font-size: .82rem; }
+.motto { margin-bottom: 14px; color: #f1dbb8; font-size: .82rem; }
 .intro { max-width: 440px; color: var(--muted); font-size: .82rem; line-height: 1.85; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 23px; }
 .button {
@@ -140,24 +157,24 @@ h1 span { color: var(--gold); }
   font-size: .78rem;
   font-weight: 650;
 }
-.primary { border-color: var(--gold); background: var(--gold); color: #202416; }
-.primary:hover { background: #edd096; }
+.primary { border-color: var(--gold); background: var(--gold); color: #241707; }
+.primary:hover { background: #ffda75; }
 .secondary:hover { border-color: var(--gold); color: var(--gold); }
-.hero-note { margin-top: 20px; color: #858f7d; font-size: .72rem; }
+.hero-note { margin-top: 20px; color: #c2a789; font-size: .72rem; }
 .hero-note span { margin-right: 8px; color: var(--gold); }
 .guild-scene {
   position: relative;
-  height: 290px;
+  height: 420px;
   overflow: hidden;
   padding: 7px;
   border: 1px solid #716043;
-  background: #161c16;
-  box-shadow: 6px 6px 0 #20271c;
+  background: #20140e;
+  box-shadow: 6px 6px 0 #39271a;
 }
 .guild-scene:after {
   position: absolute;
   inset: 7px;
-  background: linear-gradient(transparent 60%, #10170bf5);
+  background: linear-gradient(transparent 60%, #160e0af5);
   content: "";
   pointer-events: none;
 }
@@ -165,7 +182,7 @@ h1 span { color: var(--gold); }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 23%;
+  object-position: center 38%;
   image-rendering: pixelated;
 }
 .guild-scene figcaption {
@@ -179,7 +196,7 @@ h1 span { color: var(--gold); }
 .guild-scene small {
   display: block;
   margin: 5px 0 0 15px;
-  color: #acb5a5;
+  color: #d3bca1;
   font-size: .65rem;
   letter-spacing: 0;
 }
@@ -188,8 +205,8 @@ h1 span { color: var(--gold); }
   height: 5px;
   display: inline-block;
   margin-right: 10px;
-  background: #8cbed0;
-  box-shadow: 0 0 8px #6ef0ff;
+  background: #f3bc35;
+  box-shadow: 0 0 8px #ffc34e;
 }
 
 .demo-banner {
@@ -213,16 +230,16 @@ h1 span { color: var(--gold); }
 .stat:nth-child(2) { border: 0; }
 .stat small { display: block; color: var(--muted); font-size: .67rem; letter-spacing: .06em; }
 .stat strong { display: block; margin: 4px 0; color: var(--gold); font: 500 1.55rem Georgia; }
-.stat span { color: #7f8d78; font-size: .69rem; }
+.stat span { color: #bfa588; font-size: .69rem; }
 
-.panel { border: 1px solid var(--line); background: linear-gradient(130deg, #22271f, #191e19); }
+.panel { border: 1px solid var(--line); background: linear-gradient(130deg, #352318, #25180f); }
 .notice-layout, .rules-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
   margin-bottom: 36px;
 }
-.notices { padding: 22px; }
+.notices { padding: 22px; border-top: 3px solid #a52c1c; }
 .section-heading {
   display: flex;
   flex-direction: column;
@@ -246,7 +263,7 @@ h1 span { color: var(--gold); }
   grid-template-columns: 70px 1fr;
   column-gap: 18px;
   padding: 20px;
-  background: radial-gradient(ellipse at 50% 50%, #163a3b55, transparent 65%), #19221d;
+  background: radial-gradient(ellipse at 50% 50%, #a65b2055, transparent 65%), #2a1c12;
   text-align: left;
 }
 .companion .eyebrow { grid-column: 2; margin-bottom: 10px; font-size: .56rem; }
@@ -258,26 +275,26 @@ h1 span { color: var(--gold); }
   grid-row: 1 / 5;
   place-items: center;
   margin: auto;
-  border: 1px dashed #46767a;
-  background: #17333855;
-  color: #7dd8e7;
+  border: 1px dashed #ac7f3d;
+  background: #70501f55;
+  color: #ffd76c;
 }
-.mascot-placeholder span { font-size: 2.4rem; text-shadow: 0 0 25px #58d4ed; }
+.mascot-placeholder span { font-size: 2.4rem; text-shadow: 0 0 25px #ffc34e; }
 .mascot-placeholder:has(img) { border: 0; background: none; }
 .mascot-placeholder img { max-width: 100%; max-height: 100%; image-rendering: pixelated; }
-.companion h2 { grid-column: 2; color: #a7d9dd; font-size: 1.5rem; }
-.companion p { grid-column: 2; margin: 5px 0; color: #a5b6a7; font-size: .7rem; }
-.companion small { grid-column: 2; color: #839888; font-size: .63rem; }
+.companion h2 { grid-column: 2; color: #f5cd72; font-size: 1.5rem; }
+.companion p { grid-column: 2; margin: 5px 0; color: #d4bca1; font-size: .7rem; }
+.companion small { grid-column: 2; color: #bea182; font-size: .63rem; }
 
 .podium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 21px; }
 .podium-card {
   position: relative;
   overflow: hidden;
   padding: 13px 10px;
-  border: 1px solid #494b36;
-  background: linear-gradient(115deg, #2c3023, #1c241d);
+  border: 1px solid #715638;
+  background: linear-gradient(115deg, #3c2a1b, #27190f);
 }
-.podium-card:first-child { border-color: #9a8046; background: linear-gradient(115deg, #3d3521, #22271d); }
+.podium-card:first-child { border-color: #9a8046; background: linear-gradient(115deg, #59401d, #352113); }
 .podium-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 5px; margin-bottom: 10px; }
 .place { color: var(--gold); font: 1.25rem Georgia; }
 .position-promotion { display: inline-flex; align-items: center; flex-wrap: nowrap; gap: 8px; flex-shrink: 0; white-space: nowrap; }
@@ -320,15 +337,15 @@ h1 span { color: var(--gold); }
 .ranking-panel { margin-bottom: 36px; }
 .table-scroll { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; white-space: nowrap; text-align: left; font-size: .76rem; }
-th { background: #272d22; color: #a6ac99; font-size: .62rem; font-weight: 500; letter-spacing: .05em; }
-th, td { padding: 17px 18px; border-bottom: 1px solid #333b2d; }
+th { background: #44301f; color: #ddc7a8; font-size: .62rem; font-weight: 500; letter-spacing: .05em; }
+th, td { padding: 17px 18px; border-bottom: 1px solid #59412c; }
 td:first-child { color: var(--gold); }
 td:nth-child(2) { font-weight: 600; }
 td:nth-child(3) { color: #e2d4a5; font-variant-numeric: tabular-nums; }
 .positive { color: #a4c393; }
 .negative { color: #e2b286; }
 .muted { color: var(--muted); }
-.table-note { padding: 14px 18px; color: #98a28d; font-size: .66rem; }
+.table-note { padding: 14px 18px; color: #c5ac8d; font-size: .66rem; }
 
 .member-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 36px; }
 .member-card { min-width: 0; padding: 0 19px; }
@@ -355,7 +372,7 @@ td:nth-child(3) { color: #e2d4a5; font-variant-numeric: tabular-nums; }
   gap: 18px;
   padding: 19px 0;
   border-bottom: 1px solid var(--line);
-  color: #b9c0ad;
+  color: #e0c9ab;
   font-size: .81rem;
   counter-increment: rules;
 }
@@ -374,7 +391,7 @@ td:nth-child(3) { color: #e2d4a5; font-variant-numeric: tabular-nums; }
   border-top: 1px solid var(--line);
 }
 .footer-brand { color: var(--gold); font-size: 1.4rem; }
-.footer p, .footer small { color: #89927f; font-size: .65rem; }
+.footer p, .footer small { color: #bca183; font-size: .65rem; }
 .skip {
   position: fixed;
   top: -100px;
@@ -401,7 +418,7 @@ td:nth-child(3) { color: #e2d4a5; font-variant-numeric: tabular-nums; }
   }
   .brand strong { font-size: 1.25rem; }
   .brand small { font-size: .58rem; }
-  .brand-mark { width: 39px; height: 48px; font-size: 25px; }
+  .brand-mark { width: 40px; height: 54px; }
   .brand img { width: 40px; height: 48px; }
   nav { width: auto; justify-content: initial; gap: 30px; font-size: .86rem; }
   .hero { grid-template-columns: 1.15fr 1fr; gap: 30px; padding: 58px 0 42px; }
@@ -412,8 +429,8 @@ td:nth-child(3) { color: #e2d4a5; font-variant-numeric: tabular-nums; }
   .hero-actions { gap: 10px; margin-top: 30px; }
   .button { padding-inline: 13px; }
   .hero-note { margin-top: 28px; }
-  .guild-scene { height: 380px; box-shadow: 12px 12px 0 #20271c; }
-  .guild-scene img { object-position: center 27%; }
+  .guild-scene { height: 520px; box-shadow: 12px 12px 0 #39271a; }
+  .guild-scene img { object-position: center 38%; }
   .demo-banner { margin-top: 12px; font-size: .73rem; }
   .stats { grid-template-columns: repeat(4, 1fr); gap: 0; margin-bottom: 38px; }
   .stat { padding-inline: 15px; }
@@ -453,7 +470,7 @@ td:nth-child(3) { color: #e2d4a5; font-variant-numeric: tabular-nums; }
 
 @media (min-width: 901px) {
   .hero { gap: 70px; }
-  .guild-scene { height: 420px; }
+  .guild-scene { height: 560px; }
   .hero-actions { gap: 12px; }
   .button { padding-inline: 19px; }
   .stat { padding-inline: 25px; }

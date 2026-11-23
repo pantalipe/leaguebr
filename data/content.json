@@ -4,13 +4,18 @@
   "motto": "Desenvolvimento e Companheirismo Sempre!!",
   "description": "Um lugar para compartilhar conquistas, crescer em equipe e ir sempre um estágio além. Bem-vindo ao portal da nossa guild.",
   "demo": false,
-  "level": null,
-  "crestImage": "assets/brasao.jpg",
+  "level": 27,
+  "crestImage": "assets/guild-info.jpg",
   "mascot": {
     "name": "Jörg",
     "image": "assets/jorg.jpg"
   },
   "notices": [
+    {
+      "date": "2026-11-23",
+      "title": "Requisitos de participação",
+      "text": "Faça as diárias e participe dos ataques do Vale. Dois dias de ausência sem justificativa resultam em saída da guild. A participação exige Warfrost ou superior."
+    },
     {
       "date": "2026-10-19",
       "title": "Ranking da semana atualizado",
@@ -27,6 +32,11 @@
       "text": "Os 20 membros têm seu primeiro registro em 12/10/2026. A evolução e a média diária aparecerão após uma atualização em outra data. LoverS e NandinhoAh estão empatados no estágio 989; a ordem segue o nickname."
     }
   ],
-  "rules": [],
+  "rules": [
+    "Faça as diárias.",
+    "Participe dos ataques do Vale.",
+    "Dois dias offline sem justificativa resultam em remoção da guild.",
+    "Requisito mínimo de participação: Warfrost ou superior."
+  ],
   "goal": null
 }

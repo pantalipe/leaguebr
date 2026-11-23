@@ -36,8 +36,18 @@ function renderContent(content) {
   $('#demo-banner').hidden = content.demo !== true;
   const crest = configuredImage(content.crestImage, `Brasão de ${content.name}`);
   if (crest) {
-    crest.addEventListener('error', () => crest.replaceWith(element('span', 'L', 'brand-mark')), { once: true });
-    $('.brand-mark').replaceWith(crest);
+    crest.addEventListener('error', () => {
+      const fallback = element('span', 'L', 'brand-mark crest-fallback');
+      fallback.setAttribute('aria-label', `Brasão de ${content.name} indisponível`);
+      (crest.closest('.crest-crop') || crest).replaceWith(fallback);
+    }, { once: true });
+    if (content.crestImage === 'assets/guild-info.jpg') {
+      const crop = element('span', undefined, 'brand-mark crest-crop');
+      crop.append(crest);
+      $('.brand-mark').replaceWith(crop);
+    } else {
+      $('.brand-mark').replaceWith(crest);
+    }
   }
   const mascotName = content.mascot?.name || 'Jörg';
   $('#mascot-name').textContent = mascotName;

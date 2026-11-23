@@ -9,8 +9,8 @@
 .updater label { display: block; margin-bottom: 8px; font-size: .88rem; }
 .updater input, .updater textarea {
   width: 100%; min-height: 46px; padding: 10px 12px;
-  border: 1px solid #626344; border-radius: 2px;
-  background: #101710; color: var(--text); font: inherit;
+  border: 1px solid #89683e; border-radius: 2px;
+  background: #1e130d; color: var(--text); font: inherit;
 }
 .updater input:focus-visible, .updater textarea:focus-visible, .updater button:focus-visible {
   outline: 2px solid var(--blue); outline-offset: 3px;
@@ -34,7 +34,7 @@
 .stage-entry input { text-align: right; }
 .promotion-field { min-width: 0; }
 .promotion-field label { margin-bottom: 5px; font-size: .75rem; color: var(--muted); }
-.promotion-field select { width: 100%; min-height: 42px; padding: 8px; border: 1px solid #626344; border-radius: 2px; background: #101710; color: var(--text); font: inherit; font-size: .78rem; }
+.promotion-field select { width: 100%; min-height: 42px; padding: 8px; border: 1px solid #89683e; border-radius: 2px; background: #1e130d; color: var(--text); font: inherit; font-size: .78rem; }
 .promotion-field select:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 .promotion-preview { display: block; width: 42px; height: 42px; margin-top: 8px; object-fit: contain; image-rendering: pixelated; }
 .promotion-preview[hidden] { display: none; }
@@ -57,7 +57,7 @@
 .member-image-result label { margin-top: 12px; }
 .member-image-result label[hidden] { display: none; }
 .member-image-result input[type="checkbox"] { width: 20px; min-height: 20px; display: block; }
-.member-image-result select { width: 100%; min-height: 42px; background: #101710; color: var(--text); font: inherit; }
+.member-image-result select { width: 100%; min-height: 42px; background: #1e130d; color: var(--text); font: inherit; }
 .member-image-result p { color: var(--muted); font-size: .8rem; margin-top: 12px; }
 @media (min-width: 651px) {
   .updater { padding-top: 52px; }
