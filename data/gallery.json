@@ -20,16 +20,6 @@
     "height": 1024
   },
   {
-    "file": "churrasco-leaguebr.png",
-    "thumbnail": "churrasco-leaguebr.webp",
-    "title": "Churrasco da guild",
-    "description": "A turma reunida para um churrasco no salão da LeagueBR, em pixel art.",
-    "recovered_from": "2026-11-12/no-site-da-leaguebr-tem-fotos/churrasco-leaguebr.png",
-    "recovered_file_date": "2026-11-12",
-    "width": 1536,
-    "height": 1024
-  },
-  {
     "file": "churrasco-leaguebr-v2.png",
     "thumbnail": "churrasco-leaguebr-v2.webp",
     "title": "Churrasco da guild · versão 2",
@@ -38,25 +28,5 @@
     "recovered_file_date": "2026-11-12",
     "width": 1536,
     "height": 1024
-  },
-  {
-    "file": "leaguebr-nox-sombrio.png",
-    "thumbnail": "leaguebr-nox-sombrio.webp",
-    "title": "Nox Sombrio · companheiros de jornada",
-    "description": "Arte de agradecimento a Redkio e à LeagueBR, com pantalipe e os companheiros da guild.",
-    "recovered_from": "2026-11-14/no-nosso-projeto-do-site-da/leaguebr-nox-sombrio.png",
-    "recovered_file_date": "2026-11-14",
-    "width": 1122,
-    "height": 1402
-  },
-  {
-    "file": "leaguebr-nox-sombrio-v2.png",
-    "thumbnail": "leaguebr-nox-sombrio-v2.webp",
-    "title": "Nox Sombrio · valeu, LeagueBR!",
-    "description": "Uma segunda versão da homenagem, com dois personagens em meio à energia violeta de Nox Sombrio.",
-    "recovered_from": "2026-11-14/no-nosso-projeto-do-site-da/leaguebr-nox-sombrio-v2.png",
-    "recovered_file_date": "2026-11-14",
-    "width": 1122,
-    "height": 1402
   }
 ]
