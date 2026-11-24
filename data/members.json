@@ -35,6 +35,20 @@
         "date": "2026-11-23",
         "stage": 1229
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "infinaut"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "cyclos"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "ancient-canine"
+      }
     ]
   },
   {
@@ -72,6 +86,16 @@
       {
         "date": "2026-11-23",
         "stage": 1190
+      }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "infinaut"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "cyclos"
       }
     ]
   },
@@ -111,6 +135,12 @@
         "date": "2026-11-23",
         "stage": 1099
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "infinaut"
+      }
     ]
   },
   {
@@ -148,6 +178,16 @@
       {
         "date": "2026-11-23",
         "stage": 1081
+      }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "blue-abyss"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "infinaut"
       }
     ]
   },
@@ -187,6 +227,16 @@
         "date": "2026-11-23",
         "stage": 1119
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "blue-abyss"
+      },
+      {
+        "date": "2026-11-12",
+        "promotion": "infinaut"
+      }
     ]
   },
   {
@@ -224,6 +274,16 @@
       {
         "date": "2026-11-23",
         "stage": 1060
+      }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "blue-abyss"
+      },
+      {
+        "date": "2026-11-12",
+        "promotion": "infinaut"
       }
     ]
   },
@@ -263,6 +323,16 @@
         "date": "2026-11-23",
         "stage": 1067
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "blue-abyss"
+      },
+      {
+        "date": "2026-11-12",
+        "promotion": "infinaut"
+      }
     ]
   },
   {
@@ -300,6 +370,20 @@
       {
         "date": "2026-11-23",
         "stage": 1061
+      }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "dark-nox"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "blue-abyss"
+      },
+      {
+        "date": "2026-11-12",
+        "promotion": "infinaut"
       }
     ]
   },
@@ -339,6 +423,20 @@
         "date": "2026-11-23",
         "stage": 1059
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "dark-nox"
+      },
+      {
+        "date": "2026-11-03",
+        "promotion": "blue-abyss"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "infinaut"
+      }
     ]
   },
   {
@@ -376,6 +474,16 @@
       {
         "date": "2026-11-23",
         "stage": 961
+      }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "dark-nox"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "blue-abyss"
       }
     ]
   },
@@ -415,6 +523,12 @@
         "date": "2026-11-23",
         "stage": 939
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "dark-nox"
+      }
     ]
   },
   {
@@ -452,6 +566,16 @@
       {
         "date": "2026-11-23",
         "stage": 985
+      }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "dark-nox"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "blue-abyss"
       }
     ]
   },
@@ -491,6 +615,16 @@
         "date": "2026-11-23",
         "stage": 902
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "winterfrost"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "dark-nox"
+      }
     ]
   },
   {
@@ -529,6 +663,20 @@
         "date": "2026-11-23",
         "stage": 889
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "ragnablood"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "winterfrost"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "dark-nox"
+      }
     ]
   },
   {
@@ -566,6 +714,16 @@
       {
         "date": "2026-11-23",
         "stage": 906
+      }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "winterfrost"
+      },
+      {
+        "date": "2026-11-12",
+        "promotion": "dark-nox"
       }
     ]
   },
@@ -618,6 +776,20 @@
         "date": "2026-11-23",
         "stage": 869
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "ragnablood"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "winterfrost"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "dark-nox"
+      }
     ]
   },
   {
@@ -650,7 +822,17 @@
       }
     ],
     "active": false,
-    "leftAt": "2026-11-12"
+    "leftAt": "2026-11-12",
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "ragnablood"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "winterfrost"
+      }
+    ]
   },
   {
     "id": "vhzunivers",
@@ -688,6 +870,20 @@
         "date": "2026-11-23",
         "stage": 816
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "dragonos"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "ragnablood"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "winterfrost"
+      }
     ]
   },
   {
@@ -716,7 +912,17 @@
     ],
     "active": true,
     "joinedAt": "2026-11-12",
-    "promotion": "dragonos"
+    "promotion": "dragonos",
+    "promotionHistory": [
+      {
+        "date": "2026-11-12",
+        "promotion": "demon-metal"
+      },
+      {
+        "date": "2026-11-23",
+        "promotion": "dragonos"
+      }
+    ]
   },
   {
     "id": "danilofnx",
@@ -752,6 +958,16 @@
         "date": "2026-11-23",
         "stage": 1001
       }
+    ],
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "dark-nox"
+      },
+      {
+        "date": "2026-10-28",
+        "promotion": "blue-abyss"
+      }
     ]
   },
   {
@@ -785,7 +1001,17 @@
         "stage": 1129
       }
     ],
-    "leftAt": "2026-11-23"
+    "leftAt": "2026-11-23",
+    "promotionHistory": [
+      {
+        "date": "2026-10-19",
+        "promotion": "infinaut"
+      },
+      {
+        "date": "2026-11-12",
+        "promotion": "cyclos"
+      }
+    ]
   },
   {
     "id": "deft",
@@ -799,6 +1025,12 @@
         "stage": 1059
       }
     ],
-    "promotion": "infinaut"
+    "promotion": "infinaut",
+    "promotionHistory": [
+      {
+        "date": "2026-11-23",
+        "promotion": "infinaut"
+      }
+    ]
   }
 ]

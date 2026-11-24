@@ -37,6 +37,12 @@ Toque em **Usar resultados selecionados** e confira os nomes nas listas de entra
 
 A data escolhida registra a entrada ou saída. O arquivo completo inclui os cadastros de ex-membros; envie e publique o arquivo inteiro, sem remover esses registros.
 
+### Histórico das promoções
+
+Ao mudar uma promoção, a ferramenta guarda automaticamente a data escolhida no histórico do membro, mesmo sem informar outro estágio. Na seção **Membros da guild**, abra o card para ver a promoção, seu nome e brasão ao lado dos registros de estágio. A data significa quando a promoção foi conferida no portal, e pode ser posterior ao dia da conquista no jogo.
+
+Deixe **Manter promoção atual** para preservar o histórico. Repetir uma promoção não adiciona outro registro; uma correção na mesma data substitui o último registro daquele dia. **Remover promoção atual** guarda a remoção com data. O download mantém todos os históricos de promoções, estágios e ex-membros.
+
 ### Para o responsável publicar o arquivo recebido
 
 1. Confira se o arquivo acabou de ser gerado a partir dos dados atuais. Se o portal recebeu outra atualização depois da geração, peça um novo arquivo; não substitua o histórico mais recente por uma cópia antiga.

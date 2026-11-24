@@ -189,18 +189,22 @@ test("new identifiers avoid accent collisions and metadata dates constrain depar
   assert.ok(prepareUpdate(roster, "2025-01-03", [], { departures: ["ku"] }).errors.length);
 });
 
-test("updates or clears a promotion without adding a history entry", () => {
+test("records dated promotion changes, same-day corrections, and explicit clears", () => {
   const roster = structuredClone(source);
   roster[0].promotion = "gold";
   const changed = prepareUpdate(roster, "2025-01-03", [], { promotions: [{ id: "risk", promotion: "mithril" }] });
   assert.deepEqual(changed.errors, []);
   assert.equal(changed.members[0].promotion, "mithril");
   assert.deepEqual(changed.members[0].history, roster[0].history);
+  assert.deepEqual(changed.members[0].promotionHistory, [{ date: "2025-01-03", promotion: "mithril" }]);
   assert.deepEqual(changed.promotions, [{ id: "risk", nickname: "Risk", previousPromotion: "gold", promotion: "mithril" }]);
 
-  const cleared = prepareUpdate(changed.members, "2025-01-03", [], { promotions: [{ id: "risk", promotion: null }] });
+  const corrected = prepareUpdate(changed.members, "2025-01-03", [], { promotions: [{ id: "risk", promotion: "silver" }] });
+  assert.deepEqual(corrected.members[0].promotionHistory, [{ date: "2025-01-03", promotion: "silver" }]);
+  const cleared = prepareUpdate(corrected.members, "2025-01-03", [], { promotions: [{ id: "risk", promotion: null }] });
   assert.deepEqual(cleared.errors, []);
   assert.equal(Object.hasOwn(cleared.members[0], "promotion"), false);
+  assert.deepEqual(cleared.members[0].promotionHistory, [{ date: "2025-01-03", promotion: null }]);
   assert.deepEqual(cleared.members[0].history, roster[0].history);
   assert.equal(cleared.promotions[0].promotion, null);
 });
@@ -210,16 +214,114 @@ test("combines promotion and stage changes and assigns promotions to new or retu
   assert.deepEqual(combined.errors, []);
   assert.equal(combined.members[0].promotion, "gold");
   assert.deepEqual(combined.members[0].history.at(-1), { date: "2025-01-03", stage: 1070 });
+  assert.deepEqual(combined.members[0].promotionHistory, [{ date: "2025-01-03", promotion: "gold" }]);
 
   const added = prepareUpdate(source, "2025-01-03", [], { additions: [{ nickname: "Newbie", stage: 100, promotion: "bronze" }] });
   assert.deepEqual(added.errors, []);
   assert.equal(added.members.at(-1).promotion, "bronze");
+  assert.deepEqual(added.members.at(-1).promotionHistory, [{ date: "2025-01-03", promotion: "bronze" }]);
 
   const archived = structuredClone(source);
   Object.assign(archived[0], { active: false, leftAt: "2025-01-02", promotion: "silver" });
   const returned = prepareUpdate(archived, "2025-01-03", [], { additions: [{ nickname: "Risk", stage: 1100, promotion: "gold" }] });
   assert.deepEqual(returned.errors, []);
   assert.equal(returned.members[0].promotion, "gold");
+  assert.deepEqual(returned.members[0].promotionHistory, [{ date: "2025-01-03", promotion: "gold" }]);
+});
+
+test("promotion updates respect promotion-history dates and leave stage history alone", () => {
+  const roster = structuredClone(source);
+  roster[0].promotion = "gold";
+  roster[0].promotionHistory = [{ date: "2025-01-05", promotion: "gold" }];
+  const early = prepareUpdate(roster, "2025-01-04", [], { promotions: [{ id: "risk", promotion: "silver" }] });
+  assert.ok(early.errors.length);
+  assert.deepEqual(early.members, roster);
+
+  const unchanged = prepareUpdate(roster, "2025-01-05", [], { promotions: [{ id: "risk", promotion: "gold" }] });
+  assert.deepEqual(unchanged.errors, []);
+  assert.deepEqual(unchanged.members[0].promotionHistory, roster[0].promotionHistory);
+  assert.deepEqual(unchanged.promotions, []);
+  assert.deepEqual(unchanged.members[0].history, roster[0].history);
+
+  const stageOnly = prepareUpdate(roster, "2025-01-05", [{ id: "risk", stage: 1100 }]);
+  assert.deepEqual(stageOnly.errors, []);
+  assert.deepEqual(stageOnly.members[0].promotionHistory, roster[0].promotionHistory);
+});
+
+test("promotion-only updates cannot predate the latest stage record", () => {
+  const roster = structuredClone(source);
+  roster[0].promotion = "gold";
+  const result = prepareUpdate(roster, "2025-01-01", [], { promotions: [{ id: "risk", promotion: "silver" }] });
+  assert.ok(result.errors.length);
+  assert.deepEqual(result.members, roster);
+  assert.deepEqual(result.promotions, []);
+});
+
+test("same-day promotion correction replaces the last matching row and unchanged values add no event", () => {
+  const roster = structuredClone(source);
+  roster[0].promotion = "gold";
+  roster[0].promotionHistory = [
+    { date: "2025-01-03", promotion: "bronze" },
+    { date: "2025-01-02", promotion: "silver" },
+    { date: "2025-01-03", promotion: "silver" },
+  ];
+  const corrected = prepareUpdate(roster, "2025-01-03", [], { promotions: [{ id: "risk", promotion: "mithril" }] });
+  assert.deepEqual(corrected.errors, []);
+  assert.deepEqual(corrected.members[0].promotionHistory, [
+    { date: "2025-01-03", promotion: "bronze" },
+    { date: "2025-01-02", promotion: "silver" },
+    { date: "2025-01-03", promotion: "mithril" },
+  ]);
+
+  const repeated = prepareUpdate(corrected.members, "2025-01-04", [], { promotions: [{ id: "risk", promotion: "mithril" }] });
+  assert.deepEqual(repeated.errors, []);
+  assert.deepEqual(repeated.promotions, []);
+  assert.deepEqual(repeated.members[0].promotionHistory, corrected.members[0].promotionHistory);
+});
+
+test("returning and departing members preserve existing promotion timelines", () => {
+  const archived = structuredClone(source);
+  Object.assign(archived[0], {
+    active: false,
+    leftAt: "2025-01-02",
+    promotion: "silver",
+    promotionHistory: [{ date: "2025-01-01", promotion: "bronze" }],
+  });
+  const returned = prepareUpdate(archived, "2025-01-03", [], { additions: [{ nickname: "Risk", stage: 1100, promotion: "gold" }] });
+  assert.deepEqual(returned.errors, []);
+  assert.deepEqual(returned.members[0].promotionHistory, [
+    { date: "2025-01-01", promotion: "bronze" },
+    { date: "2025-01-03", promotion: "gold" },
+  ]);
+
+  const active = structuredClone(source);
+  active[0].promotionHistory = [{ date: "2025-01-02", promotion: "gold" }];
+  const departed = prepareUpdate(active, "2025-01-03", [], { departures: ["risk"] });
+  assert.deepEqual(departed.errors, []);
+  assert.deepEqual(departed.members[0].promotionHistory, active[0].promotionHistory);
+});
+
+test("validates existing promotion histories atomically and preserves legacy unknown dates", () => {
+  for (const promotionHistory of [
+    "invalid",
+    [{ date: "2025-02-30", promotion: "gold" }],
+    [{ date: "2025-01-01", promotion: "unknown" }],
+    [{ date: "2025-01-01", promotion: undefined }],
+  ]) {
+    const roster = structuredClone(source);
+    roster[0].promotionHistory = promotionHistory;
+    const result = prepareUpdate(roster, "2025-01-03", [{ id: "mat", stage: 920 }]);
+    assert.ok(result.errors.length);
+    assert.deepEqual(result.members, roster);
+    assert.deepEqual(result.changes, []);
+  }
+
+  const legacy = structuredClone(source);
+  legacy[0].promotion = "gold";
+  const changed = prepareUpdate(legacy, "2025-01-03", [], { promotions: [{ id: "risk", promotion: "silver" }] });
+  assert.deepEqual(changed.errors, []);
+  assert.deepEqual(changed.members[0].promotionHistory, [{ date: "2025-01-03", promotion: "silver" }]);
+  assert.equal(legacy[0].promotionHistory, undefined);
 });
 
 test("rejects unknown and duplicate promotion changes atomically", () => {

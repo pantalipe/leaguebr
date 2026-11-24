@@ -116,9 +116,53 @@ function promotionBadge(id) {
   badge.setAttribute('aria-label', badge.title);
   return badge;
 }
+function renderMemberHistory(member, source) {
+  const history = element('div', undefined, 'history');
+  history.append(element('p', progress(member)));
+  if (member.dailyAverage !== null) history.append(element('p', `Média: ${number(member.dailyAverage)} estágios/dia em ${member.days} ${member.days === 1 ? 'dia' : 'dias'}.`));
+  history.append(element('h3', 'Histórico de evolução'));
+  const timeline = new Map(member.history.map(record => [record.date, { stage: record.stage }]));
+  const records = source?.promotionHistory;
+  let invalid = records !== undefined && !Array.isArray(records);
+  let datedPromotions = 0;
+  for (const record of Array.isArray(records) ? records : []) {
+    try {
+      parseDay(record?.date);
+      if (record.promotion !== null && !getPromotion(record.promotion)) throw new Error('Promoção inválida');
+      timeline.set(record.date, { ...timeline.get(record.date), promotion: record.promotion });
+      datedPromotions++;
+    } catch { invalid = true; }
+  }
+  const list = element('ul');
+  list.setAttribute('aria-label', `Histórico de estágios e promoções de ${member.nickname}`);
+  for (const [date, record] of [...timeline].sort(([a], [b]) => a.localeCompare(b))) {
+    const item = element('li');
+    const values = element('span', undefined, 'history-values');
+    if (record.stage !== undefined) values.append(element('span', `Estágio ${number(record.stage)}`));
+    if (Object.hasOwn(record, 'promotion')) {
+      const promotion = getPromotion(record.promotion);
+      const event = element('span', undefined, 'history-promotion');
+      if (promotion) {
+        const badge = promotionBadge(record.promotion);
+        badge.setAttribute('aria-hidden', 'true');
+        event.append(badge, element('span', `Promoção: ${promotion.name}`));
+      }
+      else event.textContent = 'Promoção removida';
+      values.append(event);
+    }
+    item.append(dateNode(date), values);
+    list.append(item);
+  }
+  history.append(list, element('small', 'Registros em ordem cronológica. No mesmo dia, vale o último registro de cada tipo.'));
+  if (datedPromotions) history.append(element('small', 'As datas das promoções indicam quando foram registradas no portal. A conquista pode ter ocorrido antes.'));
+  else if (getPromotion(source?.promotion)) history.append(element('small', 'A promoção atual ainda não tem data registrada.'));
+  if (invalid) history.append(element('p', 'Há registros de promoção inválidos. Confira o cadastro deste membro.', 'history-warning'));
+  return history;
+}
 function renderMembers(members, content, sourceMembers) {
   const portraits = new Map(sourceMembers.map((member) => [member?.id, member?.portrait]));
   const promotions = new Map(sourceMembers.map((member) => [member?.id, member?.promotion]));
+  const sources = new Map(sourceMembers.map(member => [member?.id, member]));
   const stats = [
     ['MEMBROS REGISTRADOS', number(members.length), 'Cada jornada importa'],
     ['MAIOR ESTÁGIO', members.length ? number(members[0].currentStage) : '—', 'No histórico da equipe'],
@@ -163,17 +207,7 @@ function renderMembers(members, content, sourceMembers) {
     position.append(element('span', `#${String(member.position).padStart(2, '0')}`), promotionBadge(promotions.get(member.id)));
     identity.append(element('span', member.nickname, 'member-name'), position, element('span', member.role, 'member-role'), meta);
     summary.append(memberPortrait(member, portraits.get(member.id)), identity);
-    const history = element('div', undefined, 'history');
-    history.append(element('p', progress(member)));
-    if (member.dailyAverage !== null) history.append(element('p', `Média: ${number(member.dailyAverage)} estágios/dia em ${member.days} ${member.days === 1 ? 'dia' : 'dias'}.`));
-    const list = element('ul');
-    for (const record of member.history) {
-      const item = element('li');
-      item.append(dateNode(record.date), element('span', `Estágio ${number(record.stage)}`));
-      list.append(item);
-    }
-    history.append(list, element('small', 'Registros em ordem cronológica. No mesmo dia, vale o último registro.'));
-    card.append(summary, history);
+    card.append(summary, renderMemberHistory(member, sources.get(member.id)));
     $('#member-list').append(card);
   }
   if (!members.length) {

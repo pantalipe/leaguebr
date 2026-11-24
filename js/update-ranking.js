@@ -102,6 +102,13 @@ export function prepareUpdate(sourceMembers, date, entries, { additions = [], de
   const errors = [], changes = [], added = [], departed = [], promotionChanges = [];
   const fail = (message) => ({ members: original, changes: [], added: [], departed: [], promotions: [], errors: message ? [...errors, message] : errors });
   if (!Array.isArray(sourceMembers)) return fail("A lista de membros deve ser um array.");
+  for (const member of sourceMembers) {
+    if (member?.promotionHistory === undefined) continue;
+    if (!Array.isArray(member.promotionHistory) || member.promotionHistory.some(row => {
+      if (!row || typeof row !== "object" || Array.isArray(row) || (row.promotion !== null && (typeof row.promotion !== "string" || !getPromotion(row.promotion)))) return true;
+      try { parseDay(row.date); return false; } catch { return true; }
+    })) return fail(`O histórico de promoções de ${member.nickname ?? "um membro"} é inválido.`);
+  }
   const ranking = buildRanking(sourceMembers, { includeInactive: true });
   if (ranking.errors.length) return fail("Os dados de origem possuem erros e não podem ser atualizados.");
   let day;
@@ -113,7 +120,9 @@ export function prepareUpdate(sourceMembers, date, entries, { additions = [], de
   const staged = new Set(), leaving = new Set(), names = new Set();
   const promoted = new Set();
   const dateAllowed = (member, rejoining = false) => {
-    const limits = [stats.get(member.id).lastDate, member.joinedAt];
+    const promotionDates = member.promotionHistory?.map(row => row.date) ?? [];
+    const latestPromotionDate = promotionDates.reduce((latest, value) => !latest || parseDay(value) > parseDay(latest) ? value : latest, null);
+    const limits = [stats.get(member.id).lastDate, member.joinedAt, latestPromotionDate];
     if (rejoining) limits.push(member.leftAt);
     if (limits.some(value => value && day < parseDay(value))) {
       errors.push(`A data é anterior ao cadastro ou último registro de ${member.nickname}.`);
@@ -127,6 +136,13 @@ export function prepareUpdate(sourceMembers, date, entries, { additions = [], de
     if (index >= 0) member.history[index] = { ...member.history[index], stage };
     else member.history.push({ date, stage });
     return index >= 0;
+  };
+  const applyPromotion = (member, promotion) => {
+    const history = member.promotionHistory ?? (member.promotionHistory = []);
+    let index = -1;
+    history.forEach((row, i) => { if (row.date === date) index = i; });
+    if (index >= 0) history[index] = { date, promotion };
+    else history.push({ date, promotion });
   };
   for (const id of departures) {
     const member = byId.get(id);
@@ -164,8 +180,10 @@ export function prepareUpdate(sourceMembers, date, entries, { additions = [], de
       errors.push(`Promoção inválida para ${member.nickname}.`);
       continue;
     }
+    if (!dateAllowed(member)) continue;
     const previousPromotion = member.promotion ?? null;
     if (previousPromotion === entry.promotion) continue;
+    applyPromotion(member, entry.promotion);
     if (entry.promotion === null) delete member.promotion;
     else member.promotion = entry.promotion;
     promotionChanges.push({ id: member.id, nickname: member.nickname, previousPromotion, promotion: entry.promotion });
@@ -191,6 +209,7 @@ export function prepareUpdate(sourceMembers, date, entries, { additions = [], de
       member.joinedAt = date;
       delete member.leftAt;
       if (addition.promotion !== undefined) {
+        if (addition.promotion !== (member.promotion ?? null)) applyPromotion(member, addition.promotion);
         if (addition.promotion === null) delete member.promotion;
         else member.promotion = addition.promotion;
       }
@@ -201,6 +220,7 @@ export function prepareUpdate(sourceMembers, date, entries, { additions = [], de
       while (byId.has(id)) id = `${base}-${suffix++}`;
       const member = { id, nickname, role: "Membro", active: true, joinedAt: date, history: [{ date, stage: addition.stage }] };
       if (addition.promotion) member.promotion = addition.promotion;
+      if (addition.promotion) member.promotionHistory = [{ date, promotion: addition.promotion }];
       members.push(member);
       byId.set(id, member);
       added.push({ id, nickname, stage: addition.stage, reactivated: false });
