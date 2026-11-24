@@ -28,5 +28,15 @@
     "recovered_file_date": "2026-11-12",
     "width": 1536,
     "height": 1024
+  },
+  {
+    "file": "leaguebr-top-10.png",
+    "thumbnail": "leaguebr-top-10.webp",
+    "title": "LeagueBR no Top 10",
+    "description": "Os 20 membros celebram a conquista do Top 10 em uma arte pixelizada com guerreiros medievais e estandartes dourados.",
+    "recovered_from": ".codex/generated_images/01a20892-0f06-7b62-a0e6-9d0ddde8282c/exec-7160847c-9e1f-4f92-8500-b57ea1e8f0ca.png",
+    "recovered_file_date": "2026-11-23",
+    "width": 1122,
+    "height": 1402
   }
 ]

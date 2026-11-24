@@ -1,9 +1,10 @@
 # Acervo da galeria
 
-Três PNGs recuperados dos arquivos locais do Codex, conferidos visualmente em 24/11/2026. Os originais foram copiados sem alteração; as miniaturas WebP são versões menores para navegação. `data/gallery.json` registra a pasta de origem relativa a Documents/Codex e as dimensões. As datas exibidas correspondem às pastas de recuperação, sem comprovar a data exata da geração.
+Quatro PNGs recuperados dos arquivos locais do Codex, conferidos visualmente em 24/11/2026. Os originais foram copiados sem alteração; as miniaturas WebP são versões menores para navegação. `data/gallery.json` registra a pasta de origem relativa a Documents/Codex (ou ao perfil do usuário quando começa com `.codex/`) e as dimensões. As datas exibidas correspondem às pastas de recuperação, sem comprovar a data exata da geração.
 
 - 05/11: escadinha de membros e trono de ferro.
 - 12/11: churrasco da guild, apenas a versão 2.
+- 23/11: comemoração do Top 10 com os 20 membros; pedido e geração confirmados na sessão Codex `01a20892-0f06-7b62-a0e6-9d0ddde8282c`.
 
 As duas artes de Nox Sombrio e a primeira versão do churrasco foram retiradas da galeria a pedido do usuário. Os arquivos de origem fora do portal foram preservados.
 
